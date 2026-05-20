@@ -453,6 +453,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
   -webkit-user-select:none;user-select:none}
 .csel-display.c-blue{color:#1565C0 !important;font-weight:700}
 .csel-display.c-purple{color:#6A1B9A !important;font-weight:700}
+.csel-display.c-crimson{color:#B22222 !important;font-weight:800}
 .csel-display.open{border-color:var(--g)}
 .csel-display.placeholder{color:var(--t3)}
 .csel-list{
@@ -470,10 +471,14 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
 .csel-opt:active{background:var(--bg2)}
 .csel-opt.c-blue{color:#1565C0 !important;font-weight:700}
 .csel-opt.c-purple{color:#6A1B9A !important;font-weight:700}
+.csel-opt.c-crimson{color:#B22222 !important;font-weight:800;
+  text-shadow:0 0 6px rgba(178,34,34,.4)}
 
 /* ── LEADERBOARD NAME COLOURS ── */
 .rnm.c-blue{color:#1565C0 !important;font-weight:800}
 .rnm.c-purple{color:#6A1B9A !important;font-weight:800}
+.rnm.c-crimson{color:#B22222 !important;font-weight:800;
+  text-shadow:0 0 8px rgba(178,34,34,.5),0 0 16px rgba(178,34,34,.3)}
 
 /* Blue/purple badge on stats */
 .rank-badge-blue{
@@ -482,6 +487,40 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
 .rank-badge-purple{
   display:inline-block;width:8px;height:8px;border-radius:50%;
   background:#6A1B9A;margin-right:5px;flex-shrink:0}
+
+/* ── MSL ADHERENCE GLOWS ── */
+.glow-bronze{
+  color:#CD7F32 !important;
+  text-shadow:0 0 6px rgba(205,127,50,.6),
+              0 0 12px rgba(205,127,50,.4),
+              0 0 20px rgba(205,127,50,.25);
+  font-weight:800 !important}
+.glow-silver{
+  color:#A8A8A8 !important;
+  text-shadow:0 0 6px rgba(180,180,180,.8),
+              0 0 12px rgba(180,180,180,.5),
+              0 0 22px rgba(180,180,180,.3);
+  font-weight:800 !important}
+.glow-gold{
+  color:#FFD700 !important;
+  text-shadow:0 0 6px rgba(255,215,0,.9),
+              0 0 14px rgba(255,215,0,.6),
+              0 0 24px rgba(255,215,0,.4),
+              0 0 36px rgba(255,215,0,.2);
+  font-weight:800 !important}
+/* Adherence % badge */
+.pct-badge{
+  display:inline-block;
+  font-size:.72rem;font-weight:800;
+  padding:3px 8px;border-radius:10px;
+  text-align:center;min-width:48px}
+.pct-none{background:var(--bg2);color:var(--t3)}
+.pct-bronze{background:#3D2200;color:#CD7F32;
+  box-shadow:0 0 6px rgba(205,127,50,.4)}
+.pct-silver{background:#1E1E1E;color:#C8C8C8;
+  box-shadow:0 0 6px rgba(180,180,180,.4)}
+.pct-gold{background:#2A1F00;color:#FFD700;
+  box-shadow:0 0 8px rgba(255,215,0,.5)}
 </style>
 </head>
 <body>
@@ -545,6 +584,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
       <div class="subtabs">
         <button class="stab on" onclick="switchSub('msl','day',this)">Daily</button>
         <button class="stab" onclick="switchSub('msl','mon',this)">Monthly</button>
+        <button class="stab" onclick="switchSub('msl','pct',this)">MSL %</button>
       </div>
       <div class="live-badge">
         <span class="ldot"></span>
@@ -613,6 +653,42 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
         <div class="lb-loading">Loading…</div>
       </div>
     </div>
+
+    <!-- MSL % inner panel -->
+    <div class="lbp-inner" id="msl-pct">
+      <div style="display:flex;justify-content:space-between;align-items:center;
+        padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--bd)">
+        <span style="font-size:.83rem;color:var(--t2);font-weight:700">MSL Adherence % — Monthly</span>
+        <div class="live-badge"><span class="ldot"></span><span id="pct-ts">Live</span></div>
+      </div>
+      <div style="display:flex;gap:8px;padding:10px 14px;
+        background:var(--bg2);border-bottom:1px solid var(--bd);align-items:center;flex-wrap:wrap">
+        <span style="font-size:.72rem;font-weight:700;color:var(--t3)">Glows:</span>
+        <span class="pct-badge pct-bronze">40-45%</span>
+        <span class="pct-badge pct-silver">45-50%</span>
+        <span class="pct-badge pct-gold">50%+</span>
+      </div>
+      <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="lbs">
+          <div class="lbs-n" id="pa-top" style="font-size:.83rem">-</div>
+          <div class="lbs-l">Leader</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="pa-gold" style="color:#FFD700">0</div>
+          <div class="lbs-l">Gold 50%+</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="pa-silver" style="color:#C8C8C8">0</div>
+          <div class="lbs-l">Silver 45%+</div>
+        </div>
+      </div>
+      <div class="lbthdr" style="grid-template-columns:42px 1fr 58px 1fr">
+        <span>Rank</span><span>SSM</span>
+        <span style="text-align:center">Adh %</span><span>Bar</span>
+      </div>
+      <div id="pct-rows"><div class="lb-loading">Loading...</div></div>
+    </div>
+
   </div>
 
   <!-- Outlets Panel -->
@@ -630,6 +706,16 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
 
     <!-- Outlets Daily -->
     <div class="lbp-inner on" id="out-day">
+      <!-- Outlet Addition Goals Legend -->
+      <div style="display:flex;gap:8px;padding:9px 14px;
+        background:var(--bg2);border-bottom:1px solid var(--bd);
+        align-items:center;flex-wrap:wrap">
+        <span style="font-size:.72rem;font-weight:700;color:var(--t3)">Name colour goals:</span>
+        <span style="font-size:.72rem;font-weight:700;color:#1565C0">&#9679; Blue 10+</span>
+        <span style="font-size:.72rem;font-weight:700;color:#6A1B9A">&#9679; Purple 20+</span>
+        <span style="font-size:.72rem;font-weight:700;color:#B22222;
+          text-shadow:0 0 5px rgba(178,34,34,.5)">&#9679; Crimson 30+</span>
+      </div>
       <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr">
         <div class="lbs">
           <div class="lbs-n" id="od-t">—</div>
@@ -677,6 +763,14 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
           <div class="lbs-l">Leader</div>
         </div>
       </div>
+      <div style="display:flex;gap:8px;padding:8px 14px;
+        background:var(--bg2);border-bottom:1px solid var(--bd);
+        align-items:center;flex-wrap:wrap">
+        <span style="font-size:.72rem;font-weight:700;color:var(--t3)">Goals:</span>
+        <span style="font-size:.72rem;font-weight:700;color:#1565C0">&#9679; Blue 10+</span>
+        <span style="font-size:.72rem;font-weight:700;color:#6A1B9A">&#9679; Purple 20+</span>
+        <span style="font-size:.72rem;font-weight:700;color:#B22222;text-shadow:0 0 5px rgba(178,34,34,.5)">&#9679; Crimson 30+</span>
+      </div>
       <div class="lbthdr" style="grid-template-columns:42px 1fr 50px 1fr">
         <span>Rank</span><span>SSM</span>
         <span style="text-align:center">Added</span><span>Bar</span>
@@ -688,7 +782,7 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
   </div>
 
   <div class="bnav">
-    <button class="mgr-btn" onclick="goMgr()">⊞  Manager Dashboard</button>
+    <button class="mgr-btn" onclick="goMgr()">&#8862;  Manager Dashboard</button>
   </div>
 
 </div><!-- end login -->
@@ -935,6 +1029,7 @@ let monthlyOutletCounts = {}; // shortName -> count
 
 function getSSMColour(name){
   const c = monthlyOutletCounts[name] || 0;
+  if(c >= 30) return 'c-crimson';
   if(c >= 20) return 'c-purple';
   if(c >= 10) return 'c-blue';
   return '';
@@ -955,8 +1050,9 @@ function buildDropdown(){
     opt.setAttribute('data-val', ssm);
     opt.textContent = ssm;
     // Inline style for guaranteed cross-platform colour rendering
-    if(cls==='c-blue')        opt.style.color='#1565C0';
+    if(cls==='c-crimson')     opt.style.color='#B22222';
     else if(cls==='c-purple') opt.style.color='#6A1B9A';
+    else if(cls==='c-blue')   opt.style.color='#1565C0';
     opt.onclick = function(){ selectSSM(ssm); };
     list.appendChild(opt);
   });
@@ -978,8 +1074,9 @@ function selectSSM(ssm){
   disp.textContent = ssm;
   // Apply class AND inline style for maximum cross-platform support
   disp.className = 'csel-display' + (cls?' '+cls:'');
-  if(cls==='c-blue')       disp.style.color='#1565C0';
+  if(cls==='c-crimson')    disp.style.color='#B22222';
   else if(cls==='c-purple') disp.style.color='#6A1B9A';
+  else if(cls==='c-blue')   disp.style.color='#1565C0';
   else                       disp.style.color='';
   $('csel-ssm-list').className = 'csel-list';
   cselOpen = false;
@@ -1009,16 +1106,18 @@ function updateDropdownColours(){
     const ssm = opt.getAttribute('data-val');
     const cls = getSSMColour(sn(ssm));
     opt.className = 'csel-opt' + (cls?' '+cls:'');
-    if(cls==='c-blue')        opt.style.color='#1565C0';
+    if(cls==='c-crimson')     opt.style.color='#B22222';
     else if(cls==='c-purple') opt.style.color='#6A1B9A';
+    else if(cls==='c-blue')   opt.style.color='#1565C0';
     else                       opt.style.color='';
   });
   if(selectedSSM){
     const cls = getSSMColour(sn(selectedSSM));
     const disp = $('csel-ssm-display');
     disp.className = 'csel-display' + (cls?' '+cls:'');
-    if(cls==='c-blue')        disp.style.color='#1565C0';
+    if(cls==='c-crimson')    disp.style.color='#B22222';
     else if(cls==='c-purple') disp.style.color='#6A1B9A';
+    else if(cls==='c-blue')   disp.style.color='#1565C0';
     else                       disp.style.color='';
   }
 }
@@ -1092,11 +1191,15 @@ function switchLB(id, btn){
   $('lbp-'+id).classList.add('on');
 }
 function switchSub(prefix, tab, btn){
-  const ids = prefix==='msl' ? ['msl-day','msl-mon'] : ['out-day','out-mon'];
+  const ids = prefix==='msl'
+    ? ['msl-day','msl-mon','msl-pct']
+    : ['out-day','out-mon'];
   ids.forEach(id => $(id).classList.remove('on'));
   $(prefix+'-'+tab).classList.add('on');
   btn.closest('.subtabs').querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
+  // Load adherence data when MSL % tab is opened
+  if(prefix==='msl' && tab==='pct') loadAdherence();
 }
 
 // ── LB render ─────────────────────────────────────────────────
@@ -1120,7 +1223,7 @@ function renderRows(elId, rows, key, cols){
     const barClr = val===0 ? 'cr' : bc(pct);
     const ri = i;
     const nclr = getSSMColour(r.name);
-    const nstyle = nclr==='c-blue'?'color:#1565C0;font-weight:800':nclr==='c-purple'?'color:#6A1B9A;font-weight:800':'';
+    const nstyle = nclr==='c-crimson'?'color:#B22222;font-weight:800;text-shadow:0 0 8px rgba(178,34,34,.5)':nclr==='c-purple'?'color:#6A1B9A;font-weight:800':nclr==='c-blue'?'color:#1565C0;font-weight:800':'';
     html += `<div class="lbrow ${rc(ri)}" style="grid-template-columns:${cols}">
       <span class="rn ${rnc(ri)}">#${i+1}</span>
       <span class="rnm${nclr?' '+nclr:''}" style="${nstyle}">${ri<3?med(ri):''}${r.name}</span>
@@ -1180,6 +1283,8 @@ function applyMonthlyMSL(rows){
   $('mm-t').textContent = all[0]?.name||'—';
   $('msl-mon-ts').textContent = nowT();
   renderRows('msl-mon-rows', all, 'units', '38px 1fr 48px 1fr');
+  // Refresh adherence if it's open
+  if($('msl-pct') && $('msl-pct').classList.contains('on')) loadAdherence();
 }
 
 function applyMonthlyOutlets(rows){
@@ -1220,6 +1325,7 @@ function startPolling(){
   loadMonthly();
   if(pollTmr) clearInterval(pollTmr);
   pollTmr = setInterval(pollDaily, 30000);
+  setInterval(pollAdherence, 30000);
   // Refresh monthly every 5 minutes
   setInterval(loadMonthly, 300000);
 }
@@ -1439,6 +1545,90 @@ function expCSV(){
     download:`disha_${new Date().toISOString().slice(0,10)}.csv`
   });
   a.click(); URL.revokeObjectURL(a.href);
+}
+
+
+// ── MSL ADHERENCE % ──────────────────────────────────────────
+let adherenceLoaded = false;
+
+function glowClass(pct){
+  if(pct >= 50) return 'glow-gold';
+  if(pct >= 45) return 'glow-silver';
+  if(pct >= 40) return 'glow-bronze';
+  return '';
+}
+function pctBadgeClass(pct){
+  if(pct >= 50) return 'pct-gold';
+  if(pct >= 45) return 'pct-silver';
+  if(pct >= 40) return 'pct-bronze';
+  return 'pct-none';
+}
+
+function loadAdherence(){
+  $('pct-rows').innerHTML = '<div class="lb-loading"><span class="spin">⟳</span> Loading…</div>';
+  gasGet('getMSLAdherence').then(function(res){
+    if(!res || !res.length){
+      $('pct-rows').innerHTML = '<div class="lbempty">No denominator data yet — fill Column D in MSL Baseline sheet</div>';
+      return;
+    }
+    renderAdherence(res);
+  });
+}
+
+function renderAdherence(rows){
+  // Ensure all 16 SSMs shown with 0 if no data
+  const map = {};
+  rows.forEach(function(r){ map[sn(r.ssm)] = r; });
+  const all = ALL_SHORT.map(function(n){
+    const r = map[n];
+    return r ? {name:n, pct:r.pct, units:r.units, denom:r.denom} : {name:n, pct:0, units:0, denom:0};
+  }).sort(function(a,b){ return b.pct - a.pct; });
+
+  const goldCount   = all.filter(r=>r.pct>=50).length;
+  const silverCount = all.filter(r=>r.pct>=45 && r.pct<50).length;
+
+  $('pa-top').textContent = all[0]?.pct > 0 ? all[0].name : '—';
+  $('pa-gold').textContent = goldCount;
+  $('pa-silver').textContent = silverCount;
+  $('pct-ts').textContent = nowT();
+
+  const max = Math.max(...all.map(r=>r.pct), 1);
+  let html = '';
+  all.forEach(function(r, i){
+    const gc = glowClass(r.pct);
+    const bc = pctBadgeClass(r.pct);
+    const barPct = r.pct > 0 ? Math.max(Math.round((r.pct/max)*100), 3) : 0;
+    // Bar colour based on tier
+    const barClr = r.pct>=50?'cg':r.pct>=45?'ca':r.pct>=40?'co':'cr';
+    const nclr = getSSMColour(r.name); // outlet addition colour (blue/purple)
+    // Glow overrides outlet colour if applicable
+    const nameStyle = gc
+      ? '' // glow handled by class
+      : nclr==='c-blue' ? 'color:#1565C0;font-weight:800'
+      : nclr==='c-purple' ? 'color:#6A1B9A;font-weight:800' : '';
+    const nameClass = 'rnm' + (gc?' '+gc : nclr?' '+nclr:'');
+
+    html += `<div class="lbrow ${rc(i)}" style="grid-template-columns:42px 1fr 58px 1fr">
+      <span class="rn ${rnc(i)}">#${i+1}</span>
+      <span class="${nameClass}" style="${nameStyle}">${rc(i)?med(i):''}${r.name}</span>
+      <span><div class="pct-badge ${bc}" style="margin:0 auto">${r.pct>0?r.pct.toFixed(1)+'%':'0%'}</div></span>
+      <span>${r.pct>0
+        ? `<div class="bbar"><div class="bfill ${barClr}" style="width:${barPct}%"></div></div>`
+        : '<div class="bbar"><div style="width:3px;height:9px;background:var(--r);border-radius:4px;opacity:.3"></div></div>'
+      }</span>
+    </div>`;
+  });
+  $('pct-rows').innerHTML = html;
+}
+
+// Poll adherence every 30s if the panel is visible
+function pollAdherence(){
+  const pctPanel = $('msl-pct');
+  if(pctPanel && pctPanel.classList.contains('on')){
+    gasGet('getMSLAdherence').then(function(res){
+      if(res && res.length) renderAdherence(res);
+    });
+  }
 }
 
 setMF('focus');
