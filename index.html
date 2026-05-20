@@ -3,395 +3,621 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Disha · Dabur</title>
 <style>
+/* ── RESET + BASE ───────────────────────────────────── */
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{-webkit-text-size-adjust:100%}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  background:#f0f2f5;color:#111;width:100%;overflow-x:hidden}
+html{-webkit-text-size-adjust:none;text-size-adjust:none;font-size:18px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+  background:#EFEFEF;color:#111;width:100%;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased}
+
+/* ── DESIGN TOKENS ──────────────────────────────────── */
 :root{
-  --g:#1B6B35;--g2:#145228;--gbg:#e8f5ee;
-  --r:#E63329;--rbg:#feefee;
-  --am:#C4720A;--ambg:#fff3e0;
-  --gold:#b8860b;--sil:#777;--bro:#8b6914;
-  --t2:#555;--t3:#999;
-  --bg:#fff;--bg2:#f0f2f5;--bg3:#e8eaed;
-  --bd:#e0e0e0;--bd2:#ccc;
-  --sh:0 1px 3px rgba(0,0,0,.1);
+  --g:#1B6B35;--g2:#145228;--gbg:#DCF0E5;
+  --r:#D63028;--rbg:#FCDCDA;
+  --am:#B56800;--ambg:#FDEFD7;
+  --gold:#A07800;--sil:#666;--bro:#7A5500;
+  --t1:#111;--t2:#444;--t3:#888;
+  --bg:#FFF;--bg2:#EFEFEF;--bg3:#E2E2E2;
+  --bd:#D0D0D0;--bd2:#B8B8B8;
+  --sh:0 2px 6px rgba(0,0,0,.12);
   --safe:env(safe-area-inset-bottom,0px)
 }
 
-/* pages */
+/* ── PAGES ──────────────────────────────────────────── */
 .pg{display:none;width:100%}.pg.on{display:block}
 
-/* toast */
-.toast{position:fixed;bottom:calc(68px + var(--safe));left:50%;
-  transform:translateX(-50%);background:#111;color:#fff;
-  padding:10px 20px;border-radius:24px;font-size:13px;font-weight:600;
-  z-index:999;opacity:0;transition:opacity .2s;pointer-events:none;
-  max-width:90%;text-align:center}
+/* ── TOAST ──────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:calc(80px + var(--safe));
+  left:50%;transform:translateX(-50%);
+  background:#111;color:#fff;
+  padding:14px 24px;border-radius:28px;
+  font-size:1rem;font-weight:700;
+  z-index:999;opacity:0;transition:opacity .2s;
+  pointer-events:none;max-width:90%;text-align:center;
+  box-shadow:var(--sh)}
 .toast.red{background:var(--r)}.toast.on{opacity:1}
 
-/* ── HERO ── */
-.hero{background:var(--r);padding:14px 16px;position:relative;overflow:hidden}
-.hero::after{content:'DABUR';position:absolute;right:0;top:50%;
-  transform:translateY(-50%);font-size:56px;font-weight:900;
-  color:rgba(0,0,0,.1);letter-spacing:2px;pointer-events:none}
+/* ══════════════════════════════════════════════════════
+   LOGIN PAGE
+══════════════════════════════════════════════════════ */
+
+/* Hero */
+.hero{
+  background:var(--r);
+  padding:18px 18px 14px;
+  position:relative;overflow:hidden}
+.hero::after{
+  content:'DABUR';
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  font-size:72px;font-weight:900;
+  color:rgba(0,0,0,.1);letter-spacing:3px;pointer-events:none}
 .hero-row{display:flex;align-items:center;justify-content:space-between}
-.hero h1{font-size:17px;font-weight:800;color:#fff;line-height:1.2}
-.hero p{font-size:11px;color:rgba(255,255,255,.75);margin-top:1px}
-.hero img{height:24px;filter:brightness(0) invert(1)}
-.hero-fb{font-size:11px;font-weight:800;color:#fff;letter-spacing:1px}
+.hero h1{font-size:1.44rem;font-weight:800;color:#fff;line-height:1.2}
+.hero p{font-size:.78rem;color:rgba(255,255,255,.8);margin-top:2px}
+.hero-logo{height:30px;filter:brightness(0) invert(1)}
+.hero-logo-fb{font-size:.89rem;font-weight:800;color:#fff;letter-spacing:1px}
 
-/* ── FORM ── */
-.lform{background:#fff;padding:14px 16px;border-bottom:1px solid var(--bd)}
-.flbl{display:block;font-size:11px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px}
-.fgap{margin-top:12px}
+/* Login form */
+.lform{background:#fff;padding:18px;border-bottom:1px solid var(--bd)}
+.flbl{
+  display:block;font-size:.78rem;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px}
 select,input,textarea{
-  width:100%;padding:12px 14px;border-radius:10px;
-  border:1.5px solid var(--bd2);background:#fff;color:#111;
-  font-size:16px;font-family:inherit;outline:none;
-  -webkit-appearance:none;appearance:none}
-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23999' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 13px center;padding-right:38px}
+  width:100%;padding:16px 18px;
+  border-radius:12px;
+  border:2px solid var(--bd2);
+  background:#fff;color:var(--t1);
+  font-size:1rem;font-family:inherit;outline:none;
+  -webkit-appearance:none;appearance:none;
+  font-weight:500}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 16px center;
+  padding-right:44px}
 select:focus,input:focus,textarea:focus{border-color:var(--g)}
-.start-btn{width:100%;margin-top:12px;padding:14px;border-radius:10px;
-  background:var(--g);color:#fff;font-size:16px;font-weight:700;
-  border:none;cursor:pointer;font-family:inherit}
-.start-btn:active{background:var(--g2)}
-.start-btn:disabled{background:#aaa;cursor:not-allowed}
+.fgap{margin-top:16px}
+.start-btn{
+  width:100%;margin-top:16px;
+  padding:18px;border-radius:12px;
+  background:var(--g);color:#fff;
+  font-size:1.11rem;font-weight:800;
+  border:none;cursor:pointer;font-family:inherit;
+  letter-spacing:.03em}
+.start-btn:active{background:var(--g2);transform:scale(.99)}
+.start-btn:disabled{background:#AAA;cursor:not-allowed}
 
-/* ── LB SWITCHER ── */
-.lbswitch{display:grid;grid-template-columns:1fr 1fr;
-  background:#fff;border-bottom:2px solid var(--bd)}
-.lbsw{width:100%;padding:12px 8px;border:none;background:none;cursor:pointer;
-  font-family:inherit;display:flex;flex-direction:column;
-  align-items:center;gap:3px;
-  border-bottom:3px solid transparent;margin-bottom:-2px}
-.lbsw-i{font-size:18px}
-.lbsw-l{font-size:11px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.04em}
-.lbsw.on .lbsw-l{color:var(--r)}
+/* ── LEADERBOARD SWITCHER ── */
+.lbswitch{
+  display:grid;grid-template-columns:1fr 1fr;
+  background:#fff;border-bottom:3px solid var(--bd)}
+.lbsw{
+  width:100%;padding:16px 8px;
+  border:none;background:none;cursor:pointer;
+  font-family:inherit;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  border-bottom:4px solid transparent;margin-bottom:-3px}
+.lbsw-ico{font-size:1.56rem}
+.lbsw-lbl{
+  font-size:.78rem;font-weight:800;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.05em}
+.lbsw.on .lbsw-lbl{color:var(--r)}
 .lbsw.on{border-bottom-color:var(--r)}
 
 /* ── LB PANELS ── */
 .lbp{display:none}.lbp.on{display:block}
 .lbp-inner{display:none}.lbp-inner.on{display:block}
 
-.sub-row{display:flex;align-items:center;justify-content:space-between;
-  padding:9px 14px;background:var(--bg2);border-bottom:1px solid var(--bd)}
-.subtabs{display:flex;gap:6px}
-.stab{padding:6px 16px;border-radius:20px;border:1.5px solid var(--bd2);
-  background:#fff;color:var(--t3);font-size:12px;font-weight:700;
-  cursor:pointer;font-family:inherit;min-height:34px;display:flex;align-items:center}
+/* Sub-tabs row */
+.sub-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;
+  background:var(--bg2);border-bottom:1px solid var(--bd)}
+.subtabs{display:flex;gap:8px}
+.stab{
+  padding:9px 22px;border-radius:22px;
+  border:2px solid var(--bd2);
+  background:#fff;color:var(--t3);
+  font-size:.83rem;font-weight:700;
+  cursor:pointer;font-family:inherit;min-height:42px;
+  display:flex;align-items:center}
 .stab.on{background:var(--r);border-color:var(--r);color:#fff}
-.live-dot{display:flex;align-items:center;gap:4px;
-  font-size:11px;font-weight:700;color:var(--g)}
-.ld{width:7px;height:7px;background:var(--g);border-radius:50%;
+.live-badge{
+  display:flex;align-items:center;gap:5px;
+  font-size:.72rem;font-weight:700;color:var(--g)}
+.ldot{
+  width:8px;height:8px;background:var(--g);border-radius:50%;
   animation:blink 1.4s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* ── LB STATS ── */
+/* Stats strip */
 .lbstats{display:grid;border-bottom:1px solid var(--bd);background:#fff}
-.lbs{padding:10px 12px;border-right:1px solid var(--bd)}
+.lbs{padding:12px 14px;border-right:1px solid var(--bd)}
 .lbs:last-child{border-right:none}
-.lbs-n{font-size:18px;font-weight:800;color:#111;line-height:1}
-.lbs-l{font-size:9px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.lbs-n{font-size:1.33rem;font-weight:800;color:var(--t1);line-height:1}
+.lbs-l{
+  font-size:.61rem;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
 
-/* ── LB ROWS ── */
-.lbthdr{display:grid;padding:7px 12px;background:var(--bg2);
-  font-size:9px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.07em;
+/* Table header */
+.lbthdr{
+  display:grid;padding:9px 14px;background:var(--bg2);
+  font-size:.61rem;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.08em;
   border-bottom:1px solid var(--bd)}
-.lbrow{display:grid;padding:10px 12px;border-bottom:1px solid var(--bd);
+
+/* Rank rows — LARGE for zoomed-out readability */
+.lbrow{
+  display:grid;padding:13px 14px;
+  border-bottom:1px solid var(--bd);
   align-items:center;background:#fff}
 .lbrow:last-child{border-bottom:none}
-.lbrow.r1{background:#fffef2}.lbrow.r2{background:#fafafa}.lbrow.r3{background:#fdf9f0}
-.rn{font-size:12px;font-weight:800;color:var(--t3)}
+.lbrow.r1{background:#FFFBEC}
+.lbrow.r2{background:#FAFAFA}
+.lbrow.r3{background:#FDF8EE}
+.rn{font-size:.83rem;font-weight:800;color:var(--t3)}
 .rn.g{color:var(--gold)}.rn.s{color:var(--sil)}.rn.b{color:var(--bro)}
-.rnm{font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.rnm.dim{color:var(--t3);font-weight:400;font-style:italic}
-.rv{font-size:15px;font-weight:800;text-align:center;color:#111}
+.rnm{
+  font-size:.94rem;font-weight:700;color:var(--t1);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rv{font-size:1rem;font-weight:800;text-align:center;color:var(--t1)}
 .rv-zero{color:var(--t3)}
-.bbar{height:7px;background:var(--bg2);border-radius:4px;overflow:hidden}
-.bfill{height:100%;border-radius:4px;transition:width .5s}
-.cg{background:var(--g)}.ca{background:var(--am)}.co{background:#e67e22}.cr{background:var(--r)}
-.urep{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;
-  background:var(--bg2);color:var(--t3);text-transform:uppercase}
-.mock-l{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;
-  background:#fff8dc;color:var(--gold)}
-.lbempty{text-align:center;padding:18px;color:var(--t3);font-size:12px;
-  background:#fff;border-bottom:1px solid var(--bd)}
-.lb-loading{text-align:center;padding:18px;color:var(--t2);font-size:12px;
-  background:#fff;border-bottom:1px solid var(--bd)}
+.bbar{height:9px;background:var(--bg2);border-radius:5px;overflow:hidden}
+.bfill{height:100%;border-radius:5px;transition:width .5s}
+.cg{background:var(--g)}.ca{background:var(--am)}
+.co{background:#D06000}.cr{background:var(--r)}
+.lbempty{
+  text-align:center;padding:22px 16px;
+  color:var(--t3);font-size:.89rem;background:#fff;
+  border-bottom:1px solid var(--bd)}
+.lb-loading{
+  text-align:center;padding:22px 16px;
+  color:var(--t2);font-size:.89rem;background:#fff;
+  border-bottom:1px solid var(--bd)}
+.mock-lbl{
+  font-size:.67rem;font-weight:700;padding:3px 10px;
+  border-radius:5px;background:#FFF8DC;color:var(--gold)}
 
 /* ── BOTTOM NAV ── */
-.bnav{background:#fff;border-top:1px solid var(--bd);
-  padding:10px 20px calc(10px + var(--safe));
+.bnav{
+  background:#fff;border-top:1px solid var(--bd);
+  padding:14px 20px calc(14px + var(--safe));
   display:flex;justify-content:center}
-.mgr-btn{background:none;border:none;color:var(--t3);font-size:13px;
-  font-weight:600;cursor:pointer;font-family:inherit;
-  padding:8px 20px;display:flex;align-items:center;gap:6px}
-.mgr-btn:active{color:#111}
+.mgr-btn{
+  background:none;border:none;color:var(--t3);
+  font-size:.89rem;font-weight:700;
+  cursor:pointer;font-family:inherit;
+  padding:10px 24px;
+  display:flex;align-items:center;gap:7px}
+.mgr-btn:active{color:var(--t1)}
 
-/* ── MAIN PAGE ── */
-.mhdr{position:sticky;top:0;z-index:50;background:#fff;
-  border-bottom:1px solid var(--bd);box-shadow:var(--sh)}
-.mhdr-top{display:flex;align-items:center;padding:10px 14px;gap:10px}
-.back-btn{background:none;border:none;cursor:pointer;font-size:20px;
-  color:var(--t2);padding:6px;min-width:36px;min-height:36px;
-  display:flex;align-items:center;justify-content:center;border-radius:8px}
+/* ══════════════════════════════════════════════════════
+   MAIN PAGE
+══════════════════════════════════════════════════════ */
+
+/* Sticky header */
+.mhdr{
+  position:sticky;top:0;z-index:50;
+  background:#fff;border-bottom:1px solid var(--bd);
+  box-shadow:var(--sh)}
+.mhdr-top{
+  display:flex;align-items:center;
+  padding:12px 16px;gap:12px}
+.back-btn{
+  background:none;border:none;cursor:pointer;
+  font-size:1.44rem;color:var(--t2);
+  padding:8px;min-width:44px;min-height:44px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:10px}
 .back-btn:active{background:var(--bg2)}
 .mhdr-info{flex:1;min-width:0}
-.mhdr-nm{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mhdr-bt{font-size:11px;color:var(--g);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mhdr-logo{height:20px;object-fit:contain}
-.mhdr-logo-fb{font-size:10px;font-weight:800;color:var(--r)}
+.mhdr-nm{
+  font-size:1rem;font-weight:800;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mhdr-bt{
+  font-size:.78rem;color:var(--g);font-weight:600;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mhdr-logo{height:24px;object-fit:contain}
+.mhdr-logo-fb{font-size:.78rem;font-weight:800;color:var(--r)}
 
-/* stats */
-.stats3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;
-  padding:10px 14px;background:var(--bg2)}
-.sc{background:#fff;border-radius:10px;padding:10px 6px;
-  text-align:center;box-shadow:var(--sh)}
-.sc-n{font-size:22px;font-weight:800;line-height:1}
-.sc-l{font-size:9px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+/* 3 stat cards */
+.stats3{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:8px;padding:10px 14px;background:var(--bg2)}
+.sc{
+  background:#fff;border-radius:12px;
+  padding:12px 6px;text-align:center;
+  box-shadow:var(--sh)}
+.sc-n{font-size:1.56rem;font-weight:900;line-height:1}
+.sc-l{
+  font-size:.61rem;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
 
-/* 4 tabs */
-.tabbar{display:grid;grid-template-columns:repeat(4,1fr);
+/* 4 main tabs */
+.tabbar{
+  display:grid;grid-template-columns:repeat(4,1fr);
   background:#fff;border-bottom:1px solid var(--bd)}
-.tb{padding:8px 2px;border:none;background:none;cursor:pointer;
-  font-family:inherit;font-size:9px;font-weight:700;color:var(--t3);
-  border-bottom:3px solid transparent;min-height:48px;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:2px;
-  text-transform:uppercase;letter-spacing:.02em}
-.tb-i{font-size:16px}
+.tb{
+  padding:10px 4px;border:none;background:none;
+  cursor:pointer;font-family:inherit;
+  font-size:.61rem;font-weight:800;color:var(--t3);
+  border-bottom:4px solid transparent;
+  min-height:58px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:4px;
+  text-transform:uppercase;letter-spacing:.03em}
+.tb-ico{font-size:1.33rem}
 .tb.on{color:var(--g);border-bottom-color:var(--g)}
-.tc{display:none;padding:12px 14px}.tc.on{display:block}
+.tc{display:none;padding:14px}.tc.on{display:block}
 
-/* outlet rows */
-.orow{display:flex;align-items:center;gap:10px;padding:12px 14px;
-  background:#fff;border-radius:12px;margin-bottom:8px;
+/* Outlet rows */
+.orow{
+  display:flex;align-items:center;gap:12px;
+  padding:14px 16px;
+  background:#fff;border-radius:14px;
+  margin-bottom:10px;
   box-shadow:var(--sh);border:1px solid var(--bd)}
-.orow.done{opacity:.7}
-.oname{font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.ometa{display:flex;gap:5px;align-items:center;margin-top:3px;flex-wrap:wrap}
-.tag{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap}
+.orow.done{opacity:.65}
+.oname{
+  font-size:.94rem;font-weight:700;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ometa{
+  display:flex;gap:6px;align-items:center;
+  margin-top:5px;flex-wrap:wrap}
+.tag{
+  font-size:.72rem;font-weight:700;
+  padding:4px 10px;border-radius:22px;white-space:nowrap}
 .tag-High,.tag-closed,.tag-closed_today{background:var(--rbg);color:var(--r)}
 .tag-Medium,.tag-no_billing{background:var(--ambg);color:var(--am)}
 .tag-Low,.tag-billed{background:var(--gbg);color:var(--g)}
 .tag-other,.tag-not_open,.tag-msc{background:var(--bg2);color:var(--t2)}
-.oact{flex-shrink:0;padding:8px 13px;border:2px solid var(--g);
-  border-radius:8px;background:#fff;cursor:pointer;font-size:13px;
-  font-weight:700;color:var(--g);font-family:inherit;min-height:40px}
+.oact{
+  flex-shrink:0;
+  padding:11px 16px;
+  border:2px solid var(--g);border-radius:10px;
+  background:#fff;cursor:pointer;
+  font-size:.83rem;font-weight:800;
+  color:var(--g);font-family:inherit;min-height:46px}
 .oact:active{background:var(--gbg)}
 .oact.ed{border-color:var(--bd2);color:var(--t2)}
-.pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.pdot{
+  width:8px;height:8px;border-radius:50%;
+  flex-shrink:0;margin-top:4px}
 .pH{background:var(--r)}.pM{background:var(--am)}.pL{background:var(--g)}
-.note-sm{font-size:11px;font-style:italic;color:var(--t3)}
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--t3);font-size:13px}
+.note-sm{font-size:.72rem;font-style:italic;color:var(--t3)}
+.empty{
+  text-align:center;padding:3rem 1rem;
+  color:var(--t3);font-size:.94rem}
 
-/* search */
-.srch{position:relative;margin-bottom:10px}
-.srch input{padding-left:36px}
-.srch-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);
-  color:var(--t3);font-size:15px;pointer-events:none}
+/* Search */
+.srch{position:relative;margin-bottom:12px}
+.srch input{padding-left:44px}
+.srch-ico{
+  position:absolute;left:14px;top:50%;
+  transform:translateY(-50%);
+  color:var(--t3);font-size:1rem;pointer-events:none}
+.geo-cnt{font-size:.83rem;color:var(--t3);margin-bottom:12px}
 
-/* entry cards */
-.ecard{background:#fff;border-radius:14px;padding:18px 16px;
-  box-shadow:var(--sh);margin-bottom:12px;border:1px solid var(--bd)}
-.ecard-t{font-size:11px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px}
-.flbl2{display:block;font-size:12px;font-weight:700;color:var(--t2);
-  text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-.sub-btn{width:100%;padding:14px;border-radius:10px;background:var(--g);
-  color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;
-  font-family:inherit;margin-top:12px;min-height:48px}
+/* Entry cards */
+.ecard{
+  background:#fff;border-radius:16px;
+  padding:20px 18px;
+  box-shadow:var(--sh);margin-bottom:14px;
+  border:1px solid var(--bd)}
+.ecard-t{
+  font-size:.78rem;font-weight:800;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:18px}
+.flbl2{
+  display:block;font-size:.83rem;font-weight:700;
+  color:var(--t2);margin-bottom:8px}
+.sub-btn{
+  width:100%;padding:18px;border-radius:12px;
+  background:var(--g);color:#fff;
+  font-size:1.06rem;font-weight:800;
+  border:none;cursor:pointer;font-family:inherit;
+  margin-top:14px;min-height:58px}
 .sub-btn:active{background:var(--g2)}
-.today-box{background:var(--gbg);border:1px solid rgba(27,107,53,.2);
-  border-radius:10px;padding:12px 14px;margin-bottom:14px}
-.tb-lbl{font-size:11px;font-weight:700;color:var(--g);
-  text-transform:uppercase;letter-spacing:.05em}
-.tb-val{font-size:26px;font-weight:800;color:var(--g);margin-top:2px}
-.log-row{display:flex;align-items:center;justify-content:space-between;
-  padding:10px 13px;background:#fff;border-radius:8px;
-  margin-bottom:7px;border:1px solid var(--bd)}
-.log-nm{font-size:14px;font-weight:700}
-.log-mt{font-size:11px;color:var(--t3);margin-top:1px}
+.today-box{
+  background:var(--gbg);
+  border:2px solid rgba(27,107,53,.2);
+  border-radius:12px;padding:14px 18px;margin-bottom:16px}
+.tb-lbl{
+  font-size:.72rem;font-weight:700;color:var(--g);
+  text-transform:uppercase;letter-spacing:.06em}
+.tb-val{font-size:2rem;font-weight:900;color:var(--g);margin-top:3px}
+.log-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;background:#fff;border-radius:10px;
+  margin-bottom:8px;border:1px solid var(--bd)}
+.log-nm{font-size:.94rem;font-weight:700}
+.log-mt{font-size:.72rem;color:var(--t3);margin-top:2px}
 
-/* manager */
-.mgt{width:100%;border-collapse:collapse;font-size:12px}
-.mgt th{padding:9px 10px;background:var(--g);color:#fff;
-  text-align:left;font-weight:700;font-size:11px;white-space:nowrap}
-.mgt td{padding:8px 10px;border-top:1px solid var(--bd)}
+/* ── MANAGER ── */
+.mgt{width:100%;border-collapse:collapse;font-size:.83rem}
+.mgt th{
+  padding:11px 12px;background:var(--g);color:#fff;
+  text-align:left;font-weight:700;
+  font-size:.72rem;white-space:nowrap}
+.mgt td{
+  padding:10px 12px;border-top:1px solid var(--bd);
+  font-size:.83rem}
 .mgt tr:nth-child(even) td{background:var(--bg2)}
-.mfbtn{padding:8px 12px;border-radius:20px;border:1.5px solid var(--bd2);
-  background:#fff;color:var(--t2);font-size:12px;font-weight:700;
-  cursor:pointer;font-family:inherit;min-height:36px}
+.mfbtn{
+  padding:10px 14px;border-radius:22px;
+  border:2px solid var(--bd2);
+  background:#fff;color:var(--t2);
+  font-size:.83rem;font-weight:700;
+  cursor:pointer;font-family:inherit;min-height:42px}
 .mfbtn.on{background:var(--g);border-color:var(--g);color:#fff}
-.csv-btn{padding:8px 14px;border-radius:20px;border:none;
-  background:var(--g);color:#fff;font-size:12px;font-weight:700;
-  cursor:pointer;font-family:inherit;min-height:36px}
-.loading{text-align:center;padding:1.5rem;color:var(--t2);font-size:13px}
+.csv-btn{
+  padding:10px 16px;border-radius:22px;
+  border:none;background:var(--g);color:#fff;
+  font-size:.83rem;font-weight:700;
+  cursor:pointer;font-family:inherit;min-height:42px}
+.empty2{text-align:center;padding:2rem;color:var(--t3);font-size:.94rem}
+.loading{text-align:center;padding:2rem;color:var(--t2);font-size:.94rem}
 @keyframes spin{to{transform:rotate(360deg)}}
 .spin{animation:spin .7s linear infinite;display:inline-block}
 
-/* overlay */
-.overlay{display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.55);z-index:200;align-items:flex-end}
+/* ── ACTION SHEET ── */
+.overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.55);z-index:200;
+  align-items:flex-end}
 .overlay.on{display:flex}
-.asheet{background:#fff;border-radius:20px 20px 0 0;
-  padding:20px 16px calc(24px + var(--safe));
-  width:100%;max-height:90vh;overflow-y:auto}
-.ash-handle{width:40px;height:4px;background:var(--bd2);border-radius:2px;margin:0 auto 18px}
-.ash-sub{font-size:11px;font-weight:700;color:var(--t3);
-  text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.ash-nm{font-size:17px;font-weight:800;margin-bottom:16px}
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.sbtn{padding:14px 8px;border-radius:12px;border:2px solid var(--bd);
-  background:#fff;cursor:pointer;text-align:center;font-size:13px;
-  font-weight:700;color:#111;font-family:inherit;min-height:74px;
-  display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:4px}
+.asheet{
+  background:#fff;border-radius:22px 22px 0 0;
+  padding:22px 18px calc(28px + var(--safe));
+  width:100%;max-height:92vh;overflow-y:auto}
+.ash-handle{
+  width:44px;height:5px;background:var(--bd2);
+  border-radius:3px;margin:0 auto 20px}
+.ash-sub{
+  font-size:.72rem;font-weight:700;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px}
+.ash-nm{font-size:1.11rem;font-weight:800;margin-bottom:18px}
+.sgrid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:12px;margin-bottom:16px}
+.sbtn{
+  padding:16px 10px;border-radius:14px;
+  border:2px solid var(--bd);
+  background:#fff;cursor:pointer;
+  text-align:center;
+  font-size:.89rem;font-weight:700;color:var(--t1);
+  font-family:inherit;min-height:82px;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px}
 .sbtn:active{background:var(--bg2)}
-.sbtn .se{font-size:22px}
+.sbtn .se{font-size:1.56rem}
 .sbtn.s-billed{background:var(--gbg);border-color:var(--g);color:var(--g)}
 .sbtn.s-no_billing{background:var(--ambg);border-color:var(--am);color:var(--am)}
 .sbtn.s-closed,.sbtn.s-closed_today{background:var(--rbg);border-color:var(--r);color:var(--r)}
-.sbtn.s-other,.sbtn.s-not_open,.sbtn.s-msc{background:var(--bg2);border-color:var(--bd2);color:var(--t2)}
-.ash-btns{display:grid;grid-template-columns:1fr 2fr;gap:10px}
-.ash-cancel{padding:14px;border-radius:10px;border:1.5px solid var(--bd2);
-  background:#fff;color:var(--t2);font-size:15px;font-weight:600;
-  cursor:pointer;font-family:inherit;min-height:50px}
-.ash-save{padding:14px;border-radius:10px;border:none;background:var(--g);
-  color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;min-height:50px}
+.sbtn.s-other,.sbtn.s-not_open,.sbtn.s-msc{
+  background:var(--bg2);border-color:var(--bd2);color:var(--t2)}
+.ash-btns{display:grid;grid-template-columns:1fr 2fr;gap:12px}
+.ash-cancel{
+  padding:16px;border-radius:12px;
+  border:2px solid var(--bd2);background:#fff;
+  color:var(--t2);font-size:1rem;font-weight:700;
+  cursor:pointer;font-family:inherit;min-height:56px}
+.ash-save{
+  padding:16px;border-radius:12px;
+  border:none;background:var(--g);
+  color:#fff;font-size:1rem;font-weight:800;
+  cursor:pointer;font-family:inherit;min-height:56px}
 .ash-save:active{background:var(--g2)}
 </style>
 </head>
 <body>
 <div class="toast" id="toast"></div>
 
-<!-- ═══ LOGIN PAGE ═══ -->
+<!-- ═══════════════ LOGIN ═══════════════ -->
 <div class="pg on" id="pg-login">
 
   <div class="hero">
     <div class="hero-row">
-      <div><h1>Disha Enterprise</h1><p>South Delhi · General Trade</p></div>
+      <div>
+        <h1>Disha Enterprise</h1>
+        <p>South Delhi · General Trade</p>
+      </div>
       <img src="https://upload.wikimedia.org/wikipedia/en/5/5c/Dabur_Logo.png"
-           alt="Dabur" onerror="this.outerHTML='<div class=hero-fb>DABUR</div>'">
+           class="hero-logo" alt="Dabur"
+           onerror="this.outerHTML='<div class=hero-logo-fb>DABUR</div>'">
     </div>
   </div>
 
   <div class="lform">
     <label class="flbl">Your Name</label>
-    <select id="sel-ssm" onchange="onSSM()"><option value="">Select your name…</option></select>
+    <select id="sel-ssm" onchange="onSSM()">
+      <option value="">Select your name…</option>
+    </select>
     <div class="fgap" id="beat-wrap" style="display:none">
       <label class="flbl">Today's Beat</label>
-      <select id="sel-beat" onchange="$('start-btn').disabled=!this.value">
+      <select id="sel-beat"
+        onchange="document.getElementById('start-btn').disabled=!this.value">
         <option value="">Select beat…</option>
       </select>
     </div>
-    <button class="start-btn" id="start-btn" disabled onclick="doLogin()">▶ &nbsp;Start Day</button>
+    <button class="start-btn" id="start-btn" disabled onclick="doLogin()">
+      ▶  Start Day
+    </button>
   </div>
 
-  <!-- Leaderboard -->
+  <!-- Leaderboard switcher -->
   <div class="lbswitch">
     <button class="lbsw on" id="sw-msl" onclick="switchLB('msl',this)">
-      <span class="lbsw-i">📊</span><span class="lbsw-l">MSL</span>
+      <span class="lbsw-ico">📊</span>
+      <span class="lbsw-lbl">MSL</span>
     </button>
     <button class="lbsw" id="sw-out" onclick="switchLB('out',this)">
-      <span class="lbsw-i">🏪</span><span class="lbsw-l">Outlets</span>
+      <span class="lbsw-ico">🏪</span>
+      <span class="lbsw-lbl">Outlets</span>
     </button>
   </div>
 
-  <!-- MSL panel -->
+  <!-- MSL Panel -->
   <div class="lbp on" id="lbp-msl">
     <div class="sub-row">
       <div class="subtabs">
         <button class="stab on" onclick="switchSub('msl','day',this)">Daily</button>
         <button class="stab" onclick="switchSub('msl','mon',this)">Monthly</button>
       </div>
-      <div class="live-dot"><span class="ld"></span><span id="msl-ts">—</span></div>
+      <div class="live-badge">
+        <span class="ldot"></span>
+        <span id="msl-ts">Live</span>
+      </div>
     </div>
+
+    <!-- MSL Daily -->
     <div class="lbp-inner on" id="msl-day">
       <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr 1fr">
-        <div class="lbs"><div class="lbs-n" id="md-u">—</div><div class="lbs-l">Units</div></div>
-        <div class="lbs"><div class="lbs-n" id="md-r" style="color:var(--g)">—</div><div class="lbs-l">Reported</div></div>
-        <div class="lbs"><div class="lbs-n" id="md-p" style="color:var(--r)">—</div><div class="lbs-l">Pending</div></div>
-        <div class="lbs"><div class="lbs-n" id="md-t" style="font-size:12px">—</div><div class="lbs-l">Leader</div></div>
+        <div class="lbs">
+          <div class="lbs-n" id="md-u">—</div>
+          <div class="lbs-l">Units</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="md-r" style="color:var(--g)">—</div>
+          <div class="lbs-l">Reported</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="md-p" style="color:var(--r)">—</div>
+          <div class="lbs-l">Pending</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="md-t" style="font-size:.83rem">—</div>
+          <div class="lbs-l">Leader</div>
+        </div>
       </div>
-      <div class="lbthdr" style="grid-template-columns:38px 1fr 44px 1fr">
-        <span>Rank</span><span>SSM</span><span style="text-align:center">Units</span><span>Bar</span>
+      <div class="lbthdr" style="grid-template-columns:42px 1fr 46px 1fr">
+        <span>Rank</span><span>SSM</span>
+        <span style="text-align:center">Units</span><span>Bar</span>
       </div>
-      <div id="msl-day-rows"><div class="lb-loading">Loading…</div></div>
+      <div id="msl-day-rows">
+        <div class="lb-loading">Loading…</div>
+      </div>
     </div>
+
+    <!-- MSL Monthly -->
     <div class="lbp-inner" id="msl-mon">
       <div style="display:flex;justify-content:space-between;align-items:center;
-        padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--bd)">
-        <span style="font-size:11px;color:var(--t2);font-weight:600">This Month</span>
-        <div class="live-dot"><span class="ld"></span><span id="msl-mon-ts">—</span></div>
+        padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--bd)">
+        <span style="font-size:.83rem;color:var(--t2);font-weight:700">This Month</span>
+        <div class="live-badge">
+          <span class="ldot"></span>
+          <span id="msl-mon-ts">Live</span>
+        </div>
       </div>
       <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr">
-        <div class="lbs"><div class="lbs-n" id="mm-u">—</div><div class="lbs-l">Total Units</div></div>
-        <div class="lbs"><div class="lbs-n" id="mm-r" style="color:var(--g)">—</div><div class="lbs-l">SSMs</div></div>
-        <div class="lbs"><div class="lbs-n" id="mm-t" style="font-size:12px">—</div><div class="lbs-l">Leader</div></div>
+        <div class="lbs">
+          <div class="lbs-n" id="mm-u">—</div>
+          <div class="lbs-l">Total Units</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="mm-r" style="color:var(--g)">—</div>
+          <div class="lbs-l">Reported</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="mm-t" style="font-size:.83rem">—</div>
+          <div class="lbs-l">Leader</div>
+        </div>
       </div>
-      <div class="lbthdr" style="grid-template-columns:38px 1fr 48px 1fr">
-        <span>Rank</span><span>SSM</span><span style="text-align:center">Units</span><span>Bar</span>
+      <div class="lbthdr" style="grid-template-columns:42px 1fr 50px 1fr">
+        <span>Rank</span><span>SSM</span>
+        <span style="text-align:center">Units</span><span>Bar</span>
       </div>
-      <div id="msl-mon-rows"><div class="lb-loading">Loading…</div></div>
+      <div id="msl-mon-rows">
+        <div class="lb-loading">Loading…</div>
+      </div>
     </div>
   </div>
 
-  <!-- Outlets panel -->
+  <!-- Outlets Panel -->
   <div class="lbp" id="lbp-out">
     <div class="sub-row">
       <div class="subtabs">
         <button class="stab on" onclick="switchSub('out','day',this)">Daily</button>
         <button class="stab" onclick="switchSub('out','mon',this)">Monthly</button>
       </div>
-      <div class="live-dot"><span class="ld"></span><span id="out-ts">—</span></div>
+      <div class="live-badge">
+        <span class="ldot"></span>
+        <span id="out-ts">Live</span>
+      </div>
     </div>
+
+    <!-- Outlets Daily -->
     <div class="lbp-inner on" id="out-day">
       <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr">
-        <div class="lbs"><div class="lbs-n" id="od-t">—</div><div class="lbs-l">Today</div></div>
-        <div class="lbs"><div class="lbs-n" id="od-s" style="color:var(--g)">—</div><div class="lbs-l">Active</div></div>
-        <div class="lbs"><div class="lbs-n" id="od-l" style="font-size:12px">—</div><div class="lbs-l">Leader</div></div>
+        <div class="lbs">
+          <div class="lbs-n" id="od-t">—</div>
+          <div class="lbs-l">Today</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="od-s" style="color:var(--g)">—</div>
+          <div class="lbs-l">Active</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="od-l" style="font-size:.83rem">—</div>
+          <div class="lbs-l">Leader</div>
+        </div>
       </div>
-      <div class="lbthdr" style="grid-template-columns:38px 1fr 44px 1fr">
-        <span>Rank</span><span>SSM</span><span style="text-align:center">Added</span><span>Bar</span>
+      <div class="lbthdr" style="grid-template-columns:42px 1fr 46px 1fr">
+        <span>Rank</span><span>SSM</span>
+        <span style="text-align:center">Added</span><span>Bar</span>
       </div>
-      <div id="out-day-rows"><div class="lb-loading">Loading…</div></div>
+      <div id="out-day-rows">
+        <div class="lb-loading">Loading…</div>
+      </div>
     </div>
+
+    <!-- Outlets Monthly -->
     <div class="lbp-inner" id="out-mon">
       <div style="display:flex;justify-content:space-between;align-items:center;
-        padding:8px 12px;background:var(--bg2);border-bottom:1px solid var(--bd)">
-        <span style="font-size:11px;color:var(--t2);font-weight:600">This Month</span>
-        <div class="live-dot"><span class="ld"></span><span id="out-mon-ts">—</span></div>
+        padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--bd)">
+        <span style="font-size:.83rem;color:var(--t2);font-weight:700">This Month</span>
+        <div class="live-badge">
+          <span class="ldot"></span>
+          <span id="out-mon-ts">Live</span>
+        </div>
       </div>
       <div class="lbstats" style="grid-template-columns:1fr 1fr 1fr">
-        <div class="lbs"><div class="lbs-n" id="om-t">—</div><div class="lbs-l">Total</div></div>
-        <div class="lbs"><div class="lbs-n" id="om-s" style="color:var(--g)">—</div><div class="lbs-l">SSMs</div></div>
-        <div class="lbs"><div class="lbs-n" id="om-l" style="font-size:12px">—</div><div class="lbs-l">Leader</div></div>
+        <div class="lbs">
+          <div class="lbs-n" id="om-t">—</div>
+          <div class="lbs-l">Total</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="om-s" style="color:var(--g)">—</div>
+          <div class="lbs-l">SSMs</div>
+        </div>
+        <div class="lbs">
+          <div class="lbs-n" id="om-l" style="font-size:.83rem">—</div>
+          <div class="lbs-l">Leader</div>
+        </div>
       </div>
-      <div class="lbthdr" style="grid-template-columns:38px 1fr 48px 1fr">
-        <span>Rank</span><span>SSM</span><span style="text-align:center">Added</span><span>Bar</span>
+      <div class="lbthdr" style="grid-template-columns:42px 1fr 50px 1fr">
+        <span>Rank</span><span>SSM</span>
+        <span style="text-align:center">Added</span><span>Bar</span>
       </div>
-      <div id="out-mon-rows"><div class="lb-loading">Loading…</div></div>
+      <div id="out-mon-rows">
+        <div class="lb-loading">Loading…</div>
+      </div>
     </div>
   </div>
 
   <div class="bnav">
-    <button class="mgr-btn" onclick="goMgr()">⊞ &nbsp;Manager Dashboard</button>
+    <button class="mgr-btn" onclick="goMgr()">⊞  Manager Dashboard</button>
   </div>
+
 </div><!-- end login -->
 
-<!-- ═══ MAIN PAGE ═══ -->
+<!-- ═══════════════ MAIN PAGE ═══════════════ -->
 <div class="pg" id="pg-main">
+
   <div class="mhdr">
     <div class="mhdr-top">
       <button class="back-btn" onclick="goLogin()">←</button>
@@ -400,60 +626,97 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
         <div class="mhdr-bt" id="h-beat"></div>
       </div>
       <img src="https://upload.wikimedia.org/wikipedia/en/5/5c/Dabur_Logo.png"
-           class="mhdr-logo" alt="Dabur" onerror="this.outerHTML='<div class=mhdr-logo-fb>DABUR</div>'">
+           class="mhdr-logo" alt="Dabur"
+           onerror="this.outerHTML='<div class=mhdr-logo-fb>DABUR</div>'">
     </div>
+
     <div class="stats3">
-      <div class="sc"><div class="sc-n" style="color:var(--am)" id="s-f">0</div><div class="sc-l">Focus</div></div>
-      <div class="sc"><div class="sc-n" style="color:var(--g)" id="s-d">0</div><div class="sc-l">Done</div></div>
-      <div class="sc"><div class="sc-n" style="color:var(--r)" id="s-g">0</div><div class="sc-l">Flagged</div></div>
+      <div class="sc">
+        <div class="sc-n" style="color:var(--am)" id="s-f">0</div>
+        <div class="sc-l">Focus</div>
+      </div>
+      <div class="sc">
+        <div class="sc-n" style="color:var(--g)" id="s-d">0</div>
+        <div class="sc-l">Done</div>
+      </div>
+      <div class="sc">
+        <div class="sc-n" style="color:var(--r)" id="s-g">0</div>
+        <div class="sc-l">Flagged</div>
+      </div>
     </div>
+
     <div class="tabbar">
-      <button class="tb on" onclick="swTab('focus',this)"><span class="tb-i">🎯</span>Focus</button>
-      <button class="tb" onclick="swTab('geo',this)"><span class="tb-i">📍</span>Geo</button>
-      <button class="tb" onclick="swTab('msl',this)"><span class="tb-i">📊</span>MSL</button>
-      <button class="tb" onclick="swTab('outlet',this)"><span class="tb-i">🏪</span>New Outlet</button>
+      <button class="tb on" onclick="swTab('focus',this)">
+        <span class="tb-ico">🎯</span>Focus
+      </button>
+      <button class="tb" onclick="swTab('geo',this)">
+        <span class="tb-ico">📍</span>Geo
+      </button>
+      <button class="tb" onclick="swTab('msl',this)">
+        <span class="tb-ico">📊</span>MSL
+      </button>
+      <button class="tb" onclick="swTab('outlet',this)">
+        <span class="tb-ico">🏪</span>New Outlet
+      </button>
     </div>
   </div>
-  <div class="tc on" id="tc-focus"><div id="focus-list"></div></div>
+
+  <!-- Focus -->
+  <div class="tc on" id="tc-focus">
+    <div id="focus-list"></div>
+  </div>
+
+  <!-- Geo -->
   <div class="tc" id="tc-geo">
-    <div class="srch"><span class="srch-ico">🔍</span>
-      <input type="text" id="geo-q" placeholder="Search outlets…" oninput="renderGeo()">
+    <div class="srch">
+      <span class="srch-ico">🔍</span>
+      <input type="text" id="geo-q"
+        placeholder="Search outlets…" oninput="renderGeo()">
     </div>
-    <div id="geo-cnt" style="font-size:12px;color:var(--t3);margin-bottom:10px"></div>
+    <div class="geo-cnt" id="geo-cnt"></div>
     <div id="geo-list"></div>
   </div>
+
+  <!-- MSL -->
   <div class="tc" id="tc-msl">
     <div class="ecard">
       <div class="ecard-t">📊 MSL — Daily Count</div>
       <div id="msl-submitted" style="display:none"></div>
-      <div style="margin-bottom:12px">
+      <div style="margin-bottom:14px">
         <label class="flbl2">Outlets achieving MSL today</label>
-        <input type="number" id="msl-num" min="0" placeholder="Enter number…" inputmode="numeric">
+        <input type="number" id="msl-num"
+          min="0" placeholder="Enter number…" inputmode="numeric">
       </div>
-      <button class="sub-btn" onclick="saveMSL()">✓ &nbsp;Submit MSL</button>
+      <button class="sub-btn" onclick="saveMSL()">✓  Submit MSL</button>
     </div>
   </div>
+
+  <!-- New Outlet -->
   <div class="tc" id="tc-outlet">
     <div class="ecard">
       <div class="ecard-t">🏪 Add New Outlet</div>
-      <div style="margin-bottom:12px">
+      <div style="margin-bottom:14px">
         <label class="flbl2">Outlet Name</label>
-        <input type="text" id="new-nm" placeholder="Enter outlet name…" autocomplete="off">
+        <input type="text" id="new-nm"
+          placeholder="Enter outlet name…" autocomplete="off">
       </div>
       <div style="margin-bottom:4px">
         <label class="flbl2">Billing Amount (₹)</label>
-        <input type="number" id="new-bill" min="0" placeholder="0" inputmode="numeric">
+        <input type="number" id="new-bill"
+          min="0" placeholder="0" inputmode="numeric">
       </div>
-      <button class="sub-btn" onclick="saveOutlet()">+ &nbsp;Add Outlet</button>
+      <button class="sub-btn" onclick="saveOutlet()">+  Add Outlet</button>
     </div>
     <div id="outlet-log"></div>
   </div>
-  <div class="bnav">
-    <button class="mgr-btn" onclick="goMgr()">⊞ &nbsp;Manager Dashboard</button>
-  </div>
-</div>
 
-<!-- ═══ MANAGER PAGE ═══ -->
+  <div class="bnav">
+    <button class="mgr-btn" onclick="goMgr()">⊞  Manager Dashboard</button>
+  </div>
+
+</div><!-- end main -->
+
+<!-- ═══════════════ MANAGER ═══════════════ -->
 <div class="pg" id="pg-mgr">
   <div class="mhdr">
     <div class="mhdr-top">
@@ -462,24 +725,40 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
         <div class="mhdr-nm">Manager Dashboard</div>
         <div class="mhdr-bt" id="mgr-ts-lbl"></div>
       </div>
-      <button class="back-btn" onclick="loadMgr()" style="font-size:18px">↻</button>
+      <button class="back-btn" onclick="loadMgr()"
+        style="font-size:1.33rem">↻</button>
     </div>
   </div>
-  <div style="padding:12px 14px">
-    <div class="stats3" style="padding:0;margin-bottom:12px;grid-template-columns:repeat(4,1fr)">
-      <div class="sc"><div class="sc-n" id="m-f">—</div><div class="sc-l">Focus</div></div>
-      <div class="sc"><div class="sc-n" id="m-g">—</div><div class="sc-l">Geo</div></div>
-      <div class="sc"><div class="sc-n" id="m-m">—</div><div class="sc-l">MSL</div></div>
-      <div class="sc"><div class="sc-n" id="m-o">—</div><div class="sc-l">Outlets</div></div>
+  <div style="padding:14px">
+    <div class="stats3"
+      style="padding:0;margin-bottom:14px;grid-template-columns:repeat(4,1fr)">
+      <div class="sc">
+        <div class="sc-n" id="m-f">—</div><div class="sc-l">Focus</div>
+      </div>
+      <div class="sc">
+        <div class="sc-n" id="m-g">—</div><div class="sc-l">Geo</div>
+      </div>
+      <div class="sc">
+        <div class="sc-n" id="m-m">—</div><div class="sc-l">MSL</div>
+      </div>
+      <div class="sc">
+        <div class="sc-n" id="m-o">—</div><div class="sc-l">Outlets</div>
+      </div>
     </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
-      <button class="mfbtn on" id="mb-focus"   onclick="setMF('focus')">Focus</button>
-      <button class="mfbtn"    id="mb-geo"     onclick="setMF('geo')">Geo</button>
-      <button class="mfbtn"    id="mb-msl"     onclick="setMF('msl')">MSL</button>
-      <button class="mfbtn"    id="mb-outlets" onclick="setMF('outlets')">Outlets</button>
-      <button class="csv-btn"  onclick="expCSV()">⬇ CSV</button>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">
+      <button class="mfbtn on" id="mb-focus"
+        onclick="setMF('focus')">Focus</button>
+      <button class="mfbtn" id="mb-geo"
+        onclick="setMF('geo')">Geo</button>
+      <button class="mfbtn" id="mb-msl"
+        onclick="setMF('msl')">MSL</button>
+      <button class="mfbtn" id="mb-outlets"
+        onclick="setMF('outlets')">Outlets</button>
+      <button class="csv-btn" onclick="expCSV()">⬇ CSV</button>
     </div>
-    <div id="mgr-body"><div class="loading">Loading…</div></div>
+    <div id="mgr-body">
+      <div class="loading">Loading…</div>
+    </div>
   </div>
   <div class="bnav">
     <button class="mgr-btn" onclick="goLogin()">← Back</button>
@@ -487,14 +766,16 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
 </div>
 
 <!-- Action Sheet -->
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeSheet()">
+<div class="overlay" id="overlay"
+  onclick="if(event.target===this)closeSheet()">
   <div class="asheet">
     <div class="ash-handle"></div>
     <div class="ash-sub" id="ash-lbl"></div>
     <div class="ash-nm" id="ash-nm"></div>
     <div class="sgrid" id="ash-opts"></div>
-    <div id="ash-note-w" style="display:none;margin-bottom:14px">
-      <textarea id="ash-note" rows="2" style="resize:none" placeholder="Note…"></textarea>
+    <div id="ash-note-w" style="display:none;margin-bottom:16px">
+      <textarea id="ash-note" rows="2"
+        style="resize:none" placeholder="Note…"></textarea>
     </div>
     <div class="ash-btns">
       <button class="ash-cancel" onclick="closeSheet()">Cancel</button>
@@ -504,6 +785,24 @@ select:focus,input:focus,textarea:focus{border-color:var(--g)}
 </div>
 
 <script>
+
+const GAS_URL = 'https://script.google.com/macros/s/AKfycby-igTCTX4RPWAYE_S95YT32Gcmw2Ik4DZT6Lmm4wboM5DcD9NIQUnQxPQMYlgEoX70eQ/exec';
+
+async function gasGet(action, params) {
+  try {
+    let url = GAS_URL + '?action=' + action;
+    if (params) Object.keys(params).forEach(k => url += '&' + k + '=' + encodeURIComponent(params[k]));
+    const res = await fetch(url, {redirect:'follow'});
+    return await res.json();
+  } catch(e) { console.error('gasGet failed:', action, e); return null; }
+}
+
+function gasPost(action, payload) {
+  const body = new URLSearchParams({action, payload: JSON.stringify(payload)});
+  fetch(GAS_URL, {method:'POST', mode:'no-cors', body}).catch(()=>{});
+}
+
+
 const D={"ASHISH KUMAR MAURYA":{"CH MALVIYA NAGAR":{"a":["ANAND CHEMIST","Abhushan","Adivam medicos","Anand store","BATRA MEDICOS","CHAWLA CHEMIST","Durga medicos","Hanuman store","JAIN AYURVED","K R One Pharma","KAMAL CHEMIST","KR-ONE PHARMA","Kabeer store","MAX WELL CHEMIST","MEDICINE POINT","MEDICINE POINT","MEDIWORLD MEDICOS","NARANG BROS.","PRAKASH CHEMIST","RAMAN MEDICOS","RAMAN MEDICOS","SHRI RAM ( NARAG)","SURAJ STORE","Sapna General store","Shree Shyam Mediways","Sony General store","THUKRAL STORE","V G & CO","VARDHMAN CHEMIST","VARDHMAN MEDICAL HALL","VERMA BROTHERS","Yadav Store"],"f":[{"n":"Sapna General store","k":"DEL0DL1778213","l3":0.001,"p":"Medium"}]},"GK1":{"a":["ADARSH CHEMIST","Ahuja Gift Shop","Ajay Store","Common Wealth","GK2 MEDICINE DOT COM P LTD","GUNJAN MEDICOS","GUPTA STORE(JK)","GYAAN STORE","Gupta Departmental Store","Gupta department","Gupta store","JAGDAMBA CHEMIST","Jagdamba medicos","Kamat store","MALIK MEDICAL STORE","MANISH MEDICOS","Naman store","New friends company chemist pvt ltd","Nice Shopping Plaza","Pawan Store","Ram ram ji store","STANDARD MEDICOS","Shivesh gen store","Shri Ram General Store","Soni store","Tomar medical store","VERMA MEDICOS","Vihan store"],"f":[{"n":"New friends company chemist pvt ltd","k":"DEL0DL2856867_0225","l3":0.018,"p":"Medium"},{"n":"ADARSH CHEMIST","k":"DEL0DL11793743","l3":0.011,"p":"Medium"},{"n":"GK2 MEDICINE DOT COM P LTD","k":"DEL0DL1654322","l3":0.007,"p":"Medium"},{"n":"Gupta store","k":"DEL0DL2304497_0924","l3":0.001,"p":"Medium"}]},"NEHRU NAGAR":{"a":["ALL INDIA PHARMACY","Ananda dairy","BHARADWAJ GEN STORE (CASH)","D. K medicos","DINESH STORE NEHRU NGR","Dinesh store","Family farmace pvt. Ltd","GOPAL STORE(NN)","GUPTA STORE","Ganesh store","Guru kripa store","KAPIL GEN STORE","Mishra dairy","NAGAR DEPARTMENTAL STORE","Naresh store","PUBLIC MEDICOS","Pradhan mantri bhartiya jan aushadhi kendra","RAJENDRA STORE","RAJESH STORE","RAJU GEN STORE","RAM PROVSTORE","RASHI GENERAL STORE","S S BAKERS","SAINI PROVISION AND GENRAL STORE","SUPER STORE (HN)","Seeyotey store","Seramol pharma","Sharma gen store","Sunil Store","VEENA PHARMACY","Vijay Enterprises","Wellness pharmacy"],"f":[{"n":"Pradhan mantri bhartiya jan aushadhi kendra","k":"DEL0DL1956062","l3":0.004,"p":"Medium"},{"n":"Dinesh store","k":"DEL0DL00601784","l3":0.002,"p":"Medium"},{"n":"S S BAKERS","k":"DEL0DL00874246","l3":0.0,"p":"Low"}]},"SAKET":{"a":["AGARWAL MEDICOS","AGGARWAL STORE (RINKU)","ANAND MEDICOS","ANAND MORNING STORE","Aggarwal department store","Aggarwal store","BATRA MEDICOS","DELHI FRUIT VEGET.","DIVA S BEAUTY COLLECTION","Delhi state fruit & Vegetable","Divas cosmetic","GIRD PHARMA","GIRDH PHARMA","GOGIA MEDICOS","Gulahti store","HIMALYA STORE","Indra flour milk","JAGDAMBA GENERNAL STORE","JAI BHARAT STORE","MONICA CHEMIST","Maa sumat yadav store","NEW MORNING STORE","New cake shop","PARAS CHEMIST PLUS","S M STORE","SANTOSH STORE","SHIVAM CHEMIST","SHRI KAMAL MEDICOS","Shivam medicos","Shri shyam store "],"f":[{"n":"ANAND MORNING STORE","k":"N_DL_00009108","l3":0.021,"p":"Medium"},{"n":"Divas cosmetic","k":"DEL0DL00650924","l3":0.002,"p":"Medium"},{"n":"ANAND MEDICOS","k":"N_DL_00009361","l3":0.002,"p":"Medium"},{"n":"DIVA S BEAUTY COLLECTION","k":"N_DL_00009351","l3":0.001,"p":"Medium"}]},"SAVITRI NAGAR":{"a":["A ONE DRUG STORE","AGGARWAL MEDICOS","B.B. PHARMACY","CHATMED HEALTCARE","D R medicos","ELITE MEDICOS","GABA STORE","GUPTA STORE","Honey store","ISHWAR DASS MADAN LAL","J K M CHEMIST","Jagdama store","Jha pan bhandar","Jha store","KADAM STORE","KAMAL CHEMIST AND COSMETIC","Kashish medical store","MANGE RAM STORE","MEDX PHARMA","MV MART","NATH PHARMACY","Nath pharmacy","PARAM JEET STORE","PRAJAPATI GENERAL STORE","RAHUL STORE","RAINBOW MEDICOS","Rahul retail","S s v super store","SANDEEP STORE","SHUBHAM STORE","SUPER DAIRY HOUSE","Shri shyam store","TRISHHUL SUPER MART","Wadhawa Enterprises","ZAHID STORE","Zarif"],"f":[{"n":"Wadhawa Enterprises","k":"DEL0DL11639452","l3":0.035,"p":"Medium"},{"n":"Jha store","k":"DEL0DL2094740_0524","l3":0.003,"p":"Medium"},{"n":"KADAM STORE","k":"DEL0DL11547235","l3":0.002,"p":"Medium"}]},"YUSUF SARAI":{"a":["Ajeet gen.store","All Day pharmacy","Alok madicos","Aman madicos","Ankit traders","Balaji pooja samagiri store..","Bansal store","Bansal trading co.","Bhagat Medicos","Chawla chemist","DAYA RAM SURENDER NATH","DELHI GROCERY","G. P.S MARKETING","GOYAL AYURVEDIC STORE RE","Ganpati enterprises","Gupta store","INDER MEDICOS","Jagdish provision store","Jain Ayurvedic store","Jain Store","Jain gift & cosmatic house","Jain medicos","LIFE CARE MEDICOS","MITHILA STORE","Mohit Saini Store","Moolchand store","Om Cosmetic and Gift","PARKASH SUPER STORE","R.K Garments and General Store","RAJASTHAN FLOUR MILLS","RAM SWAROOP SHIV CHARAN","Rahul gen.store","Rahul gift emporium","Rajendra fresh","Ritika cosmatic","SHARMA STORE(GTN)","SHRI KANT STORE","Shiv shakti pooja samagri store","Shiv store","Sumit store","Vedic Pooja store "],"f":[{"n":"Chawla chemist","k":"0022015974DEL0DL00269148","l3":0.058,"p":"Medium"},{"n":"Ajeet gen.store","k":"DEL0DL907634","l3":0.002,"p":"Medium"},{"n":"PARKASH SUPER STORE","k":"DEL0DL11700160","l3":0.001,"p":"Medium"}]}},"Aditya":{"KALKAJI":{"a":["AGARWAL STORE","ARCHANA MEDICAL STORE","Aggarwal store","BHAGWAN DAS STORE","BIOGREEN CHEMIST & COSMATIC","BOTTAM STORE","DMS 537","GANPATI JI STORE","Gurkirpa pharmacy","JAWA MEDICOS","KHURANA & SONS CHEMIST","KRISHNA STORE","MALIK MORNING STORE","MEDIFAST","Maity General Store","Megna sales corporation","NEW STORE","NIKKY TRADERS","OBEROI GNERAL STORE","PAL MEDICOS","POOJA GENRAL STORE","S S super store","S.R STORE","SHAKTI PRINTERS & STATIONERS","SHEETAL GENERAL STORE","SHEETAL STORE","SHREE JIN MEDICAL STORE","SHREE SAGAR GEN STORE","SOUTH END CHEMIST","Shree Shyam Mediways","Soni chemist & General store"],"f":[{"n":"Shree Shyam Mediways","k":"0022016394DEL0DL00287947","l3":0.108,"p":"High"},{"n":"OBEROI GNERAL STORE","k":"0022016394DEL0DL00083529","l3":0.008,"p":"Medium"},{"n":"SHEETAL STORE","k":"0022016394DEL0DL00089716","l3":0.003,"p":"Medium"}]},"KOTLA RETAIL 3":{"a":["AMISH MEDIPOINT","ANGEL SALON COSMETICS","ANMOL CHUDI BHANDAR (KOTLA)","ANSH FASHION","Aggarwal store","Anil gen. store","BANSAL ENTERPRISES (CASH)","Bansal provisional store","Beauty point","Bhagya laxmi medicose","Brush House","DEEPAK COSMETICS","Dev medicos","GOPAL STORE (KOTLA)","GOYAL TRADING COMPANY","Health care pharmacy","JAANVI COSMATIC","Jagannath Medical Store(kotla)","Jagdamba Medicos","KALKA MEDICOS","KANTI MEDICOS","KHANDELWAL PROVISION &GENERAL STORE","LAKSHMI CHEMISTS","LAXMI CHEMIST","Laxmi chudi & cosmetics","Life care pharma","MAHALAXMI MEDICOSE","MOHAN STORE","Madan Store-D","NEW BALAJI KIRYANA STORE","NEW SAGAR STORE","NK MITTAL STORE","Nath chemist & cosmetic","Neha cosmetics","POOJA TRADERS","Pankhudi kirana store","R T TRADERS","RAMESH FLOUR MILL","Ritik medicos","SAGAR STORE","SHARMA CHURI BHANDAR","SHRI BALA JI CHURI BHANDAR","SHRI RAM MEDICOS","SONAM CHEMIST","SUBHASH STORE","TRIVNI ENTERPRISES","VIMAL MEDICOS","WellCARE PHARMACY","Yash crockery and gen. store","khandelwal store"],"f":[{"n":"GOPAL STORE (KOTLA)","k":"DEL0DL01035230","l3":0.014,"p":"Medium"},{"n":"Life care pharma","k":"DEL0DL00566742","l3":0.0,"p":"Low"}]},"L N  KRISHNA MARKET":{"a":["AGYA RAM DEPSTOPRE","Aman store","BHAGAT RAM TRADERS","BHAPAYDIHATTI","Bsahin dep store","CHANDER NAMKEEN BHANDAR","CHODHARY MOHAN LAL & SONS","Chawla gen store","DALJIT GEN STORE","DISCOUNT MEDICOS","Delhi Store","KRISHNA STORE","MANOJ CONF","MEHAK MEDICOS","Mahindra conf.","NARANG CHEMIST","PANKAJ STORE..(LJP)","PURVIK MEDICAL STORE","R K Store","RADHA ENTERPRISES","SWATI STORE","Shree vishnu dairy &paneer bhandar","YOGESH MEDICOSE","sachdeva store"],"f":[{"n":"BHAPAYDIHATTI","k":"N_DL_00014232","l3":0.006,"p":"Medium"},{"n":"YOGESH MEDICOSE","k":"DEL0DL00806771","l3":0.002,"p":"Medium"}]},"LN-CENTRAL MARKET":{"a":["AMIT PROV STORE0101)","Andani Enterprise","BALDEV GEN STORE","BHASIN DEPARTMENTAL STORE","Bajaj store","CENTRAL PHARMACY","GIRILAL ASHOK KUMAR(DEMANGE)","GOPAL STORE(DEMANGE)","GURU KRIPA TRADERS","GURUNANAK STORE 0227)","Grocery store","Gulbahar Pharmacy & Cosmetic","IP Pharma","KAMAL CHEMIST","KUKREJA STORE","KUKREJA STORE","KUMAR MEDICOS","LAXMAN STORE0201)","NEW PAUL BROTHERS","RADHEY SHYAM TRADERS","REX GEN STORE0205","Rex Gernal CASH","SAI BEAUTY STORE(damange)","Satguru Sai Store","TANEJA MEDICINE STORE","UNIQUE CHEMIST","VIJAY STORE..","Vaishali Gernal Store","Vijay Store 2","nd24"],"f":[{"n":"Vijay Store 2","k":"DEL0DL1070130","l3":0.006,"p":"Medium"},{"n":"Grocery store","k":"DEL0DL2827369_0125","l3":0.005,"p":"Medium"},{"n":"Satguru Sai Store","k":"DEL0DL11513740","l3":0.004,"p":"Medium"},{"n":"Rex Gernal CASH","k":"DEL0DL00466518","l3":0.004,"p":"Medium"},{"n":"GOPAL STORE(DEMANGE)","k":"DEL0DL00750344","l3":0.003,"p":"Medium"},{"n":"RADHEY SHYAM TRADERS","k":"DEL0DL1177080","l3":0.0,"p":"Low"}]},"MASJID MORE":{"a":["A.k general store","AJAY GUPTA STORE","Annapurna general store","Annapurna prov store","D S medical store","FRUIT CORNER CHEMIST","Gupta ganeral store","Gupta medicos","HARE KRISHNA MEDICOS","Hare krishna pharmacy","KALINGA MEDICOS","Kapil store","MEDICINE HOUSE (MM)","Malik chemist","Mini Mart-D","NANAK PAN BHANDAR","NEW GUPTA STORE","Neeti Store","OM ENTERPRISE","ORION STORE","Pankaj store","Prem pan bandaar","R.K.STORE","RAJDHANI PHARMA","RAM SUPER STORE","RAVI MEDICOS","ROHIT STOREM MOTH_","SAGAR BEAUTY PLACE","SHARMA MEDICOS","SUPER STORE(DAMANGE)","SURESH GUPTA STORE","Shivani Medicose","Shree shayam general store","South end medicos","VAISHANAVI STORE","VIJAY STORE","VISHAL GEN STORE","Vashisht departhamental store","Venus chemist"],"f":[{"n":"Annapurna general store","k":"DEL0DL2095151_0524","l3":0.001,"p":"Medium"}]},"NEHRU NAGAR":{"a":["ALL INDIA PHARMACY","Ananda dairy","Annpurna store","BHARADWAJ GEN STORE (CASH)","D. K medicos","DINESH STORE NEHRU NGR","Dinesh store","Family farmace pvt. Ltd","GOPAL STORE(NN)","GUPTA STORE","Ganesh store","Guru kripa store","Hari hari packers","KALRA GENERAL STORE","KAPIL GEN STORE","Mishra dairy","NAGAR DEPARTMENTAL STORE","Naresh store","PUBLIC MEDICOS","Pradhan mantri bhartiya jan aushadhi kendra","RAJENDRA STORE","RAJESH STORE","RAJU GEN STORE","RAM PROVSTORE","RASHI GENERAL STORE","S S BAKERS","SAINI PROVISION AND GENRAL STORE","SUPER STORE (HN)","Seeyotey store","Seramol pharma","Sharma gen store","Sunil Store","VEENA PHARMACY","Vijay Enterprises","Wellness pharmacy"],"f":[{"n":"S S BAKERS","k":"DEL0DL00874246","l3":0.0,"p":"Low"}]},"SANTH NAGAR":{"a":["AGGARWAL STORE(SN)","AMRIT MEDICOS","ANKUSH STORE","ARORA GEN STORE (226)","Ambey Health Care (sant nagar)","Archana store","Arora general store","CHAWLA CHEMIST-D","CUREWAYS","CUREWAYS MEDICOS","DELHI medicos","DIPTI GENERAL STORE","EAST END MEDICOS","GANESH STORE (SN)","GURU KIRPA GENRAL STORE","HARISH STORE","HEMKUNT GEN STORE","J L Chaurasia store","JAGDAMBA MEDICO","JAIN PROVISION STORE","JAIN STORE1302)","JHA DEPARTMENTAL STORE","JINDAL STORE(SANT)","JKM GEN STORE","KAILASH CORNER","KLEANWEL ANMOL","KRISHNA MEDICOS","Kohli milk& gen store","LIFE AID MEDICOS-D","MAHALAXMI PROV STORE","MAKAN TRADERS1306)","MARUTI MEDICINE POINT","MEHTA MEDICOS","NARANG STORE","NEW AGGARWAL STORE","New om sai chemist","PAWAN STORE1201)","Primier Medicos","RP MEDICOS","SAFFRON INTERNATIONAL","SUPER STORE (1318)","TAN MEDICOSE","aggarwal store(s.ngr)"],"f":[{"n":"SUPER STORE (1318)","k":"DEL0DL01120954","l3":0.002,"p":"Medium"},{"n":"Arora general store","k":"DEL0DL2923303_0325","l3":0.002,"p":"Medium"},{"n":"EAST END MEDICOS","k":"DEL0DL11560233","l3":0.001,"p":"Medium"},{"n":"DELHI medicos","k":"DEL0DL908382","l3":0.001,"p":"Medium"}]}},"Afreen":{"ADH CHINI + KALU SARAI":{"a":["BABA NANAK MEDICOS","BANSAL STORE","Bhola Sons","D.K STORE","Delhi state fruit","Friends a malayalee store","GANPATI PHARMACY","GUPTA GENERAL STORE","GUPTA STORE","GURU NANAK DEPARTMENTAL STORE","Goyal Ayurvedic","HARIOM STORE","J. K pharmacy","JAIN STORE","KAMAL PHARMACY","KAPIL STORE","Kamal chemist","LAVI KAUTILYA MEDICOS","MANGLA CHEMIST","MITTAL MEDICAL STORE","Malik Store","N K pharmacy","PAUL SUPER STORE","PAWAN JI STORE","PRIYA GROCERS","Radhe Krishna Pharma","SANGAM STORE","SHIV SHANKAR STORE","SUNNY STORE","Satish Provision store","Sushil Store","Yunus store","kps store","shiva store"],"f":[{"n":"HARIOM STORE","k":"0022015974DEL0DL00144324","l3":0.003,"p":"Medium"}]},"GOUTAM NAGAR":{"a":["AMIT STORE","Aggarwal Agency","Aggarwal paneer","Aims Medicos","Asha medicare","Bachat Bazaar","City Medicos","Friends Medicos","GEO MEDICOS","Goyal general Store","Gulshan store","Gupta Store","Health Care Pharmacy","Jassi","Kailash Gen.Store","NATIONAL MEDICAL STORE","Nakul Gift shop","Om Pooja Samagri Store","Om departmental store","R K Beauty","Radhe singar","STAR MEDICOS","Saini Cosmetics","Shakuntla Store","Soniya store","Sunil store","Welcome pharmacy"],"f":[{"n":"AMIT STORE","k":"DEL0DL11605968","l3":0.002,"p":"Medium"},{"n":"Goyal general Store","k":"DEL0DL2087748_0524","l3":0.002,"p":"Medium"},{"n":"Om departmental store","k":"DEL0DL2915051_0325","l3":0.001,"p":"Medium"}]},"KHIRKI 1":{"a":["1 DOSE PHARMA","1dose","A-ONE DRUG STORE","ARN MEDICOS","Anushka Store","BANSAL STORE","Baba Ji General Store","C.k. store","Chabra Store","DEEPAK MEDICOS","Deepak Medicose","EESHWAR MEDICOS","FAIZ STORE","GUPTA STORE","KAPIL STORE","Kanchan cosmetic","Kartar Store","MONU STORE","OM GEN STORE","Om Store","Panchsheel general Store","RAVI STORE","S K MEDICOS","S k Medicose khidhkhi 1","S.A STORE GEN STORE","SAHANI STORE","SAHARA CHEMIST","SAHARA CHEMIST","SAI MEDICOS","SHREE KRISHNA DEP STORE","SHREE STORE","Shree durga medical and gen store","Shree durga store","VED JI STORE","VERMA MEDICOS","Yamuna chemist"],"f":[{"n":"Deepak Medicose","k":"DEL0DL687082","l3":0.002,"p":"Medium"},{"n":"GUPTA STORE","k":"DEL0DL00828336","l3":0.001,"p":"Medium"},{"n":"OM GEN STORE","k":"DEL0DL11632504","l3":0.001,"p":"Medium"},{"n":"Kanchan cosmetic","k":"DEL0DL844850","l3":0.001,"p":"Medium"}]},"MALVIYA NAGAR":{"a":["A-ONE STORE","ANIL KUMAR STORE","ANITA ENTERPRISES","ARORRA GENERAL STORE","BABBAR COSMETICS","CHACHE DI HATTI","Chuni lal & sons","DAKANA STORE","Durga medicos","Every day Store","GAGAN TRADING CO.","GULSHAN STORE","Garhwal Dairy","Green Departmental Store","IMRAN DAIRY","JAMMU MAL LAL CHAND DEPSTORE","JAY AMBAY SOTRE","Juneja plastics","KADAM COSMETICS","KWALITY STORE","Kadam cosmetic","MONA MEDICOS","Mama dairy","Manan spices & dry fruits","NEW SHAGUN STORE","New chaudhary Ram & sons","OM DAIRY","R k tradas","R.K. GEN STORE CONFECERY","SHARMA DAIRY","Saj sajja","Salection gallery","Saniarupa enterprises","Shivani beauty centre","Shree Shyam Mediways","Shri Bala ji store","VIJAY DAIRY"],"f":[{"n":"Kadam cosmetic","k":"DEL0DL659409","l3":0.003,"p":"Medium"},{"n":"Garhwal Dairy","k":"DEL0DL11644547","l3":0.002,"p":"Medium"}]},"SARAI KALEKHAN":{"a":["ANKIT MEDICOS","ARORA STORE","Aalam store","Anhal pharmacy","Anvar store","Apna store","Arun general store","BIRJU STORE","Bablu store","Chauhan store","DAKSHA STORE","Ditya chemist","Diwan store","Gupta aata chakki","Jai hind medical store","KAPIL STORE","Kailash store","Karan store","Kartik store","Kunal general store","LOVE STORE","LUTHRA CHEMIST","MILAN GIFT STORE1429)","Mithla kirana store","NETRAM PURAN MAL","NEW SAI MEDICOS","PANKAJ STORE","PRAKASH MEDICOS","ROHINI GENERAL STORE","Raja masala store","Rajesh store","SHIV STORE","SINGHAL & SONS..","Saanchi Enterprises","Sammu medical","Sammu medical","Vicky store","YOURS CHEMIST","Yuvraj store","aggarwal store"],"f":[{"n":"Apna store","k":"DEL0DL822721","l3":0.002,"p":"Medium"}]},"ZAMRUDPUR":{"a":["ADARSH CHEMIST","ARUN MEDICOS","Ahuja Gift Shop","Ajay Store","All India Chemist","Apna Medicos Pvt Ltd","B G SUPERMART","BATRA STORE","Balaji Gen store","Balaji General Store","Bhola store","CHIRAG DELHI MEDICAL STORE","Delhi Grocery","Dev Medicose","Dinesh Store","Dubey Store","Dveneder Store","GUNJAN MEDICOS","GYAAN STORE","Ganpati medicos","Govind store","Jagdamba store","Kamat store","Laxmi Medicos","MALIK MEDICAL STORE","MANISH MEDICOS","Mohni Store","Mukesh Store","Neha chemist","Neha chemist","PANDIT MEDICOS","PRINCE MEDICOS","RAHUL STORE","ROSHAN MEDICOS(demange)","Raj store ","Randheer store","SHARMA MEDICAL STORE","STANDARD MEDICOS","Santosh General Store","Shiv Store","Shiv chemist","Shivam medicos","Shivesh gen store","Singh Motors IN & OUT STORE","Tomar medical store","VERMA MEDICOS","Vishal store","Vishnu store","jagdish store"],"f":[{"n":"Apna Medicos Pvt Ltd","k":"DEL0DL11547127","l3":0.005,"p":"Medium"},{"n":"RAHUL STORE","k":"DEL0DL11551336","l3":0.003,"p":"Medium"},{"n":"MALIK MEDICAL STORE","k":"DEL0DL11547250","l3":0.001,"p":"Medium"},{"n":"Dveneder Store","k":"DEL0DL2114550_0624","l3":0.001,"p":"Medium"},{"n":"Govind store","k":"DEL0DL889174","l3":0.001,"p":"Medium"}]}},"BIJENDRA KUMAR MISHRA":{"BATLAHOUSE 4":{"a":["AISHA GEN STORE","AKHTAR PHARMACY","ALIF Pharmacy","ASLAM STORE","Abdul store","Asif store","Danish store","Friends super store","Goyal Store","Gulshan store","HAQUE CHEMIST& COSMETICS","HEALTH CARE PHARMACY","Helth care medicos","IDRISH GEN STORE","ISLAH MEDICOS","J S Medicos","JAGGU BHAI GENRAL STORE","Kafeel store","La Vita Pharmacy","MADINA STORE","MUJEEB TRADERS","Madina Home Needs","NEW HIND MEDICOS","NEW UNITED MEDICOS","Paarsa medicos","S.k pharmacy","UNIQUE PHARMACY","Umar Store","VIKASH STORE","WOCAFU PRIVATE LIMITED","ZYNO MART"],"f":[{"n":"La Vita Pharmacy","k":"DEL0DL1651524","l3":0.009,"p":"Medium"},{"n":"HEALTH CARE PHARMACY","k":"DEL0DL1710577","l3":0.005,"p":"Medium"},{"n":"Abdul store","k":"DEL0DL2104448_0524","l3":0.004,"p":"Medium"},{"n":"ISLAH MEDICOS","k":"0022016394DEL0DL00110027","l3":0.003,"p":"Medium"},{"n":"Gulshan store","k":"DEL0DL2068108_0524","l3":0.002,"p":"Medium"},{"n":"AKHTAR PHARMACY","k":"DEL0DL00987026","l3":0.001,"p":"Medium"},{"n":"Goyal Store","k":"0022016394DEL0DL00425115","l3":0.001,"p":"Medium"},{"n":"IDRISH GEN STORE","k":"DEL0DL00200826","l3":0.001,"p":"Medium"}]},"BHAGWAN NAGAR":{"a":["A K MEDICOSE","AMIT GEN STORE","ANAND GENERAL STORE","All india chemist","Aryan General Store","BHAWANI SHANKAR SUPER MARKET","DEV PHARMACY","Daily use depetment store","GOYAL GEN STORE","KRISHANA MEDICOS","KRISHNA MEDICOS","MAA DURGA MEDICOS","MAA DURGA MEDICOS","MADAN LAL AND SONS","MOTI RAM & SANS","NANAK STORE","NEETU SHRINGAR COSMATICS","NEW SAI CHEMIST","NITIN MEDICOS","New Bharal Medicos","OM PARKASH STORE","PAWAN GEN STORE","R K store","Rama medicos","SAHELI GEN STORE","SHRI DURGA GEN STORE","Shri Balaji Store","YASU GEN STORE"],"f":[{"n":"NANAK STORE","k":"0022016394DEL0DL00096909","l3":0.005,"p":"Medium"},{"n":"DEV PHARMACY","k":"DEL0DL3220307_072025","l3":0.003,"p":"Medium"},{"n":"KRISHNA MEDICOS","k":"DEL0DL881443","l3":0.002,"p":"Medium"},{"n":"AMIT GEN STORE","k":"0022016394DEL0DL00137702","l3":0.001,"p":"Medium"}]},"GARHI 1":{"a":["AJAY ABBI & GAURAV ABBI GEN STORE","Amer chudi bhandar","BASISTH MEDICOS","BHARDWAJ MEDICOS","DAWAR STORE","DELHI MEDICOS","DKSTORE 1428)","DURGA MASALA STORE","FASHION POINT1435)","GARG STORE","GOVINDA STORE(MUNNA)","GOYAL PHARMACY","GOYAL STORE","Krishna Dairy","MANKANSHA PHARMACY","MARINA MEDICOS","MILAN GIFT STORE1429)","MUKTESHWAR LADIES CORNER","Mathur Medicos","NATIONAL MEDICOS","PRIME MEDICAL STORE","R.K SUPER STORE","RAKESH GEN STORE(G)","SACHIN AGGARWAL","SHIVAM MEDICOS (G)","SINGHAL TRADERS","SUMIT STORE1401)","Shiv Shakti Gernal Store","Sumit Store","VIKRAM MEDICOSE","VINOD STORE","Vishnu medical store","YASHRAJ MEDICOS","abhijeet store","gupta provision store"],"f":[{"n":"SUMIT STORE1401)","k":"N_DL_00014101","l3":0.011,"p":"Medium"},{"n":"DKSTORE 1428)","k":"DEL0DL00230671","l3":0.002,"p":"Medium"},{"n":"Sumit Store","k":"DEL0DL00460166","l3":0.002,"p":"Medium"},{"n":"DAWAR STORE","k":"DEL0DL11558484","l3":0.001,"p":"Medium"},{"n":"Amer chudi bhandar","k":"DEL0DL3006971_052025","l3":0.001,"p":"Medium"}]},"GREEN PARK":{"a":["ANIL MEDICOS","ARJUN DAS INTERPRISES","Aakash store","Ashish gen store","EVERY DAY SUPER MART","GUPTA MEDICAL STORE","Hansraj narang","Jain kiryana trading co.","Mittal Store","NIRANKARI STORE","PRAKASH GEN STOREHK","RAJDHANI MEDICAREGP)","RAJDHANI STOREGREEN PAK","S.K. MEDICOS PVT LTD","Shatrughan Pan Bhandar","VANDANA PHARMACY","sharma international"],"f":[]},"KALKAJI":{"a":["AGARWAL STORE","ARCHANA MEDICAL STORE","Aggarwal store","BHAGWAN DAS STORE","BIOGREEN CHEMIST & COSMATIC","BOTTAM STORE","GANPATI JI STORE","Gurkirpa pharmacy","JAWA MEDICOS","KHURANA & SONS CHEMIST","KRISHNA STORE","MALIK MORNING STORE","MEDIFAST","Maity General Store","NEW STORE","NIKKY TRADERS","OBEROI GNERAL STORE","PAL MEDICOS","POOJA GENRAL STORE","S S super store","S.R STORE","SHEETAL GENERAL STORE","SHEETAL STORE","SHREE JIN MEDICAL STORE","SHREE SAGAR GEN STORE","SOUTH END CHEMIST","Shree Shyam Mediways","Soni chemist & General store"],"f":[{"n":"AGARWAL STORE","k":"DEL0DL1724859","l3":0.007,"p":"Medium"},{"n":"OBEROI GNERAL STORE","k":"0022016394DEL0DL00083529","l3":0.006,"p":"Medium"},{"n":"KRISHNA STORE","k":"0022016394DEL0DL00083532","l3":0.006,"p":"Medium"},{"n":"NEW STORE","k":"0022016394DEL0DL00083530","l3":0.002,"p":"Medium"},{"n":"GANPATI JI STORE","k":"0022016394DEL0DL00083533","l3":0.002,"p":"Medium"},{"n":"Maity General Store","k":"DEL0DL2828096_0125","l3":0.002,"p":"Medium"}]},"S1 NFC 2":{"a":["Aarogya pharmacy","Amar medicos","Ambey Medicos","Ashu store","BALAJI GENERAL STORE","BANGLORE CHEMIST","BAXI GEN STORE","Care Point Pharmacy","DIAMOND STORE","HONEY MONEY TOP","ISHANT STORE","JAI BHAGWAN SONS","KAIRO EXCLUSIVE LLP","LILY GENERAL STORE","MAM CHAND STORE","N.B.MARKETING PVT LTD","NATH BROTHERS SOUTH END","PASKINS STORE","Pharma Point","SHIVA STORE","SHRI KRISHNA STORE","SHRI RAM CHEMIST","SHRI SHYAM STORE","ST. JUDE KERLA STORE","THOMAS KERLA STORE","Vikash store"],"f":[{"n":"Pharma Point","k":"0022016394DEL0DL00082963","l3":0.012,"p":"Medium"},{"n":"ISHANT STORE","k":"0022016394DEL0DL00088108","l3":0.004,"p":"Medium"},{"n":"Aarogya pharmacy","k":"DEL0DL00595624","l3":0.004,"p":"Medium"}]},"SHAHRPUR JATT":{"a":["AGGARWAL STORE","ANVAR STORE","ATUL STORE","Aggarwal Chemist","Amit Store ","Anil store","Ansari store","Ashok store","Bhagwati gen store","Bharat Store","DEV MEDICOS","Dhruv cosmetic","Gagan Store","Ganpati medical hall","Ganpati medical hall 1","Garg super store","Great pharmacy","JAY PAL COSMETIC","Jindal store","Kashish store","MANISH STORE","Mahboob store","Munna store","NAKUL COSMETIC","NEW JANTA STORE (CHABRA STORE)","NEW VEENA PHARMACY","Nitin store","PANKHUDI GEN STORE","RAJENDER STORE","RAM CHANDRA STORE","Ramesh store","SABIHA STORE","SAHANI STORE","SITA RAM STORE","SONU STORE","SUBHASH STORE(DEFENC)","Sharma store","Shivam chemist","Taj provision store ","Vipin Store","Yadav store"],"f":[{"n":"Anil store","k":"DEL0DL1654535","l3":0.002,"p":"Medium"},{"n":"Sharma store","k":"DEL0DL1646729","l3":0.002,"p":"Medium"},{"n":"SAHANI STORE","k":"DEL0DL01042140","l3":0.001,"p":"Medium"},{"n":"Bharat Store","k":"0022016394DEL0DL00101926","l3":0.001,"p":"Medium"},{"n":"Taj provision store ","k":"DEL0DL3015074_052025","l3":0.001,"p":"Medium"},{"n":"JAY PAL COSMETIC","k":"N_DL_00027904","l3":0.001,"p":"Medium"}]},"SRI NIWASHPURI":{"a":["A.R.MEDICOS","AHUJA STOREANDE","ANSARI STORE","ARORA GEN STORE","ARORA MEDICOS 0526)","BALAJI STORE","BHUTANI STORE","Bitoo store","DEE PEE STORE","Durga General Store","GANGA STORE","GURUNANAK STORE","JAIN STORE","JONNY STORE","Jagdamba chemist","Khusbu Store","New Ansari Store","PREEM STORE","RAM VILASH STORE","S P Medicos","SABIHA STORE","SHARMA JI PAAN","U p store"],"f":[]},"TEHKHAND_HERKESH NAGAR":{"a":["ABHISHEK MEDICOS","AGGARWAL STATIONERY","AGGARWAL STORE","AKASH STORE","AMS 24 WELLNESS PRIVATE LIMITED","ANUBHAV GENREL STORE","Agarwal stationary","Alam General Store ","Anil store","BABA DAIRY","BALAJI GENRAL STORE","Banty Store","Chandani Store ","DURGA COSMATIC","Deepak Store","G Mart","GUPTA COSMETICS","Gupta gen store","HARI OM STORE","JAISWAL STORE","Jai mata di store","Jaiswal store","KAPOOR MEDICOSE","KRISHNA DEPT STORESADIK","KRISHNA GENRAL STORE","KRISHNA MEDICAL HALL","KRISHNA MEDICOS","LOVE STORE","MADHAV STORE","MOHAN MEDICOS","MURGAN STORE","NARAYAN GEN STORE","OM CHEMISTS","POOJA MASALA STORE","POPULAR STORE","PRASER MEDICOS","PREM STORE","PRIYA GENRAL STORE","Praveen General Store ","Prem Store ","Royal hospitality","S S wholesale mart","SHIV POOJAN STORE","Shree Girdhari Medicos","VINOD STORE","Vivek traders.","YADAV MEDICOS","mahavir medicos","shiv shakti","shivam chemist","vijay depatmental store"],"f":[{"n":"Vivek traders.","k":"DEL0DL3075469_062025","l3":0.005,"p":"Medium"},{"n":"PREM STORE","k":"DEL0DL11640806","l3":0.003,"p":"Medium"},{"n":"HARI OM STORE","k":"N_DL_00013932","l3":0.001,"p":"Medium"}]}},"Dharmdev kumar":{"ARJUN NAGAR":{"a":["29 fresh mart","A ONE COSMETICS","AHUJA CHEMIST","ANIL MEDICOS AND DEPARTMENTAL STORE","BANKE BIHARI CHEMIST","BHARAT STORE(HIMAYUPUR)","CITI STORES","Daily need store","GARG SUPER STORESJE [A]","H.K & SONS","HIMANSHU MEDICOSE","Harsh store","JAI SHREE SHYAM MEDICOS","JINDAL STORE","Jai mata di store","KHATU SHYAM MEDICOS","KHATU SHYAM MEDICOSE","KUNAL MEDICOUSE","Khatu Shyam Medicos & Departmental Store","Laxmi Gernal Store","Mittal Store","NEW MODERN PHARMACY","New jai mata store","PIPLANI MEDICOS AND DEPARTMENTAL STORE","Peplani store","R R MEDICOS CHEMIST&COSMETICS","R S medicos","R.P.S STORE","RADHEY SHYAM GEN. STORE","RAJ GENERAL STORE","Ravis Remedies","S .K medicos","SARASWATI MEDICINE CENTER","SHIVAM GENRAL STORE","SHRI SHYAM MEDICOSE","SIDHARTHA CHEMISTS","SRI SAI INTERNATIONAL","Sahil genral Store ","Shri shyam pharma","The unique medicos","VARDHMAN CHEMIST & COSMETICS"],"f":[{"n":"The unique medicos","k":"DEL0DL666993","l3":0.007,"p":"Medium"},{"n":"Daily need store","k":"DEL0DL2096279_0524","l3":0.006,"p":"Medium"},{"n":"SRI SAI INTERNATIONAL","k":"DEL0DL802479","l3":0.006,"p":"Medium"},{"n":"JAI SHREE SHYAM MEDICOS","k":"DEL0DL00183832","l3":0.002,"p":"Medium"},{"n":"JINDAL STORE","k":"DEL0DL11556714","l3":0.002,"p":"Medium"},{"n":"Laxmi Gernal Store","k":"DEL0DL00587776","l3":0.001,"p":"Medium"},{"n":"PIPLANI MEDICOS AND DEPARTMENTAL STORE","k":"0022016394DEL0DL00334789","l3":0.001,"p":"Medium"}]},"BHAGWAN NAGAR":{"a":["A K MEDICOSE","AMBA COSMATIC","AMIT GEN STORE","ANAND GENERAL STORE","ANIL DAIRY","All india chemist","Aryan General Store","BHAWANI SHANKAR SUPER MARKET","Beauty City Hub","COSMETIC COLLECTION","Cosmic hub","DEV PHARMACY","Daily use depetment store","GOYAL GEN STORE","KRISHANA MEDICOS","KRISHNA MEDICOS","MAA DURGA MEDICOS","MAA DURGA MEDICOS","MADAN LAL AND SONS","MOTI RAM & SANS","NANAK STORE","NEETU SHRINGAR COSMATICS","NEW SAI CHEMIST","NITIN MEDICOS","New Bharal Medicos","OM PARKASH STORE","PAWAN GEN STORE","R K store","Ram kishan store","Rama medicos","SAHELI GEN STORE","SHIV SHAKTI GERNAL STORE","SHRI DURGA GEN STORE","Shri Balaji Store","YASU GEN STORE"],"f":[{"n":"ANAND GENERAL STORE","k":"0022016394DEL0DL00096910","l3":0.005,"p":"Medium"},{"n":"Aryan General Store","k":"0022016394DEL0DL00323345","l3":0.002,"p":"Medium"},{"n":"AMIT GEN STORE","k":"0022016394DEL0DL00137702","l3":0.001,"p":"Medium"},{"n":"Cosmic hub","k":"0022016394DEL0DL00189769","l3":0.001,"p":"Medium"}]},"GARHI 1":{"a":["AJAY ABBI & GAURAV ABBI GEN STORE","Amer chudi bhandar","BASISTH MEDICOS","BHARDWAJ MEDICOS","DAWAR STORE","DELHI MEDICOS","DKSTORE 1428)","DURGA MASALA STORE","FASHION POINT1435)","GARG STORE","GOVINDA STORE(MUNNA)","GOYAL PHARMACY","GOYAL STORE","Goyal Pro Store Garhi","Goyal Store","KRISHNA Cosmetic","Krishna Dairy","Ladies Shop","MANKANSHA PHARMACY","MARINA MEDICOS","MILAN GIFT STORE1429)","MUKTESHWAR LADIES CORNER","Mankansha Pharmacy","Mathur Medicos","NATIONAL MEDICOS","PRIME MEDICAL STORE","R.K SUPER STORE","RAKESH GEN STORE(G)","SACHIN AGGARWAL","SHIVAM MEDICOS (G)","SHRI BALAJI STORE","SINGHAL TRADERS","STANDER COSMETIC","SUMIT STORE1401)","Shiv Shakti Gernal Store","Shri Hanuman Store","Soundarya Cosmetics","Sumit Store","VAISHNAVI COSMETICS","VIKRAM MEDICOSE","VINOD STORE","Vishnu medical store","YASHRAJ MEDICOS","abhijeet store","gupta provision store"],"f":[{"n":"SHRI BALAJI STORE","k":"DEL0DL00313011","l3":0.031,"p":"Medium"},{"n":"Shri Hanuman Store","k":"DEL0DL2093024_0524","l3":0.008,"p":"Medium"},{"n":"SACHIN AGGARWAL","k":"DEL0DL11558516","l3":0.006,"p":"Medium"},{"n":"VINOD STORE","k":"DEL0DL00140466","l3":0.004,"p":"Medium"},{"n":"R.K SUPER STORE","k":"DEL0DL01073495","l3":0.001,"p":"Medium"},{"n":"VIKRAM MEDICOSE","k":"DEL0DL00989000","l3":0.001,"p":"Medium"},{"n":"SUMIT STORE1401)","k":"N_DL_00014101","l3":0.001,"p":"Medium"},{"n":"DELHI MEDICOS","k":"N_DL_00014304","l3":0.001,"p":"Medium"}]},"GOVIND PURI 3":{"a":["A to Z pharmacy","Ahuja tredars","Ardh Sainik Canteen","Arora fashion","BABA Cosmetic Point","BANARSI STORE","BHAGAT MEDICOS","Be Stylish","CHABRA STORE","Chaurasiya Store","Core biotech india","DEEPAK STORE","DEEPAK STORE","DIVYAM PHARMACEUTICALS","GARG CHEMIST","GOYAL TRADERS","HANDA TRADERS","KALKA GENRAL STORE","KALKA PHARMACY","KALKA PHARMACY","KALKA STORE","KHANNA MEDICOS","KRISHNA TRADERS","MAA KALKA COSMETIC","Maa Parvati Medicose","Madhavi Traders","Madhavi Traders","Metro Medicose","OM MEDICAL STORE","OM SAI MEDICAL","PANDIT DAIRY","PANkAJSTORE","POOJA MEDICOS","Puneet Medicos","R S Medicos","RAHUL MEDICOS","RAJ CHEMIST","RANA MEDICOS","RICHA MEDICOS","RUDRAKSHI MEDICOS","Raghav Chemist","S R Store","SACHIN MEDICOS","SANJAY MEDICOS","SHRI SAI MADICOS","SHRI SHYAM STORE","SK Medicos","SUNIL STORE","Styles Cosmetic","bansal store","keshav store","naveeen store"],"f":[{"n":"keshav store","k":"0022016394DEL0DL00183102","l3":0.012,"p":"Medium"},{"n":"DEEPAK STORE","k":"DEL0DL11641981","l3":0.004,"p":"Medium"},{"n":"SACHIN MEDICOS","k":"DEL0DL01034646","l3":0.003,"p":"Medium"},{"n":"OM SAI MEDICAL","k":"0022016394DEL0DL00085660","l3":0.002,"p":"Medium"},{"n":"KALKA PHARMACY","k":"0022016394DEL0DL00083519","l3":0.001,"p":"Medium"},{"n":"PANDIT DAIRY","k":"DEL0DL00646732","l3":0.001,"p":"Medium"}]},"GOVINDPURI-WS":{"a":["A. S. TRADERS","AGGARWAL STORE","AKS PHARMACY ","Aggarwal store ","CURE PHARMA CHEMISTS","Dau ji store","GARG STORE","GULSHAN STORE","Ganga ayurvedic store. ","KAILASH MEDICOS","Laxmi store","Maa laxmi medicos","NASA CHEMIST","NEHA GARMENTS","POPULAR STORE","Popular store","RADHAY RADHAY STORE","S.S. TRADERS","SAINI ST","SANDEEP STORE","SHIV SHAKTI CONF","SHIVAM GARMENTS","SHREE TIRUPATI TRADERS","SHRI GOPALAN PROV. STORE","SHRI SHYAM TRADERS","SINGHAL BROS","SINGHAL SUPER STORE","SUMIT TRADERS","Shiv shakti store","Singhal Bros","Wecare pharmacy"],"f":[{"n":"S.S. TRADERS","k":"DEL0DL00799223","l3":0.021,"p":"Medium"},{"n":"Laxmi store","k":"DEL0DL00567581","l3":0.015,"p":"Medium"},{"n":"Aggarwal store ","k":"DEL0DL3305086_092025","l3":0.011,"p":"Medium"},{"n":"SUMIT TRADERS","k":"0022016394DEL0DL00090780","l3":0.008,"p":"Medium"},{"n":"RADHAY RADHAY STORE","k":"0022016394DEL0DL00090781","l3":0.006,"p":"Medium"},{"n":"SINGHAL SUPER STORE","k":"DEL0DL00306088","l3":0.006,"p":"Medium"},{"n":"AKS PHARMACY ","k":"DEL0DL3529018_122025","l3":0.006,"p":"Medium"},{"n":"SANDEEP STORE","k":"0022016394DEL0DL00340006","l3":0.004,"p":"Medium"}]},"KOTLA RETAIL 2":{"a":["AGGARWAL COSMETICS(KOTLA)","AMIT CHEMIST","AMIT STORE(KOTLA) DEMANGE","BANSAL ENTERPRISES (CASH)","BANSAL STORE(KOTLA)","Baisoya Store","Balabhadra Medical","DEEPAK COSMETICS","GULJARI LAL MAHAVIR PRASAD","HARI OM TRADERS","HARSEASON SAINI STORE","Haresh Store","ISHIKA STORE","JANTA GENRAL STORE","JANTA PROV STORESEWA)","Jai Mata Di store","Janta Medicos","Jashika gernal Store","KAILASH CHAND SUNIL KUMAR","KHANDELWAL BROS.","LALIT STOREPILL","LAXMI NARAYAN MEDICOS","MAA SUBHADRA STORE","MADAN LAL RAKESH KUMAR","MODI STORE(KOTLA)","NAKUL COSMETIC","NEGI STORE","OM AYURVADIC AND MEDICINE CENTRE","OM OIL MILLS","PAL COSMETIC","POPULAR FOODS","PRABHU DAYAL HANUMAN PD","Piyush Medical store","RAJINDRA FLOORIST","RAVI STORE","RAVI STORE","ROSHAN LAL & SON","ROSHNI MEDICOS","SATYAM STORE","SHARMA BROTHERS","SHEFALI COSMETICS","SR COSMETICS","SUBHASH STORE(DEFENC)","SURAJ MAL CHOTH MAL &SONS","Shiv Medicos","Shri Balaji Store","anil medicos","gulab chand gyaci lal","n.v store","shambhu dayal roshan lal"],"f":[{"n":"KHANDELWAL BROS.","k":"DEL0DL00140449","l3":0.042,"p":"Medium"},{"n":"n.v store","k":"DEL0DL00177693","l3":0.002,"p":"Medium"},{"n":"AMIT CHEMIST","k":"0022016394DEL0DL00112157","l3":0.001,"p":"Medium"},{"n":"GULJARI LAL MAHAVIR PRASAD","k":"DEL0DL11502796","l3":0.001,"p":"Medium"}]},"NETAJI NAGAR 2":{"a":["AMAN STORE (SN)","ANAND DEPARTMENTAL STORE","Ashok dairy","BHATIA FLOUR MILL(NN)","Batra store","Deepak Store","Durga medicos","FAIR DEAL STORE(BZ)","Friends Corner","JAIN PROV. STORE","KRISHNA MEDICAL HALL","LAXMI MEDICOS","MURGAN STORE","NAGPAL MEDICAL STORE","OM CHEMISTS","Popular store","Prakash Fancy Store2","RAJU STORE NN","RASHMI COSMETIC","Ram Chandar & Krishna Store","SATIJA STORE","SHRI KRISHNA GEN STORE","SHYAM GENRAL STORE","Sai Beauty Store","Shingar palace","Shivam store","Shri Sai General Store","Shyam Store Sadik Nagar","VIKRAM COSMETICS","VIKRAM FANCY CORNER","WADHWA PROV STORE","shivam chemist","vijay depatmental store","vikram chemist"],"f":[{"n":"RASHMI COSMETIC","k":"DEL0DL00230703","l3":0.001,"p":"Medium"}]}},"Durga nand suman":{"AMAR COLONY":{"a":["All india pharmacy","BATRA GEN STORE","DHINGRA CHEMIST0731)","Diwan Store","Elegence beauty corner","FANCY STORE 0771)","Goldi store","Gopi Store","ISHA MEDICOS","K.k store","Love Store","MANDEEP STORE0710)","MANSA STORE","MEDIPOINT","MOHAN STORE..(AMAR)","NEW RAMA PACKERS","PAHWA STORE","Punam cosmetic","RAMA GALLERY","ROYAL PHARMACY..","Roshan store","SANTOSH PHARMACY","SURESH MEDICOS","SWADESI AYURVEDA0728)","Santosh store","Satish Store","Som store","T.M PACKERS & STATIONERS","The Essentials Shoppe","The Gift Shop","VINOD MEDICAL STORES","Vishal vegetable grocery store","manoj store(GAR)"],"f":[{"n":"Santosh store","k":"DEL0DL2093605_0524","l3":0.002,"p":"Medium"},{"n":"MOHAN STORE..(AMAR)","k":"DEL0DL01040043","l3":0.001,"p":"Medium"},{"n":"PAHWA STORE","k":"DEL0DL01324974","l3":0.001,"p":"Medium"},{"n":"Elegence beauty corner","k":"DEL0DL1260643","l3":0.001,"p":"Medium"}]},"BHOGAL":{"a":["ALLIANCE PHARMECY","AMARCHAND FOODS","ANNAPURNA TRADER-D","APPOLO MEDICOSE","All india chemist ","BALAJI MARKETING","Bajrang Enterprises","Gauri shankar & sons","HARI KISHAN SELLECTION","LIFE LINE MEDICOSE","MORNING STORE(TEA)","MORNING STORE0830)","NATURE CART","NKSONS 0354)","New Singhal bros.","PREM & COMPANY","PREM PARKASH AMIT KUMAR","RAM CHEMIST","REDOUX CHEMIST PRIVATE LIMITED","Rajesh Store","Ram Gernal Store","SIDHI VINAYAK DEPARTMENTAL STORE","SINGHAL & SONS..","SITA RAM BISHAMBER DAYAL SINGHAL","Saanchi Enterprises","Singhal Enterprises","gaurav entprises","jhankar chemist ","sameer k medicos.","shree nath chemist ","sushil general store"],"f":[{"n":"BALAJI MARKETING","k":"DEL0DL00152201","l3":0.007,"p":"Medium"},{"n":"LIFE LINE MEDICOSE","k":"DEL0DL00660409","l3":0.004,"p":"Medium"},{"n":"HARI KISHAN SELLECTION","k":"DEL0DL11556726","l3":0.002,"p":"Medium"},{"n":"All india chemist ","k":"DEL0DL3017140_052025","l3":0.002,"p":"Medium"}]},"BHOGAL 3":{"a":["ALL INDIA MEDICAL HALL","Akshar.kirana.Store","BHALLA CHEMICALS0314)","CHAUHAN PLASTIC","Chandan jeneral","DINDAYAL VED PARKASH","Deepak Enterprises","Din Dayal & Sons","Dipty chemist","GOPI NATH JAYANTI PRAKASH","GOPINATH SHANTIPARKASH","HARDEV STORE","HARI CHAND SUBASH CHAND","HARISIJAN SAINI STORE","HARSEASON SAINI STORE","HIRALAL TRILOKCHAND0303","JAGDISH PR GOEL KIR ST","JANKIDASS SETHI SONS","KATYAL PLASTIC","KATYAL PLASTIC ENTERPRISES","M S CHEMIST CASH","MADAN LAL STORE(BHOGAL)","MUKESH & CO.","MUSKAN BEAUTY PARLOUR","NETRAM PURAN MAL","R P ENTERPRISES","Rameshwarenterprises ","S S CHEMIST","SHIV CHEMICALS","SHREE BALAJI CHEMICALS","SITA RAM COSMETIC","SRI SETHI STORE","SUBHASH AND SONS","Shyam Chemist & Cosmetic","Suraksha & sons","TOP BEAUTY CENTER","V.K SONS","VISHAL NEIGBOURHOOD SHOP","Yash furniture","goel store(BH)","moolchand Rajkumar"],"f":[{"n":"R P ENTERPRISES","k":"DEL0DL1080715","l3":0.02,"p":"Medium"},{"n":"SHREE BALAJI CHEMICALS","k":"DEL0DL11504039","l3":0.007,"p":"Medium"},{"n":"S S CHEMIST","k":"DEL0DL3232009_072025","l3":0.005,"p":"Medium"},{"n":"JANKIDASS SETHI SONS","k":"N_DL_00027453","l3":0.001,"p":"Medium"}]},"CHIRAG DELHI":{"a":["A one store","ANIL STORE","ASHOK GEN STORE","Alok Medi Mart","Amar medicos","Arun","B K STORE","BALAJI COSMETIC","BHANA GENERAL STORE","Balaji medicos","CHANDER STORE","CHIRAG DELHI MEDICAL STORE","CHUNNILAL STORE","DELHI FRUIT &VEG STORE","Dinesh cosmetic","FRIENDS MEDICOS","Fresh grosher","GULATI BROS.","GURU DATTA MAL BHAHDUR CHAND","JAGAT STORE","Jagdish Store","Jain general store","KAPOOR COSMETIC","Keshav medicos","MEDICINE POINT","NISHANT STORE","P.m.B.J.k. Chirag Delhi","PAWAN JI GENERAL STORE","POOJA CHEMIST","RAJ CHEMIST","RAJAN STORE","SAI HEALTHCARE PHARMACY","SAIJWAL STORE","SHARMA MEDICAL STORE","SHIVAM GENSTORE","Shiv trader","Taneja Variety Store","UDIT STORE","VAISHNO MEDICOS"],"f":[{"n":"Jagdish Store","k":"DEL0DL880043","l3":0.008,"p":"Medium"},{"n":"KAPOOR COSMETIC","k":"DEL0DL00002295","l3":0.001,"p":"Medium"},{"n":"Taneja Variety Store","k":"DEL0DL2012225_0424","l3":0.001,"p":"Medium"}]},"GOVINDPURI-RET":{"a":["AGGARWAL STORE","AGGARWAL TRADING CO.","AP PHARMACEUTICALS","BHATIA COSMETICS","Bhumi medicine point","Bishwas Pharmacy","Choudhary wholesale Bazaar.R","Colors cosmetics & gift gallery","DEEPAK STORE","DHEERAJ POOJA PATH","Fateh Graphics","GAURAV MEDICAL STORE","Goodwill stationers and packers","Goyal plastic","HARBANSE GEN STORE","HEMKUNT MEDICAL STORE","Harjot crockery and plastic","ISSAR MEDICOS","Kalka cosmetics and general store new","Kalka pharmacy","Kamal pooja path","Kunti singh general Store ","MAA KALKA PLASTIC","New sanjay store","PANkAJSTORE","PC TRADERS","POOJA MASALA STORE","PRINTS N PACKS","RX SOLUTION","Royal hospitality","SEHGAL COSMETIC POINT","SHILPI STORE","SHIV TRADERS","SHYAM STORE","STUFF PACK INDIA","SUNSHINE HEALTHCARE","Sai medicos","Saver bazar","Shiv Shakti Store","Shiv store","Shree Shyam Mediways","TELME INTERNATIONAL","Unnati Pharmacy ","VIPUL COLLECTION","VIPUL STORE","WG S","beauty collection"],"f":[{"n":"STUFF PACK INDIA","k":"DEL0DL1537721","l3":0.006,"p":"Medium"},{"n":"Goyal plastic","k":"DEL0DL3200305_062025","l3":0.006,"p":"Medium"},{"n":"Fateh Graphics","k":"DEL0DL846916","l3":0.003,"p":"Medium"},{"n":"HEMKUNT MEDICAL STORE","k":"0022016394DEL0DL00085658","l3":0.002,"p":"Medium"},{"n":"VIPUL STORE","k":"DEL0DL00139727","l3":0.002,"p":"Medium"}]},"GREEN PARK":{"a":["ANIL MEDICOS","ARJUN DAS INTERPRISES","Aakash store","Aliya cosmetic","Ashish gen store","EVERY DAY SUPER MART","GUPTA MEDICAL STORE","Hansraj narang","JANTA SEWAK STORE","Jain kiryana trading co.","KANCHAN COSMETICS","Mahesh Pan","Mittal Store","NIRANKARI STORE","PRAKASH GEN STOREHK","RADHEY SHYAM CHEMIST","RAJDHANI MEDICAREGP)","RAJDHANI STOREGREEN PAK","RANJEEET SINGH GIFT SHOP","S.K. MEDICOS PVT LTD","Shatrughan Pan Bhandar","VANDANA PHARMACY","sharma international"],"f":[{"n":"sharma international","k":"DEL0DL2927972_0325","l3":0.027,"p":"Medium"},{"n":"KANCHAN COSMETICS","k":"DEL0DL00147525","l3":0.005,"p":"Medium"},{"n":"JANTA SEWAK STORE","k":"DEL0DL00140434","l3":0.002,"p":"Medium"},{"n":"Aakash store","k":"DEL0DL00610120","l3":0.002,"p":"Medium"},{"n":"RANJEEET SINGH GIFT SHOP","k":"DEL0DL11554113","l3":0.001,"p":"Medium"},{"n":"Hansraj narang","k":"DEL0DL1791636","l3":0.0,"p":"Low"}]},"INA":{"a":["AAKASH MEDICOSE","AKASH MEDICOS","ANAND COSMETICINA","ASHANAND STORE","Anandi cosmetics","BAJAJ MEDICAL STORE","BEAUTY COLLATION","BHUTANI MEDICAL STORE","COCHIN STORE(INA)","COSMED","Cosmetics","DG S","DMS BOOTH","DURGA MASALE","FASHION WAYS","GULATI STOREINA","GULSHAN STORE","Gupta groceries","INDER STORE","KRISHNA HOSERY","Kabul.Fruit.Corner","LUCKY GENRAL STOREINA)","MANOCHA HARDWARE STORE","MED SQUARE PLUS","MOHAN OIL MILL","NAGAR GEN STORE","NATIONAL DEP STORE","NEW ANAND STORE","NEW SUPER STORE(INA)","Nagpal Chemist","PATANJALI STORE","POOJA STORE (SOUTH EXT. P-1)","Pooja gift palace","RIA COLLECTION","SACHDEVA BROTHERS","SHIVAM STORE","SOUTH COSMETICS","STOP & SHOP (INA)","Shree Ram General Store","Singhal Store (GST)","Sneha bindi corner","TAMIL NATU STORE","VIJAY STOREKID)","shivam store","singhal store..(INA)"],"f":[{"n":"SHIVAM STORE","k":"N_DL_00014359","l3":0.011,"p":"Medium"},{"n":"AAKASH MEDICOSE","k":"DEL0DL00344980","l3":0.007,"p":"Medium"},{"n":"BHUTANI MEDICAL STORE","k":"DEL0DL00998777","l3":0.007,"p":"Medium"},{"n":"Kabul.Fruit.Corner","k":"DEL0DL741775","l3":0.003,"p":"Medium"},{"n":"DMS BOOTH","k":"0022016394DEL0DL00136310","l3":0.002,"p":"Medium"},{"n":"BEAUTY COLLATION","k":"DEL0DL00336530","l3":0.0,"p":"Low"},{"n":"COSMED","k":"DEL0DL00163945","l3":0.0,"p":"Low"}]},"KHANNA MKT":{"a":["A ONE STORE","A ONE TRADERS","AHUJA STORE-D","ANAND GEN STORE KHAN","ARIHANT STORE","Anand drug store","Anjali singh","BARKAT RAM BRIJ LAL","BHATIA STORE","Beauty cornar","CHAUDHARY STORE","GARG PROVISION STORE","GOYAL STORE","HARI KISAN STORE","J K M MEDICOS","JAIN PRO STOREKHAN MKT","JINDAL STORE(KHAN)","K D STORE","KAPIL STORE","KWALTY GEN STORE","M S P pharmacy","MEDICARE CHEMIST","MODERN BEAUTY GALARY","MORDERN BEAUTY GALLERY","NAGPAL HEALTHCARE CHEMIST","NAGPAL PHARMACY","New Nagpal pharmacy","PUNJAB PAN HOUSE-D","PYREELAL RAM PRASAD","Pappu general store","RAJ STORE(KN)","ROZMARRA STORE","SHARDA STORE","SHREE AMBICA MEDICOS","SUDHIR STORE","SUNSHINE STORE","SUPER STOREKH)","SWASTIK STORE","Sachdeva stores chemist","Shanti Stores","Shiv store Cash","SunRise Store","VISHNU STORE","YAMUNA CHEMIST","ZEOLITE WELLNESS PVT. LTD","shakti fruits"],"f":[{"n":"Anjali singh","k":"DEL0DL918885","l3":0.007,"p":"Medium"},{"n":"KWALTY GEN STORE","k":"N_DL_00014435","l3":0.006,"p":"Medium"},{"n":"JINDAL STORE(KHAN)","k":"DEL0DL00861964","l3":0.006,"p":"Medium"},{"n":"ZEOLITE WELLNESS PVT. LTD","k":"0022016394DEL0DL00434751","l3":0.005,"p":"Medium"},{"n":"SHARDA STORE","k":"N_DL_00014100","l3":0.004,"p":"Medium"},{"n":"AHUJA STORE-D","k":"N_DL_00014395","l3":0.003,"p":"Medium"},{"n":"CHAUDHARY STORE","k":"DEL0DL11495363","l3":0.002,"p":"Medium"},{"n":"SUDHIR STORE","k":"DEL0DL11617077","l3":0.001,"p":"Medium"},{"n":"SunRise Store","k":"DEL0DL2104466_0524","l3":0.001,"p":"Medium"},{"n":"K D STORE","k":"0022016394DEL0DL00088018","l3":0.001,"p":"Medium"},{"n":"NAGPAL HEALTHCARE CHEMIST","k":"DEL0DL00810755","l3":0.001,"p":"Medium"},{"n":"Shanti Stores","k":"DEL0DL11544342","l3":0.0,"p":"Low"},{"n":"ARIHANT STORE","k":"DEL0DL11520402","l3":0.0,"p":"Low"},{"n":"YAMUNA CHEMIST","k":"N_DL_00014295","l3":0.0,"p":"Low"},{"n":"PUNJAB PAN HOUSE-D","k":"N_DL_00014457","l3":0.0,"p":"Low"}]},"KOTLA WS 1":{"a":["ANIL PROV STORE","B. MART","CHAMAN LAL STORE","FRIENDS PRO STORE","Goel Store","Hamara dawaiwala","KHANDELWAL BROS.","Khandelwal sons","MANGLA STORE","Manoj gen store","NEW DEAL STORE","NEW SAGAR STORE","PAREVA CONFCTIONERY","POOJA SALES","POOJA TRADERS","PS MEGAMART","Pooja Sales","RAJASTHAN SUPER KIRYANA","RAM NIWAS JAGDISH PRASHAD","SAGAR STORE","SHAMBHU DAYAL ASHOK KU","SWASTIK MEDICOS","Shri Ram Store","Siyaram medicos"],"f":[{"n":"Siyaram medicos","k":"DEL0DL1618966","l3":0.001,"p":"Medium"}]}},"K.M. HUMZA":{"ADH CHINI + KALU SARAI":{"a":["BABA NANAK MEDICOS","BANSAL STORE","Bhola Sons","D.K STORE","Delhi state fruit","Friends a malayalee store","GANPATI PHARMACY","GUPTA GENERAL STORE","GUPTA STORE","GURU NANAK DEPARTMENTAL STORE","Goyal Ayurvedic","Gupta store","HARIOM STORE","J. K pharmacy","JAIN STORE","JINDAL CONFECTIONERY","KAMAL PHARMACY","KAPIL STORE","Kamal chemist","LAVI KAUTILYA MEDICOS","MANGLA CHEMIST","MITTAL MEDICAL STORE","Malik Store","N K pharmacy","PAUL SUPER STORE","PAWAN JI STORE","PRIYA GROCERS","Radhe Krishna Pharma","SANGAM STORE","SUNNY STORE","Satish Provision store","Sushil Store","Yunus store","kps store","shiva store"],"f":[]},"ASHRAM":{"a":["A One Collection","AJAY COSMETIC","All india chemist","Ashok Store","B.N MEDICOS","BATRA MEDICAL STORE","BREAD N MORE","BRITE AGENCIES","Binni Cosmetics","Chandra Bangal Store","Classic cosmetic and beauty parlour ","EVERGREEN STORE","Evergreen Store","Fateh Paan Bhandaar","GOYAL MEDICOS","Gangaram Store","Hemu Store","JEETEY STORE","KRIPA MEDICOS","KRISHANA MEDICOS","Lakshay General Store","MOTI RAM & SANS","Mahawar store","Manish General store","Manoj Janta store","NEERAJ SUPER STORE","NITIN GENRAL STORE","PRITAM STORE","RAJA STORE","RAJESH STORE","RITIK MEDICOS","SAHELI GEN STORE","SHREE JEEVAN PHARMACY","SMARTH MEDICOS","SONU PROV STORE","SUNIL GEN STORE","Shri Balaji Medicos","USHA DEPARTMENTAL STORE","VIMLA STORE","YASU GEN STORE"],"f":[]},"CH MALVIYA NAGAR":{"a":["ANAND CHEMIST","Adivam medicos","Anand store","BATRA MEDICOS","CHAWLA CHEMIST","Durga medicos","Hanuman store","JAIN AYURVED","K R One Pharma","KAMAL CHEMIST","Kabeer store","MAX WELL CHEMIST","MEDICINE POINT","MEDICINE POINT","MEDIWORLD MEDICOS","NARANG BROS.","PRAKASH CHEMIST","RAMAN MEDICOS","RAMAN MEDICOS","SURAJ STORE","Sapna General store","Shree Shyam Mediways","Sony General store","THUKRAL STORE","V G & CO","VARDHMAN CHEMIST","VARDHMAN MEDICAL HALL","Yadav Store"],"f":[]},"GOUTAM NAGAR":{"a":["AMIT STORE","Aggarwal Agency","Aggarwal paneer","Aims Medicos","Bachat Bazaar","City Medicos","Friends Medicos","GEO MEDICOS","Goyal general Store","Gulshan store","Gupta Store","Health Care Pharmacy","Jassi","Kailash Gen.Store","LAXMI GENERAL STORE","MANISH GENERAL STORE","Mamta store","NATIONAL MEDICAL STORE","Nakul Gift shop","Om Pooja Samagri Store","Om departmental store","R K Beauty","Radhe singar","STAR MEDICOS","Saini Cosmetics","Shakuntla Store","Soniya store","Sunil store","Veer ji Collection","Welcome pharmacy"],"f":[]},"KHIRKI 1":{"a":["1 DOSE PHARMA","1dose","A-ONE DRUG STORE","ARN MEDICOS","Anushka Store","BANSAL STORE","Baba Ji General Store","C.k. store","Chabra Store","DEEPAK MEDICOS","Deepak Medicose","EESHWAR MEDICOS","FAIZ STORE","GUPTA STORE","KAPIL STORE","Kanchan cosmetic","Kartar Store","MONA MEDICOS","MONU STORE","OM GEN STORE","Om Store","Panchsheel general Store","RAVI STORE","S K MEDICOS","S k Medicose khidhkhi 1","S.A STORE GEN STORE","SAHANI STORE","SAHARA CHEMIST","SAHARA CHEMIST","SAI MEDICOS","SHREE KRISHNA DEP STORE","SHREE STORE","Shree durga medical and gen store","Shree durga store","Sunny Cosmetics","VED JI STORE","VERMA MEDICOS","Yamuna chemist"],"f":[{"n":"SAI MEDICOS","k":"DEL0DL11634894","l3":0.007,"p":"Medium"},{"n":"ARN MEDICOS","k":"DEL0DL11632473","l3":0.001,"p":"Medium"},{"n":"SAHARA CHEMIST","k":"DEL0DL2095258_0524","l3":0.001,"p":"Medium"}]},"ZAMRUDPUR":{"a":["ARUN MEDICOS","Ahuja Gift Shop","Ajay Store","All India Chemist","Apna Medicos Pvt Ltd","B G SUPERMART","BATRA STORE","Balaji Gen store","Balaji General Store","Bhola store","CHIRAG DELHI MEDICAL STORE","Delhi Grocery","Dev Medicose","Dinesh Store","Dubey Store","Dveneder Store","GUNJAN MEDICOS","GYAAN STORE","Ganpati medicos","Govind store","Jagdamba store","Kamat store","LIFELINE GENRAL STORES","Laxmi Medicos","MANISH MEDICOS","Mohni Store","Mukesh General Store","Mukesh Store","Neha chemist","Neha chemist","PANDIT MEDICOS","PRINCE MEDICOS","RAHUL STORE","ROSHAN MEDICOS(demange)","Raj store ","Randheer store","S G SUPER STORE","SHARMA MEDICAL STORE","STANDARD MEDICOS","Santosh General Store","Shiv Store","Shiv chemist","Shivam medicos","Shivesh gen store","Singh Motors IN & OUT STORE","Tomar medical store","VERMA MEDICOS","Vishal store","Vishnu store","jagdish store"],"f":[{"n":"All India Chemist","k":"DEL0DL1649716","l3":0.003,"p":"Medium"}]}},"MOHD ASHIQUE ELAHI":{"KOTLA RETAIL 2":{"a":["AMIT CHEMIST","AMIT STORE(KOTLA) DEMANGE","BANSAL ENTERPRISES (CASH)","Baisoya Store","Balabhadra Medical","DEEPAK COSMETICS","GULJARI LAL MAHAVIR PRASAD","HARI OM TRADERS","HARSEASON SAINI STORE","Haresh Store","ISHIKA STORE","JANTA GENRAL STORE","JANTA PROV STORESEWA)","Janta Medicos","Jashika gernal Store","KAILASH CHAND SUNIL KUMAR","KHANDELWAL BROS.","LALIT STOREPILL","LAXMI NARAYAN MEDICOS","MAA SUBHADRA STORE","MADAN LAL RAKESH KUMAR","MODI STORE(KOTLA)","NAKUL COSMETIC","NEGI STORE","OM AYURVADIC AND MEDICINE CENTRE","OM OIL MILLS","PAL COSMETIC","POPULAR FOODS","PRABHU DAYAL HANUMAN PD","Piyush Medical store","RAJINDRA FLOORIST","RAVI STORE","ROSHAN LAL & SON","ROSHNI MEDICOS","SATYAM STORE","SHARMA BROTHERS","SHEFALI COSMETICS","SR COSMETICS","SUBHASH STORE(DEFENC)","SURAJ MAL CHOTH MAL &SONS","Shiv Medicos","Shri Balaji Store","anil medicos","gulab chand gyaci lal","shambhu dayal roshan lal"],"f":[{"n":"RAJINDRA FLOORIST","k":"DEL0DL00491941","l3":0.0,"p":"Low"},{"n":"NAKUL COSMETIC","k":"N_DL_00014276","l3":0.0,"p":"Low"}]},"S1 ABULFAZAL":{"a":["A to z gen. Store","ANABIYA STORE","ANWAR MEDICOS","APNA STORE","Al Noor pharmacy","B S STORE","Brothers pharmacy","Danish store","FAMILY STORE","FATIMA GEN STORE","Family care chemist","For ever store","H.n.h pharmacy","IDEAL PHARMACY","Irfan Store","M.r. pharma","MALIK TRADERS","Mohammad store","NAUSHAD STORE","New quality store","PUBLIC STORE","RAJA MEDICOS","RANA STORE","Rajdhani medicos","Royece Super","Royece Supermarket","S. K. PHARMA","SALEEM GEN STOE","SASTA STORE","SONU STORE","SUPER AGENCIES","Shan store","TAJ MEDICOS","TWAHA MEDICAL STORE","UMAR MEDICOS & COSMATICS"],"f":[{"n":"Royece Supermarket","k":"0022016394DEL0DL00425100","l3":0.002,"p":"Medium"},{"n":"Shan store","k":"DEL0DL753798","l3":0.001,"p":"Medium"}]},"S1 BATLAHOUSE 2":{"a":["A 2 Z PHARMA","A N STORE","ALAM MEDICOS","ALIGARH CHEMIST","ALSHIFA MEDICOS","ARISHA STORE","AYAAN MEDICOS","Al Noor Medicos","Aman general store","CARE MEDICOSE","DIAMOND SUPER STORE","Exact pharmacy","FAMOUS MEDICOSE","IQBAL MEDICAL STORE","Khan general store","M s medicos","M.A.STORE","MADINA MEDICARE","MAHIMA GEN STORE","MEERS SUPER STORE","Madina store","Malik store","Mariyam Store","Mark Super store","NOUSAD GEN STORE","PATTLA GIFT SHOP","Pluse medicos","Rajghani store","SAFA MEDICOS","SHABNAM STORE","Sofiya store","Super store ","TAHA STORE","TAHIR GEN STORE","THE UNIQUE MEDICOS","Zehra medicos"],"f":[{"n":"M.A.STORE","k":"DEL0DL00347498","l3":0.001,"p":"Medium"},{"n":"TAHIR GEN STORE","k":"N_DL_00013875","l3":0.001,"p":"Medium"},{"n":"SHABNAM STORE","k":"N_DL_00013893","l3":0.0,"p":"Low"}]},"S1 MADANPUR KHADER":{"a":["Aaditya store","Ac store","Ajay Store","Ankur store","Anshika gen store","Arvind store","Asian medicos","Balaji store","Bhagwan das. Store","Bhati Medical","CHETRAM STORE","DEEPAK STORE","GARGI MEDICOES","GOYAL STORE","GUPTA STORE","HARYANA STORE","HONEY MONEY TOP","Helth care chemist","Hind medicos","J K Store","Jay Bhawani store","KARAN STORE II","KHUSHI STORE","KRISHNA MEDICOSE","KRISHNA STORE","Kolkata medical","MAA KALKA STORE","MOHIT STORE","MUNNA STORE","Manisha medical","PRATAP STORE","RAM NIWAS STORE","Rajesh store","Rajpoot Store","SANTOSH STORE","SHANKAR STORE","SHREE MATESHWARI STORE","SHRI PAL SANJEEV KUMAR","SUSHIL KUMAR & SONS","Sanatan store","Setu traders","Shree gee store","Shree ram pro store","Star Pharmacy","Star pharmacy","Umar medicos","VISHAL MEDICOS","Welcome Pasty"],"f":[{"n":"SANTOSH STORE","k":"DEL0DL11636969","l3":0.001,"p":"Medium"}]},"S1 NFC":{"a":["AHMAD STORE","ALAM STORE","AMAN GEN STORE","AMANDEEP STORE","BALAJI GEN STORE","BOBBY STORE","CHAUHAN STORE","FAMILY CARE MEDICOS","GAJRAJ GEN STORE","GOPAL JEE STORE","GUPTA STORE MEDICAL","Gupta gen store","INDIAN MEDICOS","J S Ayurvedic","JAI AMBEY MEDICOS","JAI MATA STORE","JMD STORE","KRISHNA DAIRY","KUMAR STORE","Khatu shyam medicos & department store","Lovely store","MARUTI STORE","MOHAN BABA STORE","MUKESH GENRAL STORE","RAZA STORE","RD STORE","Rani store","SACHEDEVA DEP STORE","SAI CHEMIST & GENRAL STORE","SANGHI MEDICOS","SONU STORE","Sharma store","Shree Shyam Mediways","UMAR CHEMIST","VERMAS ","Vishal Store","YOGESH GEN STORE"],"f":[{"n":"J S Ayurvedic","k":"DEL0DL2000850_0424","l3":0.013,"p":"Medium"},{"n":"JAI AMBEY MEDICOS","k":"0022016394DEL0DL00121084","l3":0.004,"p":"Medium"},{"n":"MUKESH GENRAL STORE","k":"DEL0DL11642144","l3":0.002,"p":"Medium"},{"n":"GAJRAJ GEN STORE","k":"DEL0DL00180646","l3":0.001,"p":"Medium"},{"n":"KUMAR STORE","k":"N_DL_00013869","l3":0.001,"p":"Medium"}]},"S1 OKHLA":{"a":["ABDUL STORE","AJWA TRADERS","AL ZABBAR STORE","AMS 24 WELLNESS PRIVATE LIMITED","ASHRAF TRADERS","ASLAM STORE","ATN STORE","Apollo medical store","Apollo medicos 2","BULAND PHARMACY","CITY MEDICOS","Delhi medicos","FRESH FRUIT & DRY FRUIT SHOP","FRIENDS GEN STORE","GAFFAR GEN STORE","GLOBAL CHEMIST","GOYAL STORE","GROCERY WORLD","ILQA GENERAL MERCHANT","JPJ GEN STORE","KHAN BROTHERS","KRISHNA MEDICOS","Kewal general store","M.N MEDICOS","MADINA SUPER STORE","MARKSUPER STORE PVT. LTD","MOMIN TRADERS","Malik store","NOOR CHEMIST","Okhla medicos","ROYAL ENTERPRICES","Rajput kirana Store","Rehmat corner","SAIF CHEMIST","SHAN PHARMA","SHRI BALAJI STORE","Shahjad store","Siddiqui store","TrustMed Pharmacy","Wish trader"],"f":[{"n":"M.N MEDICOS","k":"DEL0DL2070995_0524","l3":0.003,"p":"Medium"},{"n":"KHAN BROTHERS","k":"DEL0DL00180618","l3":0.0,"p":"Low"},{"n":"Wish trader","k":"DEL0DL736820","l3":0.0,"p":"Low"}]}},"NARESH BHATIA":{"BATLAHOUSE 4":{"a":["AISHA GEN STORE","AKHTAR PHARMACY","ALIF Pharmacy","ASLAM STORE","Abdul store","Asif store","Ayush pharmacy","Danish store","Friends super store","Goyal Store","Gulshan store","HAQUE CHEMIST& COSMETICS","HEALTH CARE PHARMACY","Helth care medicos","IDRISH GEN STORE","ISLAH MEDICOS","JAGGU BHAI GENRAL STORE","Kafeel store","La Vita Pharmacy","MADINA STORE","MUJEEB TRADERS","Madina Home Needs","NEW HIND MEDICOS","NEW UNITED MEDICOS","Paarsa medicos","S.k pharmacy","UNIQUE PHARMACY","Umar Store","VIKASH STORE","WOCAFU PRIVATE LIMITED","ZYNO MART"],"f":[{"n":"La Vita Pharmacy","k":"DEL0DL1651524","l3":0.006,"p":"Medium"},{"n":"Abdul store","k":"DEL0DL2104448_0524","l3":0.004,"p":"Medium"},{"n":"ISLAH MEDICOS","k":"0022016394DEL0DL00110027","l3":0.001,"p":"Medium"}]},"S1 ABULFAZAL":{"a":["A to z gen. Store","ANABIYA STORE","ANWAR MEDICOS","APNA STORE","Al Noor pharmacy","Alisha cosmetic","B S STORE","Brothers pharmacy","Danish store","FAMILY STORE","FATIMA GEN STORE","Family care chemist","For ever store","H.n.h pharmacy","IDEAL PHARMACY","Irfan Store","M.r. pharma","MALIK TRADERS","Mohammad store","NAUSHAD STORE","New quality store","PUBLIC STORE","RAJA MEDICOS","RANA STORE","Rajdhani medicos","Royece Super","Royece Supermarket","S. K. PHARMA","SALEEM GEN STOE","SASTA STORE","SONU STORE","SUPER AGENCIES","Shan store","TAJ MEDICOS","TWAHA MEDICAL STORE","UMAR MEDICOS & COSMATICS"],"f":[{"n":"Irfan Store","k":"0022016394DEL0DL00425102","l3":0.016,"p":"Medium"},{"n":"Royece Super","k":"0022016394DEL0DL00425099","l3":0.01,"p":"Medium"},{"n":"SONU STORE","k":"N_DL_00013689","l3":0.002,"p":"Medium"},{"n":"APNA STORE","k":"0022016394DEL0DL00107070","l3":0.001,"p":"Medium"}]},"S1 BATLAHOUSE 2":{"a":["A 2 Z PHARMA","A N STORE","ALAM MEDICOS","ALIGARH CHEMIST","ALSHIFA MEDICOS","ARISHA STORE","AYAAN MEDICOS","Al Noor Medicos","Aman general store","CARE MEDICOSE","DIAMOND SUPER STORE","Exact pharmacy","FAMOUS MEDICOSE","IQBAL MEDICAL STORE","Khan general store","M s medicos","M.A.STORE","MADINA MEDICARE","MAHIMA GEN STORE","MEERS SUPER STORE","Madina store","Malik store","Mariyam Store","Mark Super store","NOUSAD GEN STORE","PATTLA GIFT SHOP","Pluse medicos","Rajghani store","SAFA MEDICOS","SHABNAM STORE","Sofiya store","Super store ","TAHA STORE","TAHIR GEN STORE","THE UNIQUE MEDICOS","White store","Zehra medicos"],"f":[{"n":"Al Noor Medicos","k":"DEL0DL684574","l3":0.008,"p":"Medium"},{"n":"Exact pharmacy","k":"DEL0DL2060859_0524","l3":0.002,"p":"Medium"}]},"S1 MADANPUR KHADER":{"a":["Aaditya store","Ac store","Ajay Store","Ankur store","Anshika gen store","Arvind store","Asian medicos","Balaji store","Bhagwan das. Store","Bhati Medical","CHETRAM STORE","DEEPAK STORE","GARGI MEDICOES","GOYAL STORE","GUPTA STORE","HARYANA STORE","HONEY MONEY TOP","Helth care chemist","Hind medicos","J K Store","Jay Bhawani store","KARAN STORE II","KHUSHI STORE","KRISHNA MEDICOSE","KRISHNA STORE","Kolkata medical","MAA KALKA STORE","MOHIT STORE","MUNNA STORE","Manisha medical","PRATAP STORE","PRIYA COS & GIFT CENTER","RAM NIWAS STORE","Rajesh store","Rajpoot Store","SANTOSH STORE","SHANKAR STORE","SHREE MATESHWARI STORE","SHRI PAL SANJEEV KUMAR","SUSHIL KUMAR & SONS","Sanatan store","Setu traders","Shree gee store","Shree ram pro store","Star Pharmacy","Star pharmacy","Umar medicos","VISHAL MEDICOS","Welcome Pasty"],"f":[{"n":"Star pharmacy","k":"DEL0DL1527561","l3":0.007,"p":"Medium"},{"n":"Rajpoot Store","k":"DEL0DL922386","l3":0.004,"p":"Medium"},{"n":"SHANKAR STORE","k":"DEL0DL00877662","l3":0.003,"p":"Medium"},{"n":"Asian medicos","k":"DEL0DL00592213","l3":0.001,"p":"Medium"}]},"S1 NFC 2":{"a":["Aarogya pharmacy","Amar medicos","Ambey Medicos","Ashu store","BALAJI GENERAL STORE","BANGLORE CHEMIST","BAXI GEN STORE","Care Point Pharmacy","DIAMOND STORE","ISHANT STORE","JAI BHAGWAN SONS","KAIRO EXCLUSIVE LLP","LILY GENERAL STORE","Laxmi Store","MAM CHAND STORE","MANNA KERLA","N.B.MARKETING PVT LTD","NATH BROTHERS SOUTH END","PASKINS STORE","Pharma Point","SHIVA STORE","SHRI KRISHNA STORE","SHRI RAM CHEMIST","SHRI SHYAM STORE","SHRINGAR BEAUTY COLLECTION","ST. JUDE KERLA STORE","THOMAS KERLA STORE","Vikash store"],"f":[{"n":"Aarogya pharmacy","k":"DEL0DL00595624","l3":0.002,"p":"Medium"}]},"S1 OKHLA":{"a":["ABDUL STORE","AJWA TRADERS","AL ZABBAR STORE","AMS 24 WELLNESS PRIVATE LIMITED","ASHRAF TRADERS","ASLAM STORE","ATN STORE","Apollo medical store","Apollo medicos 2","BULAND PHARMACY","CITY MEDICOS","Delhi medicos","FRESH FRUIT & DRY FRUIT SHOP","FRIENDS GEN STORE","GAFFAR GEN STORE","GLOBAL CHEMIST","GOYAL STORE","GROCERY WORLD","ILQA GENERAL MERCHANT","JPJ GEN STORE","KHAN BROTHERS","KRISHNA MEDICOS","Kewal general store","M.N MEDICOS","MADINA SUPER STORE","MARKSUPER STORE PVT. LTD","MOMIN TRADERS","Malik store","Okhla medicos","ROYAL ENTERPRICES","Rajput kirana Store","Rehmat corner","SAIF CHEMIST","SHAN PHARMA","SHRI BALAJI STORE","Shahjad store","Siddiqui store","TrustMed Pharmacy","Wish trader","Yousuf store"],"f":[]}},"Rajeev Ranjan Dass":{"ASHRAM":{"a":["AGGARWAL MEDICAL STORE","AJAY COSMETIC","All india chemist","Ashok Store","B.N MEDICOS","BATRA MEDICAL STORE","BREAD N MORE","BRITE AGENCIES","Binni Cosmetics","Chandra Bangal Store","EVERGREEN STORE","Evergreen Store","Fateh Paan Bhandaar","GOYAL MEDICOS","Gangaram Store","Hemu Store","JEETEY STORE","KRIPA MEDICOS","KRISHANA MEDICOS","Lakshay General Store","M S STORE","MOTI RAM & SANS","Mahawar store","Manish General store","Manoj Janta store","NEERAJ SUPER STORE","NITIN GENRAL STORE","RAJA STORE","RAJESH STORE","RITIK MEDICOS","SAHELI GEN STORE","SAI MEDICOS & GENERAL STORE","SHREE JEEVAN PHARMACY","SMARTH MEDICOS","SONU PROV STORE","SUNIL GEN STORE","Shri Balaji Medicos","USHA DEPARTMENTAL STORE","VIMLA STORE","YASU GEN STORE"],"f":[{"n":"M S STORE","k":"DEL0DL669820","l3":0.004,"p":"Medium"},{"n":"All india chemist","k":"DEL0DL1027935","l3":0.002,"p":"Medium"},{"n":"EVERGREEN STORE","k":"0022016394DEL0DL00098604","l3":0.001,"p":"Medium"},{"n":"Mahawar store","k":"DEL0DL00587545","l3":0.001,"p":"Medium"},{"n":"AJAY COSMETIC","k":"0022016394DEL0DL00213427","l3":0.0,"p":"Low"}]},"BATLAHOUSE 3":{"a":["AL SHAHAB PHARMACY","AL-NOOR MEDICOS","ANWAR STORE","AVON STORE","Abdul store","Al Noor super store","BISMILLAH STORE","Bismillah nazri store","C S medicose","CARE MEDICOS","Chaudhry medicos","City Medicos ","FRIENDS MEDICOS","HARYANA STORE","HIBA CHEMIST","HIND MEDICOS","ISRAR STORE","JAMIA PHARMACY","Kamran Pharmacy ","Life medicos","Lifecare pharmacy","MIRZA STORE","Mallik store","Mujamil store","NADEEM GEN STORE","NATIONAL STORE","NEW HARYANA STORE (RASID)","NEW HIND MEDICOS","NEW LIFE MEDICOS","NEW SUPER STORE","Q NEXT","Royal pharma","S K Store","Shahid store","TAUQEER STORE"],"f":[{"n":"ANWAR STORE","k":"0022016394DEL0DL00110003","l3":0.007,"p":"Medium"},{"n":"HIBA CHEMIST","k":"N_DL_00013966","l3":0.004,"p":"Medium"},{"n":"Abdul store","k":"DEL0DL00626659","l3":0.003,"p":"Medium"},{"n":"Q NEXT","k":"DEL0DL1738000","l3":0.002,"p":"Medium"},{"n":"NADEEM GEN STORE","k":"DEL0DL00174740","l3":0.001,"p":"Medium"},{"n":"AVON STORE","k":"N_DL_00027397","l3":0.0,"p":"Low"}]},"GOVINDPURI-RET":{"a":["AGGARWAL STORE","AGGARWAL TRADING CO.","AP PHARMACEUTICALS","BHATIA COSMETICS","Bhumi medicine point","Bishwas Pharmacy","Choudhary wholesale Bazaar.R","DEEPAK STORE","DHEERAJ POOJA PATH","GAURAV MEDICAL STORE","Goyal plastic","HAPPY STORE","HARBANSE GEN STORE","HEMKUNT MEDICAL STORE","ISSAR MEDICOS","Kalka pharmacy","Kalka pharmacy 8","Kamal pooja path","Kunti singh general Store ","New sanjay store","PANkAJSTORE","PC TRADERS","POOJA MASALA STORE","RX SOLUTION","Royal hospitality","SHILPI STORE","SHYAM STORE","SUNSHINE HEALTHCARE","Sai medicos","Saver bazar","Shiv Shakti Store","Shree Shyam Mediways","TELME INTERNATIONAL","Unnati Pharmacy ","beauty collection"],"f":[{"n":"Saver bazar","k":"DEL0DL1515039","l3":0.016,"p":"Medium"},{"n":"Shiv Shakti Store","k":"0022016394DEL0DL00112423","l3":0.01,"p":"Medium"},{"n":"beauty collection","k":"DEL0DL00983034","l3":0.001,"p":"Medium"},{"n":"SUNSHINE HEALTHCARE","k":"DEL0DL00567586","l3":0.0,"p":"Low"}]},"LAXMIBAI SAROJNI MKT":{"a":["ABHIMANYU STORE","ANAND KISHORE","Abhishek Store","Ahuja medicos","DERA PROV STORE","GUPTA FLOUR MILL","Gupta mill","JAIN STORE","KHUSHBOO STORE","KISHAN MART","KISHAN SONS...","Khan store","MITHLA STOREPILL)","NAV JEEVAN CHEMIST","NEW MODERN CHEMISTS","NEW TIWARI GEN. STORE","P P PHARMACEUTICALS","PANKAJ STORE(PILL)","Pari cosmetics","RADHE SHYAM STORE","SARKAR DISPENSING CHEMIST","SATYAM STOREPILL","SHRI SAI STORE(PILL)","SINGH PAN CORNER","SURESH STORE","TIWARI GEN STORE","VERMA CHEMIST","abhinav store","jeewan parkash chemist","rahul store(PILL)"],"f":[{"n":"P P PHARMACEUTICALS","k":"N_DL_00014436","l3":0.005,"p":"Medium"},{"n":"Abhishek Store","k":"DEL0DL2105451_0524","l3":0.001,"p":"Medium"}]},"S1 NFC":{"a":["HONEY MONEY TOP"],"f":[]},"S1 SARITA VIHAR":{"a":["ANIL STORE","ANSHU STORE","Aggrawal snacks and caters","All india chemist","Anil grocery store","Bansal morning store","CORDIAL PHARMACY","Central super Store","DISHA MEDICOS","Duwa store","Ganpati madicoes","Garg store","Guru Kripa Store","Hans bakers & confectioner","JAGDISH SRORE","Janta store","K.K. & SONS CHEMIST","KAILESH STORE","KAKA GEN STORE","KALKA STORE","KRISHANA STORE","Khandelwal medicos","Madicare chemist","Medicare chemist","Om sai general store","POOJA STORE","RAJ GEN STORE 0937)","SAHALI COSMATICS","SHYAM STORE","Sethi confectionery","TURNING POINT CHEMIST","VIKAS MORNING STORE"],"f":[{"n":"Guru Kripa Store","k":"0022016394DEL0DL00425111","l3":0.003,"p":"Medium"},{"n":"VIKAS MORNING STORE","k":"DEL0DL00162814","l3":0.001,"p":"Medium"},{"n":"ANIL STORE","k":"N_DL_00013764","l3":0.001,"p":"Medium"}]},"S1 SHAHIN BAG":{"a":["A One Store","A.B. MEDCIOS","AIM MEDICOS","AL KHALEEL","AL-MADINA MEDICOS","AL-MADINA MEDICOS","ALAM SUPER STORE","Ahmed Store","CHOUDHARY FARMAN STORE","CITY STORE","Family Store","GUDDU GEN STORE","HAZMA DAIRY","IQRA STORE","K.S.K PHARMA","KGN Store","LIMRA STORE","M.M MEDICOS","MANNAT PHARMACY","MAXX PHARMACY","MAZHAR STORE","Modern Super Store ","NATIONAL MEDICAL STORE","NATIONAL MEDICAL STORE","NOOR AMIR STORE","OLIVE ENTERPRISES","RAISUDDIN STORE","S.MALLIK MASALA STORE","SARTAJ STORE","SOHAIL STORE","SUBANALAA COSMATICS STORE","SUBHAN ALLAH STORE","Sadia cosmetic","Samshad store","THE GLOBAL PHARMACY"],"f":[{"n":"HAZMA DAIRY","k":"0022016394DEL0DL00222451","l3":0.003,"p":"Medium"},{"n":"Ahmed Store","k":"0022016394DEL0DL00425136","l3":0.003,"p":"Medium"},{"n":"A One Store","k":"0022016394DEL0DL00425133","l3":0.002,"p":"Medium"},{"n":"SOHAIL STORE","k":"N_DL_00013709","l3":0.002,"p":"Medium"},{"n":"THE GLOBAL PHARMACY","k":"0022016394DEL0DL00297099","l3":0.001,"p":"Medium"},{"n":"SUBANALAA COSMATICS STORE","k":"N_DL_00013614","l3":0.001,"p":"Medium"},{"n":"NOOR AMIR STORE","k":"N_DL_00013972","l3":0.0,"p":"Low"}]}},"SANJAY MAURYA":{"AMAR COLONY":{"a":["All india pharmacy","BATRA GEN STORE","DHINGRA CHEMIST0731)","Diwan Store","Elegence beauty corner","FANCY STORE 0771)","Goldi store","Gopi Store","ISHA MEDICOS","K.k store","MANDEEP STORE0710)","MANSA STORE","MEDIPOINT","MOHAN STORE..(AMAR)","RAMA GALLERY","ROYAL PHARMACY..","Roshan store","SANTOSH PHARMACY","SURESH MEDICOS","SWADESI AYURVEDA0728)","Satish Store","Som store","The Essentials Shoppe","VINOD MEDICAL STORES","Vishal vegetable grocery store","manoj store(GAR)"],"f":[]},"CHIRAG DELHI":{"a":["A one store","ANIL STORE","ASHOK GEN STORE","Alok Medi Mart","Amar medicos","Arun","B K STORE","BALAJI COSMETIC","BHANA GENERAL STORE","Balaji medicos","CHANDER STORE","CHIRAG DELHI MEDICAL STORE","CHUNNILAL STORE","DELHI FRUIT &VEG STORE","Dinesh cosmetic","FRIENDS MEDICOS","Fresh grosher","GULATI BROS.","GURU DATTA MAL BHAHDUR CHAND","Jagdish Store","Jain general store","Keshav medicos","MEDICINE POINT","NISHANT STORE","P.m.B.J.k. Chirag Delhi","PAWAN JI GENERAL STORE","POOJA CHEMIST","RAJ CHEMIST","RAJAN STORE","SAI HEALTHCARE PHARMACY","SAIJWAL STORE","SHARMA MEDICAL STORE","SHIVAM GENSTORE","Shiv trader","Taneja Variety Store","VAISHNO MEDICOS"],"f":[{"n":"NISHANT STORE","k":"DEL0DL11547266","l3":0.001,"p":"Medium"},{"n":"Taneja Variety Store","k":"DEL0DL2012225_0424","l3":0.001,"p":"Medium"},{"n":"BHANA GENERAL STORE","k":"DEL0DL11529323","l3":0.0,"p":"Low"}]},"KOTLA WS 1":{"a":["ANIL PROV STORE","B. MART","CHAMAN LAL STORE","FRIENDS PRO STORE","Goel Store","Hamara dawaiwala","KHANDELWAL BROS.","Khandelwal sons","MANGLA STORE","NEW DEAL STORE","NEW SAGAR STORE","PAREVA CONFCTIONERY","POOJA SALES","POOJA TRADERS","PS MEGAMART","Pooja Sales","RAJASTHAN SUPER KIRYANA","RAM NIWAS JAGDISH PRASHAD","SAGAR STORE","SHAMBHU DAYAL ASHOK KU","SWASTIK MEDICOS","Shri Ram Store","Siyaram medicos"],"f":[{"n":"SHAMBHU DAYAL ASHOK KU","k":"N_DL_00014270","l3":0.014,"p":"Medium"},{"n":"POOJA TRADERS","k":"DEL0DL00160711","l3":0.003,"p":"Medium"},{"n":"PAREVA CONFCTIONERY","k":"N_DL_00014125","l3":0.001,"p":"Medium"}]},"NETAJI NAGAR 2":{"a":["AMAN STORE (SN)","ANAND DEPARTMENTAL STORE","Ashok dairy","BHATIA FLOUR MILL(NN)","Batra store","Deepak Store","Durga medicos","FAIR DEAL STORE(BZ)","Friends Corner","JAIN PROV. STORE","KRISHNA MEDICAL HALL","LAXMI MEDICOS","MURGAN STORE","NAGPAL MEDICAL STORE","OM CHEMISTS","Popular store","RAJU STORE NN","RASHMI COSMETIC","Ram Chandar & Krishna Store","SATIJA STORE","SHIVA MEDICOSE (CHEHIST)","SHRI KRISHNA GEN STORE","SHYAM GENRAL STORE","Shivam store","Shri Sai General Store","Shyam Store Sadik Nagar","VIKRAM COSMETICS","VIKRAM FANCY CORNER","WADHWA PROV STORE","shivam chemist","vijay depatmental store","vikram chemist"],"f":[{"n":"Deepak Store","k":"DEL0DL2268539_0824","l3":0.002,"p":"Medium"},{"n":"BHATIA FLOUR MILL(NN)","k":"DEL0DL00146268","l3":0.001,"p":"Medium"},{"n":"Shyam Store Sadik Nagar","k":"DEL0DL2104711_0524","l3":0.001,"p":"Medium"},{"n":"Shivam store","k":"DEL0DL2081442_0524","l3":0.0,"p":"Low"}]},"S1 BATLA HOUSE":{"a":["A TO Z CHEMIST","ADHNAN STORE","AISHA CHEMIST","AKSHA GEN STORE","APPOLLO MEDICAL STORE","ASAD STORE","Al fiza general store","BATLA MEDICOS","BHARAT MEDICINE PHARMACY","BOBBY STORE","DAR AL SHIFA PHARMACY","Delhi store","HEENA RICE TRADERS","Haji gen store","INSTANT WALL CARE PHARMACY","Inayat medicos","Jamia bazar","Khan store","MADAN GEN STORE","MISPA STORE","Maham medicos","Mahan medicos","RAJDHANI MEDICOSE","S.H STORE","Sajid store","TAJ SUPER STORE","UNITED MEDICAL STORE"],"f":[{"n":"ADHNAN STORE","k":"DEL0DL00895645","l3":0.001,"p":"Medium"}]},"S1 JASOLA VILLAGE":{"a":["A FAMILY MEDICOS","A k Medicos","ANIL STORE","ASIA MEDICOS","Bala gi store","Choudhary dary & paneer bhandhar","City madicose","DUTTA STORE","Dheraj store","GAURAV PHARMACY","GIRJANAND STORE","GOYAL GENERAL STORE","Gupta Gen Store","Imran store","Jasola Super Store","K M STORE","Khalid store","Krishna pharmacy","Krishna pharmacy","M.S.TRADERS","NEHA TRADERS","NOBAR STORE","OM MEDICOSE","PHARMACY-7","RAJ MEDICAL & GEN STORE","RAJPOOT GEN STORE","RAJSTHAN GENERAL STORE","Raunak store","STANDARD STORE","Shree Shyam Mediways","Sri Narasimha treders","Sri gopala dudh bhawan","VARMA STORE","YADAV STORE","Yashu chemist shop"],"f":[{"n":"PHARMACY-7","k":"N_DL_00014017","l3":0.03,"p":"Medium"},{"n":"Jasola Super Store","k":"DEL0DL00508096","l3":0.009,"p":"Medium"},{"n":"STANDARD STORE","k":"DEL0DL01007933","l3":0.003,"p":"Medium"},{"n":"Gupta Gen Store","k":"DEL0DL00466550","l3":0.001,"p":"Medium"},{"n":"A FAMILY MEDICOS","k":"0022016394DEL0DL00098612","l3":0.001,"p":"Medium"},{"n":"NOBAR STORE","k":"N_DL_00013758","l3":0.001,"p":"Medium"},{"n":"Choudhary dary & paneer bhandhar","k":"DEL0DL688795","l3":0.0,"p":"Low"}]}},"SANTOSH":{"GK1":{"a":["ADARSH CHEMIST","Ahuja Gift Shop","Ajay Store","Common Wealth","GK2 MEDICINE DOT COM P LTD","GUNJAN MEDICOS","GUPTA STORE(JK)","GYAAN STORE","Gupta Departmental Store","Gupta department","Gupta store","JAGDAMBA CHEMIST","Jagdamba medicos","Kamat store","LIFELINE GENRAL STORES","MALIK MEDICAL STORE","MANISH MEDICOS","Naman store","New friends company chemist pvt ltd","Nice Shopping Plaza","Pandit paan bhandar","Pawan Store","Ram ram ji store","S G SUPER STORE","STANDARD MEDICOS","Shivesh gen store","Shri Ram General Store","Soni store","Tomar medical store","VERMA MEDICOS","Verma Beauty & Cosmetic Counter","Vihan store","Vijay General Store"],"f":[{"n":"GK2 MEDICINE DOT COM P LTD","k":"DEL0DL1654322","l3":0.008,"p":"Medium"},{"n":"New friends company chemist pvt ltd","k":"DEL0DL2856867_0225","l3":0.005,"p":"Medium"},{"n":"Verma Beauty & Cosmetic Counter","k":"0022015974DEL0DL00098914","l3":0.001,"p":"Medium"}]},"MALVIYA NAGAR":{"a":["A-ONE STORE","ANIL KUMAR STORE","ANITA ENTERPRISES","ANPURNA STORE","ARORRA GENERAL STORE","BABBAR COSMETICS","Babbar cosmetic","CHACHE DI HATTI","Chuni lal & sons","DAKANA STORE","Durga medicos","Every day Store","GAGAN TRADING CO.","GULSHAN STORE","Garhwal Dairy","Green Departmental Store","IMRAN DAIRY","JAMMU MAL LAL CHAND DEPSTORE","JAY AMBAY SOTRE","JKM Plastics","Juneja plastics","KADAM COSMETICS","KWALITY STORE","Kadam cosmetic","Kalra cosmetic","MANISH DAIRY","MONA MEDICOS","Mama dairy","Manan spices & dry fruits","NEW SHAGUN STORE","New chaudhary Ram & sons","OM DAIRY","R k tradas","R.K. GEN STORE CONFECERY","RADHEY KRISHAN DAIRY","SHARMA DAIRY","Saj sajja","Salection gallery","Saniarupa enterprises","Shivani beauty centre","Shree Shyam Mediways","Shri Bala ji store","VIJAY DAIRY"],"f":[{"n":"R k tradas","k":"DEL0DL655311","l3":0.011,"p":"Medium"},{"n":"BABBAR COSMETICS","k":"N_DL_00009091","l3":0.007,"p":"Medium"},{"n":"Every day Store","k":"DEL0DL660401","l3":0.004,"p":"Medium"},{"n":"IMRAN DAIRY","k":"DEL0DL11797336","l3":0.002,"p":"Medium"},{"n":"VIJAY DAIRY","k":"DEL0DL11644543","l3":0.001,"p":"Medium"},{"n":"GULSHAN STORE","k":"DEL0DL11569233","l3":0.001,"p":"Medium"}]},"SAKET":{"a":["AGARWAL MEDICOS","AGGARWAL STORE (RINKU)","ANAND MEDICOS","ANAND MORNING STORE","Aggarwal department store","Aggarwal store","BATRA MEDICOS","DELHI FRUIT VEGET.","DIVA S BEAUTY COLLECTION","Delhi state fruit & Vegetable","Divas cosmetic","GIRD PHARMA","GIRDH PHARMA","GOGIA MEDICOS","Global enterprises","Gulahti store","HIMALYA STORE","INDER STORE","Indra flour milk","JAGDAMBA GENERNAL STORE","JAI BHARAT STORE","MONICA CHEMIST","Maa sumat yadav store","NEW MORNING STORE","PARAS CHEMIST PLUS","RADHA DAIRY","S M STORE","SANTOSH STORE","SHIVAM CHEMIST","SHRI KAMAL MEDICOS","Shivam medicos","Shri shyam store ","Siddharth fancy store"],"f":[{"n":"ANAND MORNING STORE","k":"N_DL_00009108","l3":0.014,"p":"Medium"},{"n":"INDER STORE","k":"DEL0DL11574781","l3":0.003,"p":"Medium"},{"n":"Divas cosmetic","k":"DEL0DL00650924","l3":0.002,"p":"Medium"},{"n":"DIVA S BEAUTY COLLECTION","k":"N_DL_00009351","l3":0.002,"p":"Medium"},{"n":"ANAND MEDICOS","k":"N_DL_00009361","l3":0.0,"p":"Low"}]},"SAVITRI NAGAR":{"a":["A ONE DRUG STORE","AGGARWAL MEDICOS","Arnav plastic","Arora traders","B.B. PHARMACY","CHATMED HEALTCARE","D R medicos","ELITE MEDICOS","GABA STORE","GOYAL KHADHYA BANDAR","GUPTA STORE","Honey store","ISHWAR DASS MADAN LAL","J K M CHEMIST","Jagdama store","Jha pan bhandar","Jha store","KADAM STORE","KALRA BAZAR","KAMAL CHEMIST AND COSMETIC","Kashish medical store","MANGE RAM STORE","MEDX PHARMA","MV MART","NATH PHARMACY","Nath pharmacy","PARAM JEET STORE","PRAJAPATI GENERAL STORE","RAHUL STORE","RAINBOW MEDICOS","RANI STORE","Rahul retail","S s v super store","SANDEEP STORE","SHUBHAM STORE","SUPER DAIRY HOUSE","Shri shyam store","TRISHHUL SUPER MART","Wadhawa Enterprises","ZAHID STORE","Zarif"],"f":[{"n":"Jha store","k":"DEL0DL2094740_0524","l3":0.013,"p":"Medium"},{"n":"S s v super store","k":"DEL0DL1325546","l3":0.005,"p":"Medium"},{"n":"PRAJAPATI GENERAL STORE","k":"DEL0DL00873451","l3":0.002,"p":"Medium"},{"n":"ELITE MEDICOS","k":"DEL0DL00866182","l3":0.001,"p":"Medium"}]},"SRI NIWASHPURI":{"a":["A.R.MEDICOS","AGGARWAL STORE","AHUJA STOREANDE","ANSARI STORE","ANVAR STORE","ARORA GEN STORE","ARORA MEDICOS 0526)","BALAJI STORE","BHUTANI STORE","Bharat Store","Bitoo store","DEE PEE STORE","Durga General Store","GANGA STORE","GURUNANAK STORE","JAIN STORE","JONNY STORE","Khusbu Store","Mac Store","Manish store","NEW VEENA PHARMACY","New Ansari Store","OM SAI CORNER","OM SAI MEDICAL STORE","PREEM STORE","Preeti store","RAHEJA STORE","RAM CHANDRA STORE","RAM VILASH STORE","RAMCHANDRA STORE","S P Medicos","SABIHA STORE","SAHANI STORE","SHARMA JI PAAN","U p store","VINAY STORE"],"f":[{"n":"VINAY STORE","k":"DEL0DL11594421","l3":0.006,"p":"Medium"}]},"YUSUF SARAI":{"a":["Aggarwal Medicos","Ajeet gen.store","All Day pharmacy","Alok madicos","Aman madicos","Aman plastic","Amit stores","Ankit traders","Balaji pooja samagiri store..","Bansal store","Bansal trading co.","Bhagat Medicos","Bhardwaj plastic","Chawla chemist","DAYA RAM SURENDER NATH","DELHI GROCERY","G. P.S MARKETING","GOYAL AYURVEDIC STORE RE","Ganesh convenience & plastics","Ganpati enterprises","Gupta store","Gupta super store","INDER MEDICOS","Jagdish provision store","Jain Ayurvedic store","Jain Store","Jain gift & cosmatic house","Jain medicos","MITHILA STORE","Mohit Saini Store","Moolchand store","Om Cosmetic and Gift","PARKASH SUPER STORE","R.K Garments and General Store","RAJASTHAN FLOUR MILLS","RAM SWAROOP SHIV CHARAN","Rahul gen.store","Rahul gift emporium","Rajendra fresh","Ritika cosmatic","SHARMA STORE(GTN)","SHRI KANT STORE","Sanjay store","Shiv shakti pooja samagri store","Shiv store","Sumit store","Vedic Pooja store "],"f":[{"n":"Amit stores","k":"DEL0DL1949685","l3":0.015,"p":"Medium"},{"n":"Chawla chemist","k":"0022015974DEL0DL00269148","l3":0.012,"p":"Medium"},{"n":"Ritika cosmatic","k":"DEL0DL857286","l3":0.005,"p":"Medium"}]}},"SATEESH MAURYA":{"ARJUN NAGAR":{"a":["29 fresh mart","A ONE COSMETICS","AHUJA CHEMIST","ANIL MEDICOS AND DEPARTMENTAL STORE","BANKE BIHARI CHEMIST","BHARAT STORE(HIMAYUPUR)","CITI STORES","Daily need store","GARG SUPER STORESJE [A]","Gupta Dairy","H.K & SONS","HIMANSHU MEDICOSE","Harsh store","JAI SHREE SHYAM MEDICOS","JINDAL STORE","Jai mata di store","KHATU SHYAM MEDICOS","KHATU SHYAM MEDICOSE","KUNAL MEDICOUSE","Khatu Shyam Medicos & Departmental Store","Laxmi Gernal Store","Mittal Store","NEW MODERN PHARMACY","New jai mata store","PIPLANI MEDICOS AND DEPARTMENTAL STORE","Peplani store","R R MEDICOS CHEMIST&COSMETICS","R S medicos","R.P.S STORE","RADHEY SHYAM GEN. STORE","RAJ GENERAL STORE","Ravis Remedies","S .K medicos","SARASWATI MEDICINE CENTER","SHIVAM GENRAL STORE","SHRI SHYAM MEDICOSE","SIDHARTHA CHEMISTS","SRI SAI INTERNATIONAL","Sahil genral Store ","Shri shyam pharma","The unique medicos","VARDHMAN CHEMIST & COSMETICS"],"f":[{"n":"PIPLANI MEDICOS AND DEPARTMENTAL STORE","k":"0022016394DEL0DL00334789","l3":0.012,"p":"Medium"},{"n":"JAI SHREE SHYAM MEDICOS","k":"DEL0DL00183832","l3":0.006,"p":"Medium"},{"n":"JINDAL STORE","k":"DEL0DL11556714","l3":0.004,"p":"Medium"},{"n":"New jai mata store","k":"DEL0DL2096280_0524","l3":0.001,"p":"Medium"}]},"BHOGAL":{"a":["ALLIANCE PHARMECY","AMARCHAND FOODS","ANNAPURNA TRADER-D","APPOLO MEDICOSE","All india chemist ","Bajrang Enterprises","Gauri shankar & sons","HARI KISHAN SELLECTION","LIFE LINE MEDICOSE","MORNING STORE(TEA)","MORNING STORE0830)","NATURE CART","NKSONS 0354)","New Singhal bros.","PREM & COMPANY","PREM PARKASH AMIT KUMAR","RAM CHEMIST","REDOUX CHEMIST PRIVATE LIMITED","Rajesh Store","Ram Gernal Store","SIDHI VINAYAK DEPARTMENTAL STORE","SINGHAL & SONS..","SITA RAM BISHAMBER DAYAL SINGHAL","Saanchi Enterprises","Singhal Enterprises","gaurav entprises","jhankar chemist ","sameer k medicos.","shree nath chemist ","sushil general store"],"f":[{"n":"REDOUX CHEMIST PRIVATE LIMITED","k":"DEL0DL920049","l3":0.0,"p":"Low"}]},"GOVINDPURI-WS":{"a":["A. S. TRADERS","AGGARWAL STORE","AKS PHARMACY ","Aggarwal store ","CURE PHARMA CHEMISTS","Dau ji store","GARG STORE","GULSHAN STORE","Ganga ayurvedic store. ","KAILASH MEDICOS","Laxmi store","MAGGU & SONS","Maa laxmi medicos","NASA CHEMIST","Popular store","RADHAY RADHAY STORE","S.S. TRADERS","SAINI ST","SANDEEP STORE","SHIV SHAKTI CONF","SHREE TIRUPATI TRADERS","SHRI GOPALAN PROV. STORE","SHRI SHYAM TRADERS","SINGHAL SUPER STORE","SUMIT TRADERS","Shiv shakti store","Singhal Bros","Wecare pharmacy","uppal store"],"f":[{"n":"SHIV SHAKTI CONF","k":"DEL0DL00206252","l3":0.004,"p":"Medium"}]},"KOTLA RETAIL 3":{"a":["AMISH MEDIPOINT","ANGEL SALON COSMETICS","ANMOL CHUDI BHANDAR (KOTLA)","ANSH FASHION","Aggarwal store","Anil gen. store","BANSAL ENTERPRISES (CASH)","Bansal provisional store","Bhagya laxmi medicose","Brush House","DEEPAK COSMETICS","Dev medicos","GOPAL STORE (KOTLA)","GOYAL TRADING COMPANY","Health care pharmacy","Jagannath Medical Store(kotla)","Jagdamba Medicos","KALKA MEDICOS","KANTI MEDICOS","KHANDELWAL PROVISION &GENERAL STORE","LAKSHMI CHEMISTS","LAXMI CHEMIST","Laxmi chudi & cosmetics","Life care pharma","MAHALAXMI MEDICOSE","MOHAN STORE","Madan Store-D","NEW BALAJI KIRYANA STORE","NEW SAGAR STORE","NK MITTAL STORE","Nath chemist & cosmetic","Neha cosmetics","POOJA TRADERS","Pankhudi kirana store","R T TRADERS","RAMESH FLOUR MILL","Ritik medicos","SAGAR STORE","SHRI BALA JI CHURI BHANDAR","SHRI RAM MEDICOS","SONAM CHEMIST","SUBHASH STORE","TRIVNI ENTERPRISES","VIMAL MEDICOS","WellCARE PHARMACY","khandelwal store"],"f":[{"n":"BANSAL ENTERPRISES (CASH)","k":"DEL0DL00140464","l3":0.002,"p":"Medium"},{"n":"DEEPAK COSMETICS","k":"DEL0DL01006382","l3":0.002,"p":"Medium"},{"n":"Laxmi chudi & cosmetics","k":"DEL0DL1066017","l3":0.001,"p":"Medium"},{"n":"Neha cosmetics","k":"DEL0DL11504038","l3":0.001,"p":"Medium"}]},"L N  KRISHNA MARKET":{"a":["AGYA RAM DEPSTOPRE","AMIT PROV STORE0101)","Aman store","BHAGAT RAM TRADERS","BHAPAYDIHATTI","Bajaj store","Bsahin dep store","CENTRAL PHARMACY","CHANDER NAMKEEN BHANDAR","CHODHARY MOHAN LAL & SONS","Chawla gen store","DALJIT GEN STORE","DISCOUNT MEDICOS","Delhi Store","GURU KRIPA TRADERS","GURUNANAK STORE 0227)","Gulbahar Pharmacy & Cosmetic","KAMAL CHEMIST","KRISHNA STORE","KUKREJA STORE","KUMAR MEDICOS","LAXMAN STORE0201)","MANOJ CONF","MEHAK MEDICOS","Mahindra conf.","NARANG CHEMIST","NEW CHANDER NAMKEEN","PANKAJ STORE..(LJP)","PURVIK MEDICAL STORE","R K Store","Ramraj sales ","SAI RAM MEDICOS","SWATI STORE","Shree vishnu dairy &paneer bhandar","TANEJA MEDICINE STORE","UNIQUE CHEMIST","VIJAY STORE..","Vijay Store 2","YOGESH MEDICOSE","l.v traders","nd24","sachdeva store"],"f":[{"n":"GURU KRIPA TRADERS","k":"DEL0DL1243227","l3":0.008,"p":"Medium"},{"n":"YOGESH MEDICOSE","k":"DEL0DL00806771","l3":0.007,"p":"Medium"}]},"SANTH NAGAR":{"a":["AGGARWAL STORE(SN)","AMRIT MEDICOS","ANKUSH STORE","ARORA GEN STORE (226)","Ambey Health Care (sant nagar)","Archana store","Arora general store","CHAWLA CHEMIST-D","CUREWAYS","CUREWAYS MEDICOS","DELHI medicos","DIPTI GENERAL STORE","EAST END MEDICOS","GANESH STORE (SN)","HARISH STORE","HEMKUNT GEN STORE","J L Chaurasia store","JAGDAMBA MEDICO","JAIN PROVISION STORE","JAIN STORE1302)","JHA DEPARTMENTAL STORE","JINDAL STORE(SANT)","JKM GEN STORE","KAILASH CORNER","KRISHNA MEDICOS","Kohli milk& gen store","LIFE AID MEDICOS-D","MAHALAXMI PROV STORE","MARUTI MEDICINE POINT","MEHTA MEDICOS","NARANG STORE","NEW AGGARWAL STORE","New om sai chemist","PAWAN STORE1201)","Primier Medicos","RP MEDICOS","SUPER STORE (1318)","Shree Shyam Mediways","TAN MEDICOSE","aggarwal store(s.ngr)"],"f":[]}},"VIJAY KUMAR YADAV":{"BHOGAL 3":{"a":["ALL INDIA MEDICAL HALL","ANNAPURNA TRADER-D","Akshar.kirana.Store","BHALLA CHEMICALS0314)","CHAUHAN PLASTIC","Chandan jeneral","DINDAYAL VED PARKASH","Din Dayal & Sons","Dipty chemist","GOPI NATH JAYANTI PRAKASH","GOPINATH SHANTIPARKASH","HARDEV STORE","HARI CHAND SUBASH CHAND","HARISIJAN SAINI STORE","HARSEASON SAINI STORE","HIRALAL TRILOKCHAND0303","JAGDISH PR GOEL KIR ST","JANKIDASS SETHI SONS","M S CHEMIST CASH","MADAN LAL STORE(BHOGAL)","MUKESH & CO.","MUSKAN BEAUTY PARLOUR","NETRAM PURAN MAL","NKSONS 0354)","New Singhal bros.","PREM & COMPANY","PREM PARKASH AMIT KUMAR","R P ENTERPRISES","S S CHEMIST","SITA RAM COSMETIC","SRI SETHI STORE","SUBHASH AND SONS","Shyam Chemist & Cosmetic","Suraksha & sons","TOP BEAUTY CENTER","V.K SONS","VISHAL NEIGBOURHOOD SHOP","goel store(BH)","moolchand Rajkumar"],"f":[{"n":"Chandan jeneral","k":"DEL0DL1263715","l3":0.019,"p":"Medium"},{"n":"VISHAL NEIGBOURHOOD SHOP","k":"0022016394DEL0DL00071177","l3":0.001,"p":"Medium"},{"n":"TOP BEAUTY CENTER","k":"N_DL_00014366","l3":0.001,"p":"Medium"},{"n":"MADAN LAL STORE(BHOGAL)","k":"DEL0DL11556723","l3":0.0,"p":"Low"}]},"GARHI 2":{"a":["AGARWAL PROV STORE1324)","AJAY ABBI & GAURAV ABBI GEN STORE","AMAR Medical Store","ANAS STORE","ARUN STORE","ASHOK STORE GARHI","BANSAL PROVISION STORE","BHATI STORE","Bhura Store","DELHI MEDICOS","DHEERAJ MEDICINE POINT","DHIRAJ STORE","DURGA MASALA STORE","GEETA STORE","GOVIND STORE","GOYAL STORE","GUPTA STORE","HAR MILAP STORE GARHI","HIMANSHU STORE","Hari Om narayna Gen. Store","Ishita Gen. Store","JAIN STORE","Jai Bhola Corner","Janta medicos","KALKA GEN STORE GARHI","KAPIL STORE","KRISHNA STORE","Krishna store","LAXMI STORE GARHI","MA NOJ STORE","MARINA MEDICOS","MITHLESH MEDICOS","MUKESH MEDICOS GHRI","Monu Store","NATIONAL MEDICOS","OM GENERAL STORE","OM SUPER STORE GARHI","Pankaj gen store","RAKESH GEN STORE(G)","Rahul Store","Ram ji Store","SHREE RAM MEDICOS","SHREE RAM STORE","SUPER CHEMIST","Shree Hanuman Store","Sumit Store","VARSHA STORE GARHI","VIKRAM MEDICOSE","Vishnu medical store","YASHRAJ MEDICOS","gupta provision store","shreyansh store"],"f":[{"n":"SUPER CHEMIST","k":"DEL0DL01488025","l3":0.009,"p":"Medium"},{"n":"GOYAL STORE","k":"DEL0DL00160707","l3":0.004,"p":"Medium"},{"n":"gupta provision store","k":"N_DL_00014354","l3":0.003,"p":"Medium"},{"n":"GOVIND STORE","k":"DEL0DL01073300","l3":0.001,"p":"Medium"},{"n":"AMAR Medical Store","k":"DEL0DL00591865","l3":0.0,"p":"Low"},{"n":"SHREE RAM STORE","k":"DEL0DL11558518","l3":0.0,"p":"Low"},{"n":"Vishnu medical store","k":"DEL0DL1245275","l3":0.0,"p":"Low"},{"n":"DURGA MASALA STORE","k":"N_DL_00014350","l3":0.0,"p":"Low"}]},"GOVIND PURI 3":{"a":["A to Z pharmacy","Ahuja tredars","Ardh Sainik Canteen","BANARSI STORE","BHAGAT MEDICOS","CHABRA STORE","Chaurasiya Store","DEEPAK STORE","DEEPAK STORE","DIVYAM PHARMACEUTICALS","GARG CHEMIST","GOYAL TRADERS","KALKA GENRAL STORE","KALKA PHARMACY","KALKA PHARMACY","KALKA STORE","KHANNA MEDICOS","KRISHNA TRADERS","MAA KALKA COSMETIC","Maa Parvati Medicose","Madhavi Traders","Madhavi Traders","Metro Medicose","OM MEDICAL STORE","OM SAI MEDICAL","PANDIT DAIRY","PANkAJSTORE","POOJA MEDICOS","Puneet Medicos","R S Medicos","RAHUL MEDICOS","RAJ CHEMIST","RANA MEDICOS","RICHA MEDICOS","Raghav Chemist","Rudrakshi medicos","S R Store","SACHIN MEDICOS","SANJAY MEDICOS","SHRI SAI MADICOS","SHRI SHYAM STORE","SK Medicos","SUNIL STORE","Styles Cosmetic","VIDYA MEDICOS","VIJAY MEDICAL STORE","bansal store","keshav store","naveeen store"],"f":[{"n":"VIDYA MEDICOS","k":"0022016394DEL0DL00083518","l3":0.003,"p":"Medium"}]},"INA":{"a":["AAKASH MEDICOSE","AKASH MEDICOS","ANAND COSMETICINA","ASHANAND STORE","All2All Food Trading co.","Anandi cosmetics","BAJAJ MEDICAL STORE","BHUTANI MEDICAL STORE","COCHIN STORE(INA)","COSMED","Cosmetics","DG S","DMS BOOTH","DURGA MASALE","GULSHAN STORE","Gupta groceries","INDER STORE","JAIN CONFECTIONERY","KAKA FRUIT & VEGETABLE MART","KRISHNA HOSERY","Kabul.Fruit.Corner","LUCKY GENRAL STOREINA)","MED SQUARE PLUS","MOHAN OIL MILL","NAGAR GEN STORE","NATIONAL DEP STORE","NEW ANAND STORE","NEW SUPER STORE(INA)","Nagpal Chemist","POOJA STORE (SOUTH EXT. P-1)","RIA COLLECTION","SHIVAM STORE","SHRI MAHADEV STORE","SOUTH COSMETICS","STOP & SHOP (INA)","Shree Ram General Store","Singhal Store (GST)","Sneha bindi corner","TAMIL NATU STORE","VIJAY STOREKID)","shivam store","singhal store..(INA)"],"f":[{"n":"shivam store","k":"DEL0DL2105743_0524","l3":0.006,"p":"Medium"},{"n":"Cosmetics","k":"DEL0DL2834198_0125","l3":0.004,"p":"Medium"},{"n":"KRISHNA HOSERY","k":"DEL0DL00206198","l3":0.001,"p":"Medium"},{"n":"COSMED","k":"DEL0DL00163945","l3":0.001,"p":"Medium"}]},"KHANNA MKT":{"a":["A ONE TRADERS","AHUJA STORE-D","ANAND GEN STORE KHAN","ARIHANT STORE","Anand drug store","Anjali singh","BARKAT RAM BRIJ LAL","BHATIA STORE","Beauty cornar","CHAUDHARY STORE","GARG PROVISION STORE","GOYAL STORE","HARI KISAN STORE","J K M MEDICOS","JINDAL STORE(KHAN)","K D STORE","KAPIL STORE","KWALTY GEN STORE","M S P pharmacy","MEDICARE CHEMIST","NAGPAL HEALTHCARE CHEMIST","NAGPAL PHARMACY","New Nagpal pharmacy","PUNJAB PAN HOUSE-D","PYREELAL RAM PRASAD","Pappu general store","RAJ STORE(KN)","ROZMARRA STORE","SHARDA STORE","SHREE AMBICA MEDICOS","SUDHIR STORE","SUNSHINE STORE","SUPER STOREKH)","SWASTIK STORE","Sachdeva stores chemist","Shanti Stores","Shiv store Cash","SunRise Store","VISHNU STORE","YAMUNA CHEMIST","ZEOLITE WELLNESS PVT. LTD","shakti fruits"],"f":[{"n":"ZEOLITE WELLNESS PVT. LTD","k":"0022016394DEL0DL00434751","l3":0.005,"p":"Medium"},{"n":"shakti fruits","k":"0022016394DEL0DL00085744","l3":0.0,"p":"Low"},{"n":"BHATIA STORE","k":"0022016394DEL0DL00088051","l3":0.0,"p":"Low"},{"n":"ARIHANT STORE","k":"DEL0DL11520402","l3":0.0,"p":"Low"}]},"MASJID MORE":{"a":["A.k general store","AJAY GUPTA STORE","Annapurna general store","Annapurna prov store","D S medical store","FRUIT CORNER CHEMIST","Gupta ganeral store","Gupta medicos","HARE KRISHNA MEDICOS","Hare krishna pharmacy","KALINGA MEDICOS","Kapil store","MEDICINE HOUSE (MM)","Malik chemist","Mini Mart-D","NANAK PAN BHANDAR","NEW GUPTA STORE","Neeti Store","OM ENTERPRISE","ORION STORE","Pankaj store","Prem pan bandaar","RAJDHANI PHARMA","RAVI MEDICOS","ROHIT STOREM MOTH_","SAGAR BEAUTY PLACE","SHARMA MEDICOS","SUPER STORE(DAMANGE)","SURESH GUPTA STORE","Shivani Medicose","Shree shayam general store","South end medicos","VAISHANAVI STORE","VIJAY STORE","VISHAL GEN STORE","Venus chemist"],"f":[{"n":"FRUIT CORNER CHEMIST","k":"DEL0DL00566738","l3":0.01,"p":"Medium"},{"n":"KALINGA MEDICOS","k":"DEL0DL1259031","l3":0.007,"p":"Medium"},{"n":"SAGAR BEAUTY PLACE","k":"DEL0DL00313846","l3":0.0,"p":"Low"}]}},"Vikram Meharwansing Rawat":{"GARHI 2":{"a":["AGARWAL PROV STORE1324)","AGGARWAL GARMENTS","AJAY ABBI & GAURAV ABBI GEN STORE","AMAR Medical Store","ANAS STORE","ARUN STORE","ASHOK STORE GARHI","BANSAL PROVISION STORE","BHATI STORE","BIG FASHION","Bhura Store","DELHI MEDICOS","DHEERAJ MEDICINE POINT","DHIRAJ STORE","DURGA MASALA STORE","GEETA STORE","GOVIND STORE","GOYAL STORE","GUPTA STORE","Gaourav store","Ghanshyam Store","HAR MILAP STORE GARHI","Hari Om narayna Gen. Store","Ishita Gen. Store","JAIN STORE","Jai Bhola Corner","Janta medicos","KALKA GEN STORE GARHI","KALKA MEDICOS GARHI","KAPIL STORE","KRISHNA STORE","Khatushyam Store","Krishna store","LAXMI COLLLECTION","LAXMI STORE GARHI","MA NOJ STORE","MARINA MEDICOS","MITHLESH MEDICOS","MUKESH MEDICOS GHRI","Monu Store","NATIONAL MEDICOS","OM GENERAL STORE","OM SUPER STORE GARHI","Pankaj gen store","RAKESH GEN STORE(G)","Rahul Store","Ram ji Store","SHREE LAXMI STORE","SHREE RAM MEDICOS","SHREE RAM STORE","SUMIT STORE GARHI","Shree Hanuman Store","Sumit Store","VARSHA STORE GARHI","VIKRAM MEDICOSE","Vishnu medical store","YASHRAJ MEDICOS","gupta provision store","shreyansh store"],"f":[{"n":"MUKESH MEDICOS GHRI","k":"DEL0DL00147536","l3":0.008,"p":"Medium"},{"n":"Monu Store","k":"DEL0DL2093603_0524","l3":0.004,"p":"Medium"},{"n":"KRISHNA STORE","k":"N_DL_00014118","l3":0.003,"p":"Medium"},{"n":"ANAS STORE","k":"N_DL_00014050","l3":0.002,"p":"Medium"},{"n":"Vishnu medical store","k":"DEL0DL1245275","l3":0.0,"p":"Low"},{"n":"DURGA MASALA STORE","k":"N_DL_00014350","l3":0.0,"p":"Low"}]},"KHANNA MKT":{"a":["A ONE STORE","A ONE TRADERS","AHUJA STORE-D","ANAND GEN STORE KHAN","ARIHANT STORE","Anand drug store","Anjali singh","BARKAT RAM BRIJ LAL","BHATIA STORE","Beauty cornar","CHAUDHARY STORE","GARG PROVISION STORE","GOYAL STORE","HARI KISAN STORE","J K M MEDICOS","JAIN PRO STOREKHAN MKT","JINDAL STORE(KHAN)","K D STORE","KAPIL STORE","KWALTY GEN STORE","M S P pharmacy","MEDICARE CHEMIST","MODERN BEAUTY GALARY","MORDERN BEAUTY GALLERY","NAGPAL HEALTHCARE CHEMIST","NAGPAL PHARMACY","New Nagpal pharmacy","PUNJAB PAN HOUSE-D","PYREELAL RAM PRASAD","Pappu general store","RAJ STORE(KN)","ROZMARRA STORE","SHARDA STORE","SHREE AMBICA MEDICOS","SUDHIR STORE","SUNSHINE STORE","SUPER STOREKH)","SWASTIK STORE","Sachdeva stores chemist","Shanti Stores","Shiv store Cash","SunRise Store","VISHNU STORE","YAMUNA CHEMIST","ZEOLITE WELLNESS PVT. LTD"],"f":[{"n":"M S P pharmacy","k":"DEL0DL00614927","l3":0.02,"p":"Medium"},{"n":"J K M MEDICOS","k":"DEL0DL1107920","l3":0.002,"p":"Medium"},{"n":"ARIHANT STORE","k":"DEL0DL11520402","l3":0.0,"p":"Low"},{"n":"Pappu general store","k":"DEL0DL1266919","l3":0.0,"p":"Low"}]},"L N  KRISHNA MARKET":{"a":["AGYA RAM DEPSTOPRE","AMIT PROV STORE0101)","Aman store","BHAGAT RAM TRADERS","BHAPAYDIHATTI","Bajaj store","Bsahin dep store","CENTRAL PHARMACY","CHANDER NAMKEEN BHANDAR","CHODHARY MOHAN LAL & SONS","Chawla gen store","DALJIT GEN STORE","DISCOUNT MEDICOS","Delhi Store","GURU KRIPA TRADERS","GURUNANAK STORE 0227)","Gulbahar Pharmacy & Cosmetic","KAMAL CHEMIST","KRISHNA STORE","KUKREJA STORE","KUMAR MEDICOS","LAXMAN STORE0201)","MANOJ CONF","MEHAK MEDICOS","Mahindra conf.","NARANG CHEMIST","PANKAJ STORE..(LJP)","PURVIK MEDICAL STORE","R K Store","RADHA ENTERPRISES","SWATI STORE","Shree vishnu dairy &paneer bhandar","TANEJA MEDICINE STORE","UNIQUE CHEMIST","VIJAY STORE..","Vijay Store 2","YOGESH MEDICOSE","l.v traders","nd24","sachdeva store"],"f":[{"n":"MANOJ CONF","k":"DEL0DL00183841","l3":0.004,"p":"Medium"},{"n":"CHODHARY MOHAN LAL & SONS","k":"N_DL_00027439","l3":0.004,"p":"Medium"},{"n":"BHAGAT RAM TRADERS","k":"DEL0DL1068825","l3":0.003,"p":"Medium"},{"n":"RADHA ENTERPRISES","k":"DEL0DL00832277","l3":0.003,"p":"Medium"},{"n":"SWATI STORE","k":"DEL0DL11520405","l3":0.002,"p":"Medium"},{"n":"sachdeva store","k":"0022016394DEL0DL00093591","l3":0.001,"p":"Medium"},{"n":"DALJIT GEN STORE","k":"DEL0DL00230706","l3":0.0,"p":"Low"},{"n":"PURVIK MEDICAL STORE","k":"0022016394DEL0DL00275340","l3":0.0,"p":"Low"},{"n":"NARANG CHEMIST","k":"DEL0DL00971857","l3":0.0,"p":"Low"},{"n":"YOGESH MEDICOSE","k":"DEL0DL00806771","l3":0.0,"p":"Low"},{"n":"R K Store","k":"DEL0DL11520406","l3":0.0,"p":"Low"},{"n":"KRISHNA STORE","k":"DEL0DL11502797","l3":0.0,"p":"Low"},{"n":"DISCOUNT MEDICOS","k":"DEL0DL1928226","l3":0.0,"p":"Low"},{"n":"Delhi Store","k":"DEL0DL2428058_1024","l3":0.0,"p":"Low"},{"n":"MEHAK MEDICOS","k":"N_DL_00014103","l3":0.0,"p":"Low"},{"n":"AGYA RAM DEPSTOPRE","k":"N_DL_00014319","l3":0.0,"p":"Low"}]},"LAXMIBAI SAROJNI MKT":{"a":["ABHIMANYU STORE","ANAND KISHORE","Abhishek Store","Ahuja medicos","DERA PROV STORE","GUPTA FLOUR MILL","Gupta mill","JAIN STORE","KHUSHBOO STORE","KISHAN MART","KISHAN SONS...","Khan store","MITHLA STOREPILL)","NAV JEEVAN CHEMIST","NEW MODERN CHEMISTS","NEW TIWARI GEN. STORE","P P PHARMACEUTICALS","PANKAJ STORE(PILL)","Pari cosmetics","RADHE SHYAM STORE","SARKAR DISPENSING CHEMIST","SATYAM STOREPILL","SHRI SAI STORE(PILL)","SINGH PAN CORNER","SURESH STORE","TIWARI GEN STORE","VERMA CHEMIST","Yadav store","abhinav store","jeewan parkash chemist","rahul store(PILL)"],"f":[]},"SARAI KALEKHAN":{"a":["ANKIT MEDICOS","ARORA STORE","Aalam store","Aaweshi store mother dairy","Anhal pharmacy","Anvar store","Apna store","Arun general store","BIRJU STORE","Bablu store","Chauhan store","DAKSHA STORE","DUA STORE","Ditya chemist","Diwan store","EKTA STORE","GANESH STORE","GRISH STORE","Gupta aata chakki","Gupta floor mill","JAI DURGA STORE","Jai hind medical store","KAPIL STORE","Kailash store","Karan store","Kartik store","Kunal general store","LOVE STORE","LUTHRA CHEMIST","Laxmi general store","MILAN GIFT STORE1429)","Mithla kirana store","NEERAJ STORE","NETRAM PURAN MAL","NEW SAI MEDICOS","PANKAJ STORE","PRAKASH MEDICOS","Pawan masala store","Priyansh store","RATHOR STORE","ROHINI GENERAL STORE","ROHNI GENRAL STORE","Raja masala store","Rajesh store","SHIV STORE","SINGHAL & SONS..","Saanchi Enterprises","Sammu medical","Shubham general store","VAISHNAVI COSMETICS","Vicky store","YOURS CHEMIST","Yash store","Yuvraj store","aggarwal store"],"f":[{"n":"Apna store","k":"DEL0DL822721","l3":0.003,"p":"Medium"},{"n":"Kartik store","k":"DEL0DL00490119","l3":0.002,"p":"Medium"},{"n":"Gupta floor mill","k":"DEL0DL1256379","l3":0.001,"p":"Medium"},{"n":"MILAN GIFT STORE1429)","k":"DEL0DL00152230","l3":0.0,"p":"Low"}]},"SHAHRPUR JATT":{"a":["AGGARWAL STORE","AHUJA STOREANDE","ANVAR STORE","ARORA GEN STORE","ARORA MEDICOS 0526)","ATUL STORE","Aggarwal Chemist","Amit Store ","Anil store","Ansari store","Ashok store","BALAJI STORE","BHAGAT STORE (KOTLA)","BHUTANI STORE","Bhagwati gen store","Bharat Store","DEE PEE STORE","DEV MEDICOS","Dhruv cosmetic","GAURAB STORE","GAUTAM STORE","GURUNANAK STORE","Gagan Store","Ganpati medical hall","Ganpati medical hall 1","Garg super store","Great pharmacy","JAIN STORE","JAY PAL COSMETIC","JONNY STORE","Jindal store","Kashish store","MANISH STORE","Mahboob store","Munna store","NAKUL COSMETIC","NEW GAUTAM STORE","NEW JANTA STORE (CHABRA STORE)","NEW VEENA PHARMACY","NIDHI MEDICOS","NISHA COSMATICS","Nitin store","OM SAI CORNER","OM SAI MEDICAL STORE","PANKHUDI GEN STORE","PINK COSMETICS SNP","PREEM STORE","Preeti store","Prem cosmetic","R R GENERAL STORE AND STATIONERY","RAHEJA STORE","RAHUL STORE","RAJENDER STORE","RAM CHANDRA STORE","RAM VILASH STORE","RAMCHANDRA STORE","RAVI STORE","ROHIT STORE","Ramesh store","SABIHA STORE","SAHANI STORE","SHARMA JI PAAN","SHIV NARAYAN STORE","SITA RAM STORE","SONU STORE","SONU STORE","SUBHASH STORE(DEFENC)","Sharma store","Shivam chemist","Suraj Masala","Taj provision store ","VINAY STORE","Vipin Store","Yadav store"],"f":[{"n":"SITA RAM STORE","k":"DEL0DL2443506_1124","l3":0.006,"p":"Medium"},{"n":"RAHUL STORE","k":"DEL0DL00684160","l3":0.001,"p":"Medium"},{"n":"Gagan Store","k":"0022016394DEL0DL00425132","l3":0.0,"p":"Low"},{"n":"ATUL STORE","k":"N_DL_00013980","l3":0.0,"p":"Low"}]},"TEHKHAND_HERKESH NAGAR":{"a":["ABHISHEK MEDICOS","AGGARWAL STATIONERY","AGGARWAL STORE","AKASH STORE","AMS 24 WELLNESS PRIVATE LIMITED","ANOOP STORE SADIK","ANUBHAV GENREL STORE","Agarwal stationary","Alam General Store ","Anil store","BABA DAIRY","BALAJI GENRAL STORE","Banty Store","Birju store","Chandani Store ","DURGA COSMATIC","DURGA STOREANDRWES","Deepak Store","G Mart","GUPTA COSMETICS","Gupta gen store","Gupta gen store","HARI OM STORE","Harjot crockery and plastic","JAISWAL STORE","Jai mata di store","Jaiswal store","Jeet Singh Store","KAPOOR MEDICOSE","KRISHNA DEPT STORESADIK","KRISHNA GENRAL STORE","KRISHNA MEDICAL HALL","KRISHNA MEDICOS","KUMAR GENRAL STORE","Khurana & sons","MADHAV STORE","MINI GENERAL STORE","MOHAN MEDICOS","MURGAN STORE","Mittal Stationers & Packers ","Mukul cosmetic","NARAYAN GEN STORE","OM CHEMISTS","POOJA MASALA STORE","POOJA SHRINGAR COS.","PRASER MEDICOS","PREM STORE","PRIYA GENRAL STORE","Praveen General Store ","Prem Store ","Royal hospitality","S S wholesale mart","SHIV POOJAN STORE","SHIV TRADERS","Shree Girdhari Medicos","VINOD STORE","Vivek traders.","YADAV MEDICOS","mahavir medicos","shiv shakti","shivam chemist","vijay depatmental store"],"f":[{"n":"Mittal Stationers & Packers ","k":"DEL0DL3223982_072025","l3":0.036,"p":"Medium"}]}},"Vinod Kumar Shah":{"BATLAHOUSE 3":{"a":["AL SHAHAB PHARMACY","AL-NOOR MEDICOS","AVON STORE","Abdul store","Al Noor super store","BISMILLAH STORE","Bismillah nazri store","C S medicose","CARE MEDICOS","Chaudhry medicos","City Medicos ","FRIENDS MEDICOS","HARYANA STORE","HIBA CHEMIST","HIND MEDICOS","ISRAR STORE","JAMIA PHARMACY","Kamran Pharmacy ","Life medicos","Lifecare pharmacy","MIRZA STORE","Mallik store","Mujamil store","NADEEM GEN STORE","NATIONAL STORE","NEW HARYANA STORE (RASID)","NEW HIND MEDICOS","NEW LIFE MEDICOS","NEW SUPER STORE","Q NEXT","Royal pharma","S K Store","Shahid store","TAUQEER STORE"],"f":[{"n":"NATIONAL STORE","k":"DEL0DL00987362","l3":0.007,"p":"Medium"},{"n":"Chaudhry medicos","k":"DEL0DL00582895","l3":0.003,"p":"Medium"},{"n":"JAMIA PHARMACY","k":"DEL0DL741649","l3":0.001,"p":"Medium"},{"n":"HIBA CHEMIST","k":"N_DL_00013966","l3":0.001,"p":"Medium"},{"n":"Mallik store","k":"DEL0DL2081065_0524","l3":0.0,"p":"Low"}]},"S1 BATLA HOUSE":{"a":["A TO Z CHEMIST","ADHNAN STORE","AISHA CHEMIST","AKSHA GEN STORE","AL-RAIYAN SUPER STORE","APPOLLO MEDICAL STORE","ASAD STORE","Al fiza general store","BATLA MEDICOS","BHARAT MEDICINE PHARMACY","BOBBY STORE","DAR AL SHIFA PHARMACY","Delhi store","HEENA RICE TRADERS","Haji gen store","Huda cosmetic and statinery","INSTANT WALL CARE PHARMACY","Inayat medicos","Jamia bazar","Khan store","M B store","MADAN GEN STORE","MISPA STORE","Maham medicos","Mahan medicos","NEW MIRZA STORE","NEW PAPPU STORE","RAJDHANI MEDICOSE","S.H STORE","Sajid store","TAJ SUPER STORE","UNITED MEDICAL STORE"],"f":[{"n":"NEW PAPPU STORE","k":"DEL0DL00924478","l3":0.002,"p":"Medium"},{"n":"DAR AL SHIFA PHARMACY","k":"0022016394DEL0DL00109964","l3":0.001,"p":"Medium"},{"n":"NEW MIRZA STORE","k":"N_DL_00013547","l3":0.001,"p":"Medium"}]},"S1 JASOLA VILLAGE":{"a":["A FAMILY MEDICOS","A k Medicos","ANIL STORE","ARSHI GEN STORE","ASIA MEDICOS","Bala gi store","Choudhary dary & paneer bhandhar","City madicose","DUTTA STORE","Dheraj store","GAURAV PHARMACY","GIRJANAND STORE","GOYAL GENERAL STORE","Gupta Gen Store","Imran store","Jasola Super Store","K M STORE","KARTIK STORE","Khalid store","Krishna pharmacy","Krishna pharmacy","M.S.TRADERS","NEHA TRADERS","OM MEDICOSE","PHARMACY-7","RAJ MEDICAL & GEN STORE","RAJPOOT GEN STORE","RAJSTHAN GENERAL STORE","Raunak store","SATPAL NAMKEEN STORE","STANDARD STORE","Shree Shyam Mediways","Sri Narasimha treders","VARMA STORE","YADAV STORE","Yashu chemist shop"],"f":[{"n":"RAJPOOT GEN STORE","k":"0022016394DEL0DL00096934","l3":0.007,"p":"Medium"},{"n":"PHARMACY-7","k":"N_DL_00014017","l3":0.004,"p":"Medium"},{"n":"STANDARD STORE","k":"DEL0DL01007933","l3":0.003,"p":"Medium"},{"n":"KARTIK STORE","k":"DEL0DL00826122","l3":0.001,"p":"Medium"},{"n":"DUTTA STORE","k":"DEL0DL00947668","l3":0.0,"p":"Low"}]},"S1 NFC":{"a":["AHMAD STORE","ALAM STORE","AMAN GEN STORE","AMANDEEP STORE","BALAJI GEN STORE","BOBBY STORE","CHAUHAN STORE","FAMILY CARE MEDICOS","GAJRAJ GEN STORE","GOPAL JEE STORE","GUPTA STORE MEDICAL","Gupta gen store","HONEY MONEY TOP","INDIAN MEDICOS","J S Ayurvedic","JAFRUDDIN COSMETIC","JAI AMBEY MEDICOS","JAI MATA STORE","JMD STORE","KRISHNA DAIRY","KUMAR STORE","Khatu shyam medicos & department store","Lovely store","MARUTI STORE","MOHAN BABA STORE","MUKESH GENRAL STORE","MUSKAN COSMATICS","OM STORE ","RAZA STORE","RD STORE","Rani store","SACHEDEVA DEP STORE","SAI CHEMIST & GENRAL STORE","SANGHI MEDICOS","SONU STORE","Sharma store","VERMAS ","Vishal Store","YOGESH GEN STORE"],"f":[{"n":"SACHEDEVA DEP STORE","k":"N_DL_00013696","l3":0.006,"p":"Medium"},{"n":"JAFRUDDIN COSMETIC","k":"DEL0DL677193","l3":0.005,"p":"Medium"},{"n":"KUMAR STORE","k":"N_DL_00013869","l3":0.004,"p":"Medium"},{"n":"GUPTA STORE MEDICAL","k":"DEL0DL11642143","l3":0.003,"p":"Medium"},{"n":"JAI AMBEY MEDICOS","k":"0022016394DEL0DL00121084","l3":0.0,"p":"Low"},{"n":"Gupta gen store","k":"DEL0DL2822074_0125","l3":0.0,"p":"Low"}]},"S1 SARITA VIHAR":{"a":["ANIL STORE","ANSHU STORE","Aggrawal snacks and caters","All india chemist","Anil grocery store","Bansal morning store","Central super Store","DISHA MEDICOS","Duwa store","Garg store","Guru Kripa Store","JAGDISH SRORE","Janta store","K.K. & SONS CHEMIST","KAILESH STORE","KAKA GEN STORE","KALKA STORE","KRISHANA STORE","Khandelwal medicos","Madicare chemist","Medicare chemist","Om sai general store","POOJA STORE","RAJ GEN STORE 0937)","SAHALI COSMATICS","SHYAM STORE","Sethi confectionery","Shri shyam pharma","Shyam samagry pooja store","TURNING POINT CHEMIST","Trishi cosmetic","VIKAS MORNING STORE"],"f":[{"n":"K.K. & SONS CHEMIST","k":"DEL0DL11701234","l3":0.002,"p":"Medium"},{"n":"Shyam samagry pooja store","k":"DEL0DL00581118","l3":0.001,"p":"Medium"},{"n":"Trishi cosmetic","k":"DEL0DL908892","l3":0.001,"p":"Medium"}]},"S1 SHAHIN BAG":{"a":["A One Store","A.B. MEDCIOS","AIM MEDICOS","AL-MADINA MEDICOS","AL-MADINA MEDICOS","ALAM SUPER STORE","Ahmed Store","CHOUDHARI SUPER STORE","CHOUDHARY FARMAN STORE","CITY STORE","Family Store","GUDDU GEN STORE","IQRA STORE","K.S.K PHARMA","KGN Store","M.M MEDICOS","MANNAT PHARMACY","MAZHAR STORE","Modern Super Store ","NATIONAL MEDICAL STORE","NATIONAL MEDICAL STORE","NOOR AMIR STORE","OLIVE ENTERPRISES","RAISUDDIN STORE","S.MALLIK MASALA STORE","SARTAJ STORE","SHAHEEN MEDICOS","SOHAIL STORE","SUBANALAA COSMATICS STORE","SUBHAN ALLAH STORE","Sadia cosmetic","Samshad store"],"f":[{"n":"CHOUDHARI SUPER STORE","k":"DEL0DL00313015","l3":0.032,"p":"Medium"}]}}};
 
 // ── SSM short names ───────────────────────────────────────────
@@ -658,38 +957,17 @@ function applyMonthlyOutlets(rows){
 
 // ── Daily poll (every 30s) ────────────────────────────────────
 function pollDaily(){
-  try{
-    google.script.run
-      .withSuccessHandler(function(res){
-        applyDailyMSL(res.msl||[]);
-        applyDailyOutlets(res.outlets||[]);
-      })
-      .withFailureHandler(function(){
-        $('msl-ts').textContent = nowT()+'*';
-        $('out-ts').textContent = nowT()+'*';
-      })
-      .getDailyLeaderboard();
-  } catch(e){
-    // local test fallback
-    applyDailyMSL([]);
-    applyDailyOutlets([]);
-  }
+  gasGet('getDailyLeaderboard').then(function(res){
+    if(res){ applyDailyMSL(res.msl||[]); applyDailyOutlets(res.outlets||[]); }
+    else { $('msl-ts').textContent=nowT()+'*'; $('out-ts').textContent=nowT()+'*'; }
+  });
 }
 
 // ── Monthly load (once on init, refreshed every 5 min) ────────
 function loadMonthly(){
-  try{
-    google.script.run
-      .withSuccessHandler(function(res){
-        applyMonthlyMSL(res.msl||[]);
-        applyMonthlyOutlets(res.outlets||[]);
-      })
-      .withFailureHandler(function(){})
-      .getMonthlyLeaderboard();
-  } catch(e){
-    applyMonthlyMSL([]);
-    applyMonthlyOutlets([]);
-  }
+  gasGet('getMonthlyLeaderboard').then(function(res){
+    if(res){ applyMonthlyMSL(res.msl||[]); applyMonthlyOutlets(res.outlets||[]); }
+  });
 }
 
 function startPolling(){
@@ -732,13 +1010,10 @@ function doLogin(){
   $('geo-q').value='';
   showPg('pg-main');
   renderFocus(); renderGeo(); renderMSLTab(); renderOutLog(); updateStats();
-  try{
-    google.script.run
-      .withSuccessHandler(r=>{S.sts=r.statuses||{};S.gfl=r.geoFlags||{};
-        renderFocus();renderGeo();updateStats();})
-      .withFailureHandler(()=>{})
-      .getSSMData(ssm,beat);
-  }catch(e){}
+  gasGet('getSSMData', {ssm:ssm, beat:beat}).then(function(r){
+    if(r){ S.sts=r.statuses||{}; S.gfl=r.geoFlags||{};
+      renderFocus(); renderGeo(); updateStats(); }
+  });
 }
 
 function swTab(id,btn){
@@ -837,10 +1112,8 @@ function saveAct(){
   else{entry.flag=pend;S.gfl[ok]=entry;renderGeo();}
   updateStats(); closeSheet(); toast('✓ Saved');
   const pl={ssm:S.ssm,beat:S.beat,outlet:out.n,note};
-  try{
-    if(mode==='focus'){pl.status=pend;google.script.run.withFailureHandler(()=>toast('Sheet sync failed',true)).saveAction(pl);}
-    else{pl.flag=pend;google.script.run.withFailureHandler(()=>toast('Sheet sync failed',true)).saveGeoFlag(pl);}
-  }catch(e){toast('Sheet sync failed',true);}
+  if(mode==='focus'){ pl.status=pend; gasPost('saveAction', pl); }
+  else { pl.flag=pend; gasPost('saveGeoFlag', pl); }
 }
 
 // ── MSL ───────────────────────────────────────────────────────
@@ -859,9 +1132,7 @@ function saveMSL(){
   if(isNaN(num)||num<0){toast('Enter a valid number',true);return;}
   S.mslToday=num; renderMSLTab(); $('msl-num').value='';
   toast('✓ MSL submitted: '+num+' outlets');
-  try{google.script.run.withFailureHandler(()=>toast('Sheet sync failed',true))
-    .saveMSLEntry({ssm:S.ssm,beat:S.beat,units:num});}
-  catch(e){toast('Sheet sync failed',true);}
+  gasPost('saveMSLEntry', {ssm:S.ssm, beat:S.beat, units:num});
   setTimeout(pollDaily, 2000); // refresh leaderboard after 2s
 }
 
@@ -882,27 +1153,21 @@ function saveOutlet(){
   S.myOuts.unshift({name:nm,bill,beat:S.beat});
   $('new-nm').value=''; $('new-bill').value='';
   renderOutLog(); toast('✓ Outlet added');
-  try{google.script.run.withFailureHandler(()=>toast('Sheet sync failed',true))
-    .saveOutletAddition({ssm:S.ssm,beat:S.beat,outlet:nm,billAmt:bill});}
-  catch(e){toast('Sheet sync failed',true);}
+  gasPost('saveOutletAddition', {ssm:S.ssm, beat:S.beat, outlet:nm, billAmt:bill});
   setTimeout(pollDaily, 2000);
 }
 
 // ── Manager ───────────────────────────────────────────────────
 function loadMgr(){
   $('mgr-body').innerHTML='<div class="loading"><span class="spin">⟳</span> Loading…</div>';
-  try{
-    google.script.run
-      .withSuccessHandler(res=>{
-        MGR=res;
-        $('m-f').textContent=res.focus.length; $('m-g').textContent=res.geo.length;
-        $('m-m').textContent=res.msl.length; $('m-o').textContent=res.outlets.length;
-        $('mgr-ts-lbl').textContent='Updated '+nowT();
-        renderMgr();
-      })
-      .withFailureHandler(()=>{$('mgr-body').innerHTML='<div class="empty">⚠️ Could not load</div>';})
-      .getAllData();
-  }catch(e){$('mgr-body').innerHTML='<div class="empty">⚠️ Open via deployed URL</div>';}
+  gasGet('getAllData').then(function(res){
+    if(!res){ $('mgr-body').innerHTML='<div class="empty2">⚠️ Could not load data</div>'; return; }
+    MGR=res;
+    $('m-f').textContent=res.focus.length; $('m-g').textContent=res.geo.length;
+    $('m-m').textContent=res.msl.length; $('m-o').textContent=res.outlets.length;
+    $('mgr-ts-lbl').textContent='Updated '+nowT();
+    renderMgr();
+  });
 }
 function setMF(f){
   mf=f;
